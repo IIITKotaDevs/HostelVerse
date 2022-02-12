@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField';
+import axios from "axios"
+import baseurl from "../config"
 
 function RoomIssue() {
     const [reason, setReason] = useState("")
@@ -7,9 +9,27 @@ function RoomIssue() {
         setReason(e.target.value)
         console.log(reason)
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault()
-        console.log('You submitted the input')
+        const res = await axios.post(
+            `${baseurl}/student/createRoomIssue`,
+            {
+                hostelid: localStorage.getItem('hostelid'),
+                roomno: localStorage.getItem('roomno'),
+                remarks: reason,
+            },
+            {
+                headers: {
+                    Authorization: localStorage.getItem('jwtToken') ? `Bearer ${localStorage.getItem('jwtToken')}` : "",
+                    "Content-type": "application/json",
+                }
+            }
+        )
+        if(res.status === 200) {
+            console.log("Room issue submitted successfully")
+        } else {
+            console.error("Something went wrong!")
+        }
     }
   return (
     <div className="bg-room-issue h-screen bg-cover">

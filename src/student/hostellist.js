@@ -1,31 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Menu } from '@headlessui/react'
 import Slider from "@material-ui/core/Slider";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import.macro'
-
-const cards = [
-    {
-        name: "Hostel1",
-        location: "Jaipur",
-        seats: 30,
-        rent: 10000,
-        stars: 4.5,
-        students: 30
-    },
-    {
-        name: "Hostel2",
-        location: "Jaipur",
-        seats: 40,
-        rent: 10000,
-        stars: 4.5,
-        students: 30
-    },
-]
+import axios from "axios"
+import baseurl from '../config';
 
 function HostelList() {
     const [val, setVal] = useState([5000, 15000])
     const [seats, setSeats] = useState(20)
+    const [hostels, setHostels] = useState([])
     const [location, setLocation] = useState('Jaipur')
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -39,6 +23,16 @@ function HostelList() {
         e.preventDefault()
         setSeats(data)
     }
+
+    useEffect(() => {
+        getHostels()
+    }, [])
+
+    const getHostels = async() => {
+        const hostels = await axios.get(`${baseurl}/getHostelList`)
+        setHostels(hostels.data)
+    }
+
     return (
         <div className="grid grid-cols-12 p-16">
             <div className="col-span-2">
@@ -106,12 +100,13 @@ function HostelList() {
 
 
             <div className="col-span-10 border-l-4 grid grid-cols-3">
-                {cards.map(card => {
+                {hostels.map(hostel => {
                     return (
                         <div className="text-center border-2 rounded-lg mx-8 shadow-lg h-40">
-                            <h1 className="font-bold text-xl my-2">{card.name}</h1>
-                            <h1 className="text-gray-500">{card.location} | ₹{card.rent}/month | {card.stars}⭐️ | {card.students} </h1>
-                            <h1 className="text-lg font-bold mt-2">Seats Left: {card.seats}</h1>
+                            <h1 className="font-bold text-xl my-2">{hostel.hostelname}</h1>
+                            <h1 className="text-gray-500">{hostel.location} | ₹{hostel.fees}/month</h1>
+                            <h1 className="text-gray-500">{hostel.stars}⭐️ | {hostel.totalrooms} students </h1>
+                            <h1 className="text-lg font-bold mt-2">Seats Left: {hostel.roomsleft}</h1>
                         </div>
                     )
                 })}

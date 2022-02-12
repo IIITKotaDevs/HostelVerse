@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField';
-import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
+import axios from "axios"
+import baseurl from "../config"
 
 function UpdateProfile() {
     const student = { name: "Vinamra", gender: "Male", location: "Ghaziabad, India"}
@@ -21,9 +21,9 @@ function UpdateProfile() {
         e.preventDefault()
         setLocation(e.target.value)
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault()
-        console.log('You submitted the input')
+        console.log("Updated successfully")
     }
   return (
     <div className="bg-room-issue h-screen bg-cover">

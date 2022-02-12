@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField';
+import baseurl from '../config';
+import axios from "axios"
 
 function LeaveApplication() {
     const [startDate, setStartDate] = useState("2022-02-12")
@@ -13,11 +15,30 @@ function LeaveApplication() {
     }
     const handleReasonChange = (e) => {
         setReason(e.target.value)
-        console.log(reason)
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault()
-        console.log('You submitted the input')
+        const res = await axios.post(
+            `${baseurl}/student/createLeaveApplication`,
+            {
+                studentid: localStorage.getItem('id'),
+                message: reason,
+                date_to: endDate,
+                date_from: startDate,
+            },
+            {
+                headers: {
+                    Authorization: localStorage.getItem('jwtToken') ? `Bearer ${localStorage.getItem('jwtToken')}` : "",
+                    "Content-type": "application/json",
+                }
+            }
+        )
+
+        if(res.status === 200) {
+            console.log("Your application is submitted successfully")
+        } else {
+            console.log("Something went wrong!")
+        }
     }
   return (
     <div className="bg-leave-application bg-cover h-screen">
@@ -30,7 +51,7 @@ function LeaveApplication() {
                 label="Choose starting date"
                 type="date"
                 onChange={handleStartDateChange}
-                defaultValue="2017-05-24"
+                defaultValue="2022-02-12"
                 InputLabelProps={{
                 shrink: true,
                 }}
@@ -42,7 +63,7 @@ function LeaveApplication() {
                 label="Choose ending date"
                 type="date"
                 onChange={handleEndDateChange}
-                defaultValue="2017-05-24"
+                defaultValue="2022-02-13"
                 InputLabelProps={{
                 shrink: true,
                 }}

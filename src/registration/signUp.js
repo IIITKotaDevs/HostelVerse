@@ -5,14 +5,13 @@ import axios from "axios";
 export default function SignUp() {
   const navigate = useNavigate();
   const [name, setName] = useState("akash");
-  const [email, setEmail] = useState("akash123@gmail.com");
-  const [password, setPassword] = useState("12345678");
-  const [confirmPassword, setConfirmPassword] = useState("12345678");
-  const [id, setId] = useState("123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [id, setId] = useState("");
   const [gender, setGender] = useState("Male");
-  const [phone, setPhone] = useState("1234567890");
-  const [location, setLocation] = useState("Uttar pradesh");
-  const [dataText, setDataText] = useState("");
+  const [phone, setPhone] = useState("");
+  const [location, setLocation] = useState("");
 
   const isValidated = (email) => {
     return String(email)
@@ -34,7 +33,7 @@ export default function SignUp() {
         location: location,
       })
       .then(function (response) {
-        console.log(response.status);
+        console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -45,7 +44,7 @@ export default function SignUp() {
     if (name.length > 4) {
       if (isValidated(email)) {
         if (password.length > 7) {
-          if (password === confirmPassword) {
+          if (password == confirmPassword) {
             if (id.length > 0) {
               if (phone.length > 9) {
                 if (location.length > 5) {
@@ -138,19 +137,20 @@ export default function SignUp() {
         </div>
         <button
           type="submit"
-          className="px-10 py-2 bg-black text-white font-medium rounded-xl"
-          onClick={validate}
+          className="px-10 py-2 bg-black text-white font-medium rounded-lg"
+          onClick={() => navigate("/otp")}
         >
           Submit
         </button>
-        <p className="mt-2 ">Already have an Account ?</p>
-        <p
-          className="cursor-pointer underline text-blue-700"
-          onClick={() => navigate("/sign-in")}
-        >
-          Sign In
+        <p className="mt-2 ">
+          Already have an Account ?
+          <p
+            className="cursor-pointer underline text-blue-700"
+            onClick={() => navigate("/sign-in")}
+          >
+            Sign In
+          </p>
         </p>
-        <p>{dataText.toString()}</p>
       </div>
     </div>
   );

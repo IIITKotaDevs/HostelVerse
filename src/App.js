@@ -6,6 +6,7 @@ import { HostelList, HostelDetail } from './student'
 import Landing from './registration/landing';
 import SignUp from './registration/signUp';
 import SignIn from './registration/signIn';
+import { PayFee } from "./student/components/PayFee";
 import Dashboard from "./student/dashboard";
 import Profile from "./student/profile";
 
@@ -23,7 +24,7 @@ function App() {
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/:user/dashboard' element={<Dashboard />} />
           <Route path='/:user/profile' element={<Profile />} />
-          {/* <Route path="/:user/pay-fee" element={<PayFee />} /> */}
+          <Route path="/:user/pay-fee" element={<PayFee />} />
         </Routes>
         {/* <Footer /> */}
         <ReactQueryDevtools initialIsOpen={false} />

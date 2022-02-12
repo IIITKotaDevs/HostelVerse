@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import Home from './home';
 import { HostelList, HostelDetail } from './student'
 import Landing from './registration/landing';
 import SignUp from './registration/signUp';
@@ -10,7 +9,7 @@ function App() {
     <>
       {/* <Navbar /> */}
       <Routes>
-        <Route path="/:user/hostels" element={<HostelList />} />
+        <Route path="/hostels" element={<HostelList />} />
         <Route path="/hostels/:id" element={<HostelDetail />} />
         <Route path="/" element={<Landing />} />
         <Route path='/home' element={<Landing />} />

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
+  const [name, setName] = useState("akash");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -11,6 +12,52 @@ export default function SignUp() {
   const [gender, setGender] = useState("Male");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
+
+  const isValidated = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+  const userSignUp = () => {
+    axios
+      .post("https://hostelverse-aztecs.herokuapp.com/signup", {
+        email: email,
+        password: password,
+        studentid: id,
+        name: name,
+        gender: gender,
+        contactno: phone,
+        location: location,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const validate = () => {
+    if (name.length > 4) {
+      if (isValidated(email)) {
+        if (password.length > 7) {
+          if (password == confirmPassword) {
+            if (id.length > 0) {
+              if (phone.length > 9) {
+                if (location.length > 5) {
+                  userSignUp();
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+
   return (
     <div className="bg-landing-background bg-cover h-screen grid grid-cols-2 font-roboto">
       <div></div>

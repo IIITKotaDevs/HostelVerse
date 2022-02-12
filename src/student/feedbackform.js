@@ -1,19 +1,37 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField';
 import Rating from '@mui/material/Rating';
+import baseurl from "../config"
+import axios from "axios"
 import Typography from '@mui/material/Typography';
 
 function FeedbackForm() {
     const [value, setValue] = useState(0)
     const [review, setReview] = useState("")
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault()
-        console.log('You submitted the input')
+        const res = await axios.post(`${baseurl}/student/Feedback`,
+        {
+            studentid: localStorage.getItem('id'),
+            name: localStorage.getItem('name'),
+            rating: value,
+            message: review
+        },
+        {
+            headers: {
+                Authorization: localStorage.getItem('jwtToken') ? `Bearer ${localStorage.getItem('jwtToken')}` : "",
+                "Content-type": "application/json",
+            }
+        })
+        if(res.status === 200) {
+            console.log("Submitted successfully")
+        } else {
+            console.error("Something went wrong!")
+        }
     }
     const handleReviewChange = (e) => {
         e.preventDefault()
         setReview(e.target.value)
-        console.log(review)
     }
   return (
     <div className="bg-room-issue h-screen bg-cover">

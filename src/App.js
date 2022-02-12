@@ -10,9 +10,26 @@ import FeedbackForm from "./student/feedbackform";
 import UpdateProfile from "./student/updateprofile";
 import Otp from "./registration/otp";
 import { geolocated } from "react-geolocated";
+import { useEffect } from "react";
 
 function App(props) {
-  console.log(props?.coords?.latitude);
+  const fetchLocationName = async (lat, lng) => {
+    await fetch(
+      "https://www.mapquestapi.com/geocoding/v1/reverse?key=G6q7WRpEhG4OUGMA6eALCiebUcYfakEx&location=" +
+        props.coords.latitude +
+        "%2C" +
+        props.coords.longitude +
+        "&outFormat=json&thumbMaps=false"
+    )
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(
+          "ADDRESS GEOCODE is BACK!! => " + JSON.stringify(responseJson)
+        );
+      });
+  };
+  
+  fetchLocationName();
 
   return (
     <>

@@ -17,6 +17,7 @@ function HostelDetail(id) {
         }
     ]
     const params = useParams();
+    console.log(params.id)
     const hostel = { name: "Hostel 1", rating: 4.5, ratings: 20, reviews: 5, description: "This is the best hostel.", seater: 1, rent: 5000, totalrooms: 40, seatsleft: 12 }
   return (
     <div>

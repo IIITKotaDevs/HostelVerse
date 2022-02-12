@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { geolocated } from "react-geolocated";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -30,7 +29,15 @@ export default function SignIn() {
         role: type,
       })
       .then(function (response) {
-        console.log(response);
+        if (response?.status === 200) {
+          if (response?.data?.profile?.role === "student") {
+            navigate("/student/dashboard");
+          } else if (response?.data?.profile?.role === "warden") {
+            navigate("/warden/dashboard");
+          } else if (response?.data?.profile?.role === "admin") {
+            navigate("/admin/dashboard");
+          }
+        }
       })
       .catch(function (error) {
         setError(true);

@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import man from "../assets/img/man.png";
+import baseurl from "../config";
 import { localStorageKey } from "../utils/localStorageKey";
 
 export default function Dashboard() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
+  const [isChecked, setIsChecked] = useState(null);
+
   setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
 
   var objToday = new Date(),
@@ -54,6 +58,29 @@ export default function Dashboard() {
     },
   ];
 
+  const getInitialState = async () => {
+    const state = await axios.post(`${baseurl}/student/currentState`, {
+      studentid: localStorage.getItem(localStorageKey.id),
+    });
+    if (state.data.message == "Checked in") {
+      setIsChecked(false);
+    } else setIsChecked(true);
+  };
+
+  const doCheck = async () => {
+    const state = await axios.post(`${baseurl}/student/checkin`, {
+      studentid: localStorage.getItem(localStorageKey.id),
+      location: localStorage.getItem(localStorageKey.location),
+    });
+    setIsChecked(!isChecked);
+  };
+
+  useEffect(() => {
+    getInitialState();
+  }, [isChecked]);
+
+  if (isChecked == null) return null;
+
   return (
     <div className="px-16 py-10 bg-dashboard bg-cover h-screen">
       <p className="font-medium text-gray-800 text-xl">{time}</p>
@@ -80,9 +107,14 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
-      <p className="text-xl font-bold mt-10 mb-2">Check In / Out</p>
-      <button className="bg-green-700 w-1/3 text-white font-bold py-2 rounded-full text-lg">
-        IN
+      <p className={`text-xl font-bold mt-10 mb-2`}>Check In / Out</p>
+      <button
+        className={`w-1/3 text-white font-bold py-2 rounded-full text-lg ${
+          !isChecked ? "bg-red-600" : "bg-green-600"
+        }`}
+        onClick={doCheck}
+      >
+        {isChecked ? "IN" : "OUT"}
       </button>
       <p className="text-xs mt-1">
         Pro Tip: Click on the button to Check In or Check Out.

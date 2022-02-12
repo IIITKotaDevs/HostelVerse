@@ -18,6 +18,9 @@ import RoomIssuesList from "./warden/roomIssuesList";
 import WardenList from "./admin/WardenList";
 import { localStorageKey } from "./utils/localStorageKey";
 import { useEffect } from "react";
+import CreateWarden from "./admin/createwarden";
+import { Announcement } from "./student/components/Announcement";
+import PutAnnouncement from './warden/putAnnouncement';
 
 function App(props) {
   useEffect(() => {
@@ -52,8 +55,8 @@ function App(props) {
       <>
         <Navbar />
         <Routes>
-          <Route path="/hostels" element={<HostelList />} />
-          <Route path="/hostels/:id" element={<HostelDetail />} />
+          <Route path="/:user/hostels" element={<HostelList />} />
+          <Route path="/:user/hostels/:id" element={<HostelDetail />} />
           <Route path="/" element={<Landing />} />
           <Route path="/landing" element={<Landing />} />
           <Route path="/sign-up" element={<SignUp />} />
@@ -69,7 +72,9 @@ function App(props) {
           <Route path="/:user/leave-applications" element={<LeaveApplications />} />
           <Route path="/:user/room-issues" element={<RoomIssuesList />} />
           <Route path="/:user/warden-list" element={<WardenList />} />
-          {/* <Route path="/:user/pay-fee" element={<PayFee />} /> */}
+          <Route path="/:user/create-warden" element={<CreateWarden />} />
+          <Route path="/student/announcement" element={<Announcement />} />
+          <Route path="/warden/announcement" element={<PutAnnouncement />} />
         </Routes>
         {/* <Footer /> */}
       </>

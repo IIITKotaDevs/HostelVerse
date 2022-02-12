@@ -9,6 +9,7 @@ module.exports = {
         'dashboard': 'url("/src/assets/img/dashboard.png")',
         'leave-application': 'url("/src/assets/img/LeaveApplication.png")',
         'room-issue': 'url("/src/assets/img/RoomComplaint.png")',
+        'profile': 'url("/src/assets/img/profile.png")',
       },
       fontFamily: {
         'roboto': ['Roboto', 'sans-serif'],
@@ -17,6 +18,9 @@ module.exports = {
       colors: {
         'primary': 'rgba(241, 174, 0, 1)',
         'primary2': 'rgba(252, 209, 41, 1)',
+      },
+      fontSize: {
+        'xxs': '10px',
       },
     },
   },

@@ -3,12 +3,13 @@ import { HostelList, HostelDetail } from './student'
 import Landing from './registration/landing';
 import SignUp from './registration/signUp';
 import SignIn from './registration/signIn';
-import { PayFee } from "./student/component/PayFee";
+import { PayFee } from "./student/components/PayFee";
 import Dashboard from "./student/dashboard";
 import LeaveApplication from "./student/leaveapplication";
 import RoomIssue from "./student/roomissue"
 import FeedbackForm from "./student/feedbackform";
 import UpdateProfile from "./student/updateprofile";
+import Profile from "./student/profile";
 
 function App() {
   return (

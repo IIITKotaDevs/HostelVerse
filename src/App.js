@@ -16,6 +16,7 @@ import StudentList from "./student/studentList";
 import LeaveApplications from "./warden/leaveApplications";
 import RoomIssuesList from "./warden/roomIssuesList";
 import WardenList from "./admin/WardenList";
+import CreateWarden from "./admin/createWarden";
 import { localStorageKey } from "./utils/localStorageKey";
 import { useEffect } from "react";
 
@@ -52,8 +53,8 @@ function App(props) {
       <>
         <Navbar />
         <Routes>
-          <Route path="/hostels" element={<HostelList />} />
-          <Route path="/hostels/:id" element={<HostelDetail />} />
+          <Route path="/:user/hostels" element={<HostelList />} />
+          <Route path="/:user/hostels/:id" element={<HostelDetail />} />
           <Route path="/" element={<Landing />} />
           <Route path="/landing" element={<Landing />} />
           <Route path="/sign-up" element={<SignUp />} />
@@ -69,6 +70,7 @@ function App(props) {
           <Route path="/:user/leave-applications" element={<LeaveApplications />} />
           <Route path="/:user/room-issues" element={<RoomIssuesList />} />
           <Route path="/:user/warden-list" element={<WardenList />} />
+          <Route path="/:user/create-warden" element={<CreateWarden />} />
           {/* <Route path="/:user/pay-fee" element={<PayFee />} /> */}
         </Routes>
         {/* <Footer /> */}

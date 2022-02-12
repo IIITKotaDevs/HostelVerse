@@ -17,7 +17,7 @@ function HostelDetail(id) {
         }
     ]
     const params = useParams();
-    const hostel = { rating: 4.5, ratings: 20, reviews: 5, description: "This is the best hostel.", seater: 1 }
+    const hostel = { name: "Hostel 1", rating: 4.5, ratings: 20, reviews: 5, description: "This is the best hostel.", seater: 1, rent: 5000, totalrooms: 40, seatsleft: 12 }
   return (
     <div>
         <img className="w-full" src={Hostel}></img>
@@ -52,6 +52,16 @@ function HostelDetail(id) {
                 </div>
             )
         })}
+        </div>
+
+        <div className="my-4 bg-yellow-500 grid grid-cols-5">
+            <div className="mx-24 my-8 col-span-3">
+                <h1 className="text-3xl font-bold">₹{hostel.rent}/month</h1>
+                <h1 className="text-xl">Available: {hostel.seatsleft} | Max Capacity: {hostel.totalrooms}</h1>
+            </div>
+            <div className="my-8 col-span-2">
+                <button className="bg-black text-white py-2 px-8 text-3xl rounded-3xl">Apply Now</button>
+            </div>
         </div>
 
     </div>

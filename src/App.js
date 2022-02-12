@@ -3,7 +3,6 @@ import { HostelList, HostelDetail } from './student'
 import Landing from './registration/landing';
 import SignUp from './registration/signUp';
 import SignIn from './registration/signIn';
-import Landing from "./landing";
 import { PayFee } from "./student/component/PayFee";
 
 function App() {

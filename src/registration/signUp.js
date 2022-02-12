@@ -58,7 +58,7 @@ export default function SignUp() {
               <input
                 type="radio"
                 className="bg-white mr-2"
-                checked={gender == "Male"}
+                checked={gender === "Male"}
                 onChange={() => setGender("Male")}
               />
               <label>Male</label>
@@ -67,7 +67,7 @@ export default function SignUp() {
               <input
                 type="radio"
                 className="bg-white mr-2"
-                checked={gender == "Female"}
+                checked={gender === "Female"}
                 onChange={() => setGender("Female")}
               />
               <label>Female</label>

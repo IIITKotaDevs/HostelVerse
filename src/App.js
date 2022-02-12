@@ -13,6 +13,8 @@ import Profile from "./student/profile";
 import Otp from "./registration/otp";
 import Navbar from "./components/Navbar";
 import StudentList from "./student/studentList";
+import LeaveApplications from "./warden/leaveApplications";
+import RoomIssuesList from "./warden/roomIssuesList";
 
 function App(props) {
   if (!props.coords)
@@ -28,7 +30,7 @@ function App(props) {
   else
     return (
       <>
-        {/* <Navbar /> */}
+        <Navbar />
         <Routes>
           <Route path="/hostels" element={<HostelList />} />
           <Route path="/hostels/:id" element={<HostelDetail />} />
@@ -44,6 +46,8 @@ function App(props) {
           <Route path="/:user/profile" element={<Profile />} />
           <Route path="/:user/update-profile" element={<UpdateProfile />} />
           <Route path="/:user/student-list" element={<StudentList />} />
+          <Route path="/:user/leave-applications" element={<LeaveApplications />} />
+          <Route path="/:user/room-issues" element={<RoomIssuesList />} />
           {/* <Route path="/:user/pay-fee" element={<PayFee />} /> */}
         </Routes>
         {/* <Footer /> */}

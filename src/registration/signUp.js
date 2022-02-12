@@ -138,7 +138,7 @@ export default function SignUp() {
                 <button
                     type="submit"
                     className="px-10 py-2 bg-black text-white font-medium rounded-lg"
-                    onClick={() => navigate("/sign-in")}
+                    onClick={() => navigate("/otp")}
                 >
                     Submit
                 </button>

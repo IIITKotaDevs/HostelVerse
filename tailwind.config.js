@@ -7,6 +7,8 @@ module.exports = {
       backgroundImage: {
         'landing-background': 'url("/src/assets/img/LandingBackground.png")',
         'dashboard': 'url("/src/assets/img/dashboard.png")',
+        'leave-application': 'url("/src/assets/img/LeaveApplication.png")',
+        'room-issue': 'url("/src/assets/img/RoomComplaint.png")',
         'profile': 'url("/src/assets/img/profile.png")',
       },
       fontFamily: {

@@ -10,13 +10,14 @@ function App() {
     <>
       {/* <Navbar /> */}
       <Routes>
-        <Route path="/:user/hostels" element={<HostelList />} />
+        <Route path="/hostels" element={<HostelList />} />
         <Route path="/hostels/:id" element={<HostelDetail />} />
         <Route path="/" element={<Landing />} />
-        <Route path='/home' element={<Landing />} />
+        <Route path='/landing' element={<Landing />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/:user/dashboard' element={<Dashboard />} />
+        <Route path="/:user/pay-fee" element={<PayFee />} />
       </Routes>
       {/* <Footer /> */}
     </>

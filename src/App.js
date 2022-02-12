@@ -10,6 +10,7 @@ import FeedbackForm from "./student/feedbackform";
 import UpdateProfile from "./student/updateprofile";
 import Otp from "./registration/otp";
 import { geolocated } from "react-geolocated";
+import { useEffect } from "react";
 
 function App(props) {
   console.log(props.coords);

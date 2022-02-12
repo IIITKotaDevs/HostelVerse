@@ -7,6 +7,9 @@ module.exports = {
       backgroundImage: {
         'landing-background': 'url("/src/assets/img/LandingBackground.png")',
       },
+      fontFamily: {
+        'roboto': ['Roboto', 'sans-serif'],
+      },
     },
   },
   plugins: [],

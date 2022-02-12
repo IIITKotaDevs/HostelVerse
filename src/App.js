@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-import Home from './home';
+import Landing from './landing';
 
 function App() {
   return (
     <>
       {/* <Navbar /> */}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Landing />} />
       </Routes>
       {/* <Footer /> */}
     </>

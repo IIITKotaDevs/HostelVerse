@@ -1,7 +1,9 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom'
 import Hostel from '../assets/img/hostel.jpeg'
 import Man from '../assets/img/man.svg'
+import axios from "axios"
+import baseurl from "../config"
 
 function HostelDetail(id) {
     const feedbacks = [
@@ -18,29 +20,45 @@ function HostelDetail(id) {
     ]
     const params = useParams();
     console.log(params.id)
-    const hostel = { name: "Hostel 1", rating: 4.5, ratings: 20, reviews: 5, description: "This is the best hostel.", seater: 1, rent: 5000, totalrooms: 40, seatsleft: 12 }
+    const [hostelData, setHostelData] = useState(null)
+
+    useEffect(() => {
+        getHostel()
+    }, [])
+
+    const getHostel = async () => {
+        const hostel = await axios.post(`${baseurl}/getHostel`,
+        {
+            hostelid: params.id
+        },
+        )
+        setHostelData(hostel.data.hostel)
+        // console.log(hostel.data.hostel)
+    }
+
+  if(!hostelData)
+    return null
   return (
     <div>
         <img className="w-full" src={Hostel}></img>
 
         <div className="text-center">
-            <h1 className="font-bold text-3xl bg-white z-40 w-40 mx-auto p-4 -mt-8">{hostel.name}</h1>
+            <h1 className="font-bold text-3xl bg-white z-40 w-40 mx-auto p-4 -mt-8">{hostelData.hostelname}</h1>
         </div>
 
-        <div className="rounded-xl py-4 grid grid-cols-5 drop-shadow-[15px_15px_15px_rgba(0,0,0,0.25)] text-center bg-white mx-60">
+        <div className="rounded-xl py-4 grid grid-cols-4 drop-shadow-[15px_15px_15px_rgba(0,0,0,0.25)] text-center bg-white mx-60">
             <div className="col-span-1"></div>
-            <div className="bg-green col-span-1 text-2xl">{hostel.rating}/5</div>
-            <div className="col-span-1">{hostel.ratings} ratings</div>
-            <div className="col-span-1">{hostel.reviews} reviews</div>
+            <div className="col-span-1 text-2xl">{hostelData.overallRating}/5</div>
+            <div className="col-span-1">{hostelData.numberOfReviews} reviews</div>
             <div className="col-span-1"></div>
         </div>
 
         <h1 className="text-orange-400 font-bold mx-24 text-3xl mt-20">Description</h1>
-        <p className="text-lg mx-24 mt-4">{hostel.description}</p>
+        <p className="text-lg mx-24 mt-4">{hostelData.description}</p>
 
         <h1 className="text-orange-400 font-bold mx-24 text-3xl mt-20">Room Type</h1>
         <img className="w-24 mx-24 mt-4" src={Man} />
-        <h1 className="text-2xl mx-24 mt-4">{hostel.seater} - seater</h1>
+        <h1 className="text-2xl mx-24 mt-4">{hostelData.roomtype} - seater</h1>
 
         <h1 className="text-orange-400 font-bold mx-24 text-3xl mt-20">Feedback</h1>
         <div className="grid grid-cols-3 gap-4">
@@ -57,8 +75,8 @@ function HostelDetail(id) {
 
         <div className="my-4 bg-yellow-500 grid grid-cols-5">
             <div className="mx-24 my-8 col-span-3">
-                <h1 className="text-3xl font-bold">₹{hostel.rent}/month</h1>
-                <h1 className="text-xl">Available: {hostel.seatsleft} | Max Capacity: {hostel.totalrooms}</h1>
+                <h1 className="text-3xl font-bold">₹{hostelData.fees}/month</h1>
+                <h1 className="text-xl">Available: {hostelData.roomsleft} | Max Capacity: {hostelData.totalrooms}</h1>
             </div>
             <div className="my-8 col-span-2">
                 <button className="bg-black text-white py-2 px-8 text-3xl rounded-3xl">Apply Now</button>

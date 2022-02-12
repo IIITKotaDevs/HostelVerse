@@ -4,30 +4,35 @@ import Rating from '@mui/material/Rating';
 import baseurl from "../config"
 import axios from "axios"
 import Typography from '@mui/material/Typography';
+import localStorageKey from "../utils/localStorageKey"
 
 function FeedbackForm() {
     const [value, setValue] = useState(0)
     const [review, setReview] = useState("")
     const handleSubmit = async(e) => {
         e.preventDefault()
-        const res = await axios.post(`${baseurl}/student/Feedback`,
-        {
-            studentid: localStorage.getItem('id'),
-            name: localStorage.getItem('name'),
-            rating: value,
-            message: review
-        },
-        {
-            headers: {
-                Authorization: localStorage.getItem('jwtToken') ? `Bearer ${localStorage.getItem('jwtToken')}` : "",
-                "Content-type": "application/json",
+        if(localStorage.getItem('hostelid')) {
+            const res = await axios.post(`${baseurl}/student/Feedback`,
+            {
+                studentid: localStorage.getItem('id'),
+                name: localStorage.getItem('name'),
+                rating: value,
+                message: review,
+                hostelid: localStorage.getItem('hostelid')
+            },
+            {
+                headers: {
+                    Authorization: localStorage.getItem('jwtToken') ? `Bearer ${localStorage.getItem('jwtToken')}` : "",
+                    "Content-type": "application/json",
+                }
+            })
+            if(res.status === 200) {
+                console.log("Submitted successfully")
+            } else {
+                console.error("Something went wrong!")
             }
-        })
-        if(res.status === 200) {
-            console.log("Submitted successfully")
-        } else {
-            console.error("Something went wrong!")
         }
+        
     }
     const handleReviewChange = (e) => {
         e.preventDefault()

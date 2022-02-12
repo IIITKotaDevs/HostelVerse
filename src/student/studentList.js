@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import baseurl from "../config"
 
-export default function studentList() {
+export default function StudentList() {
     const [students, setStudents] = useState([]);
     const getStudentsList = async () => {
         const students = await axios.get(`${baseurl}/warden/studentList`)

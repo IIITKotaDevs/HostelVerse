@@ -1,25 +1,28 @@
-import { Routes, Route } from "react-router-dom";
-import { HostelList, HostelDetail } from "./student";
-import Landing from "./registration/landing";
-import SignUp from "./registration/signUp";
-import SignIn from "./registration/signIn";
+import { Routes, Route, useParams } from "react-router-dom";
+import { HostelList, HostelDetail } from './student'
+import Landing from './registration/landing';
+import SignUp from './registration/signUp';
+import SignIn from './registration/signIn';
+import { PayFee } from "./student/components/PayFee";
 import Dashboard from "./student/dashboard";
 import LeaveApplication from "./student/leaveapplication";
 import RoomIssue from "./student/roomissue";
 import FeedbackForm from "./student/feedbackform";
 import UpdateProfile from "./student/updateprofile";
-import Otp from "./registration/otp";
 import { geolocated } from "react-geolocated";
-import { useEffect } from "react";
+import Profile from "./student/profile";
+import Otp from './registration/otp';
+import Navbar from './components/Navbar';
+import StudentList from "./student/studentList";
 
 function App(props) {
   const fetchLocationName = async (lat, lng) => {
     await fetch(
       "https://www.mapquestapi.com/geocoding/v1/reverse?key=G6q7WRpEhG4OUGMA6eALCiebUcYfakEx&location=" +
-        props.coords.latitude +
-        "%2C" +
-        props.coords.longitude +
-        "&outFormat=json&thumbMaps=false"
+      props.coords.latitude +
+      "%2C" +
+      props.coords.longitude +
+      "&outFormat=json&thumbMaps=false"
     )
       .then((response) => response.json())
       .then((responseJson) => {
@@ -28,12 +31,13 @@ function App(props) {
         );
       });
   };
-  
+
   fetchLocationName();
+
 
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <Routes>
         <Route path="/hostels" element={<HostelList />} />
         <Route path="/hostels/:id" element={<HostelDetail />} />
@@ -46,7 +50,9 @@ function App(props) {
         <Route path="/:user/leave" element={<LeaveApplication />} />
         <Route path="/:user/issue" element={<RoomIssue />} />
         <Route path="/:user/feedback" element={<FeedbackForm />} />
+        <Route path="/:user/profile" element={<Profile />} />
         <Route path="/:user/update-profile" element={<UpdateProfile />} />
+        <Route path="/:user/student-list" element={<StudentList />} />
         {/* <Route path="/:user/pay-fee" element={<PayFee />} /> */}
       </Routes>
       {/* <Footer /> */}

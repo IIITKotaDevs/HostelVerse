@@ -5,6 +5,10 @@ import SignUp from './registration/signUp';
 import SignIn from './registration/signIn';
 import { PayFee } from "./student/component/PayFee";
 import Dashboard from "./student/dashboard";
+import LeaveApplication from "./student/leaveapplication";
+import RoomIssue from "./student/roomissue"
+import FeedbackForm from "./student/feedbackform";
+import UpdateProfile from "./student/updateprofile";
 
 function App() {
   return (
@@ -18,7 +22,11 @@ function App() {
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/:user/dashboard' element={<Dashboard />} />
-        <Route path="/:user/pay-fee" element={<PayFee />} />
+        <Route path='/:user/leave' element={<LeaveApplication />} />
+        <Route path='/:user/issue' element={<RoomIssue />} />
+        <Route path='/:user/feedback' element={<FeedbackForm />} />
+        <Route path='/:user/update-profile' element={<UpdateProfile />} />
+        {/* <Route path="/:user/pay-fee" element={<PayFee />} /> */}
       </Routes>
       {/* <Footer /> */}
     </>

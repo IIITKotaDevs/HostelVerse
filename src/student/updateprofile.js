@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField';
-// import axios from "axios"
+import axios from "axios"
 // import FormData from "form-data";
-// import baseurl from "../config"
+import baseurl from "../config"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { localStorageKey } from '../utils/localStorageKey';
@@ -11,11 +11,11 @@ import { localStorageKey } from '../utils/localStorageKey';
 // import { localStorageKey } from '../utils/localStorageKey';
 
 function UpdateProfile() {
-    const [name, setName] = useState(localStorage.getItem(localStorageKey.name))
     const [gender, setGender] = useState(localStorage.getItem(localStorageKey.gender))
     const [location, setLocation] = useState(localStorage.getItem(localStorageKey.location))
     // const [percentage, setPercentage] = useState(0)
     const [contact, setContact] = useState(localStorage.getItem(localStorageKey.contactNo))
+    const [email, setEmail] = useState(localStorage.getItem(localStorageKey.email))
 
     // const selectFile = async (e) => {
     //     const files = Array.from(e.target.files)
@@ -55,21 +55,41 @@ function UpdateProfile() {
     //     content=""
     // }
 
-    const handleNameChange = (e) => {
+    const handleContactChange = (e) => {
         e.preventDefault()
-        setName(e.target.value)
+        setContact(e.target.value)
     }
     const handleGenderChange = (e) => {
         e.preventDefault()
-        setName(e.target.value)
+        setGender(e.target.value)
     }
     const handleAddressChange = (e) => {
         e.preventDefault()
         setLocation(e.target.value)
     }
+    const handleEmailChange = (e) => {
+        e.preventDefault()
+        setEmail(e.target.value)
+    }
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log("Updated successfully")
+        const res = await axios.post(`${baseurl}/student/profile`, {
+            email: email,
+            contact: contact,
+            location: location,
+            gender: gender
+        },
+        {
+            headers: {
+                Authorization: localStorage.getItem(localStorageKey.jwtToken) ? `Bearer ${localStorage.getItem(localStorageKey.jwtToken)}` : "",
+                "Content-type": "application/json",
+            }
+        })
+        if(res.status === 200) {
+            console.log("Updated successfully")
+        } else {
+            console.error("Something went wrong!")
+        }
     }
     return (
         <div className="bg-room-issue h-screen bg-cover">
@@ -85,14 +105,14 @@ function UpdateProfile() {
 
             <div className="mx-auto text-center px-60 grid grid-cols-1 md:grid-cols-4">
                 <div className="col-span-1">
-                    <h1 className="text-center text-2xl mt-20 mb-8">Name</h1>
+                    <h1 className="text-center text-2xl mt-20 mb-8">Email</h1>
                     <TextField
                         id="date"
-                        label="Your name..."
+                        label="Your email..."
                         type="text"
                         multiline
-                        onChange={handleNameChange}
-                        defaultValue={name}
+                        onChange={handleEmailChange}
+                        defaultValue={email}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -130,10 +150,10 @@ function UpdateProfile() {
                     <h1 className="text-center text-2xl mt-20 mb-8">Contact</h1>
                     <TextField
                         id="date"
-                        label="Your address..."
+                        label="Your contact..."
                         type="text"
                         multiline
-                        onChange={handleAddressChange}
+                        onChange={handleContactChange}
                         defaultValue={contact}
                         InputLabelProps={{
                             shrink: true,

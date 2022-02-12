@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [id, setId] = useState("");
+  const [gender, setGender] = useState("Male");
+  const [phone, setPhone] = useState("");
+  const [location, setLocation] = useState("");
   return (
     <div className="bg-landing-background bg-cover h-screen grid grid-cols-2 font-roboto">
       <div></div>
@@ -14,41 +22,70 @@ export default function SignUp() {
             type="text"
             className="bg-white w-80 px-4 py-2 rounded-xl my-4"
             placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
           <input
             type="text"
             className="bg-white w-80 px-4 py-2 rounded-xl mb-4"
             placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="text"
             className="bg-white w-80 px-4 py-2 rounded-xl mb-4"
             placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <input
             type="text"
             className="bg-white w-80 px-4 py-2 rounded-xl mb-4"
             placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <input
             type="text"
             className="bg-white w-80 px-4 py-2 rounded-xl mb-4"
             placeholder="College Id"
+            value={id}
+            onChange={(e) => setId(e.target.value)}
           />
-          <input
-            type="text"
-            className="bg-white w-80 px-4 py-2 rounded-xl mb-4"
-            placeholder="Gender"
-          />
+          <div className="flex-row pb-4 w-80 flex justify-evenly">
+            <div className="align-middle">
+              <input
+                type="radio"
+                className="bg-white mr-2"
+                checked={gender == "Male"}
+                onChange={() => setGender("Male")}
+              />
+              <label>Male</label>
+            </div>
+            <div className="align-middle">
+              <input
+                type="radio"
+                className="bg-white mr-2"
+                checked={gender == "Female"}
+                onChange={() => setGender("Female")}
+              />
+              <label>Female</label>
+            </div>
+          </div>
           <input
             type="text"
             className="bg-white w-80 px-4 py-2 rounded-xl mb-4"
             placeholder="Contact No."
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
           />
           <input
             type="text"
             className="bg-white w-80 px-4 py-2 rounded-xl mb-4"
             placeholder="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
           />
         </div>
         <button

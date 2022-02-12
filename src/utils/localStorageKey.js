@@ -8,5 +8,3 @@ export const localStorageKey = {
   role: "role",
   id: "id",
 };
-
-module.exports = true;

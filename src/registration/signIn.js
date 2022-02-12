@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { localStorageKey } from "../utils/localStorageKey";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -8,18 +9,6 @@ export default function SignIn() {
   const [password, setPassword] = useState("raghhav");
   const [type, setType] = useState("student");
   const [error, setError] = useState(false);
-
-  const position = async () => {
-    await navigator.geolocation.getCurrentPosition(
-      (position) => {
-        console.log(position);
-      },
-      (err) => console.log(err)
-    );
-  };
-  useEffect(() => {
-    position();
-  }, []);
 
   const userSignIn = () => {
     axios
@@ -29,10 +18,42 @@ export default function SignIn() {
         role: type,
       })
       .then(function (response) {
-        if (response?.status === 200) {
+        if (response.status === 200) {
+          localStorage.setItem(
+            localStorageKey.name,
+            response.data.profile.profile.name
+          );
+          localStorage.setItem(
+            localStorageKey.jwtToken,
+            response.data.jwtToken
+          );
+          localStorage.setItem(
+            localStorageKey.contactNo,
+            response.data.profile.profile.contactno
+          );
+          localStorage.setItem(
+            localStorageKey.role,
+            response.data.profile.role
+          );
+          localStorage.setItem(
+            localStorageKey.name,
+            response.data.profile.profile.name
+          );
+          localStorage.setItem(
+            localStorageKey.email,
+            response.data.profile.email
+          );
           if (response?.data?.profile?.role === "student") {
+            localStorage.setItem(
+              localStorageKey.id,
+              response.data.profile.studentid
+            );
             navigate("/student/dashboard");
           } else if (response?.data?.profile?.role === "warden") {
+            localStorage.setItem(
+              localStorageKey.id,
+              response.data.profile.wardenid
+            );
             navigate("/warden/dashboard");
           } else if (response?.data?.profile?.role === "admin") {
             navigate("/admin/dashboard");

@@ -16,9 +16,11 @@ import StudentList from "./student/studentList";
 import LeaveApplications from "./warden/leaveApplications";
 import RoomIssuesList from "./warden/roomIssuesList";
 import WardenList from "./admin/WardenList";
-import CreateWarden from "./admin/createWarden";
 import { localStorageKey } from "./utils/localStorageKey";
 import { useEffect } from "react";
+import CreateWarden from "./admin/createwarden";
+import { Announcement } from "./student/components/Announcement";
+import PutAnnouncement from './warden/putAnnouncement';
 
 function App(props) {
   useEffect(() => {
@@ -71,7 +73,8 @@ function App(props) {
           <Route path="/:user/room-issues" element={<RoomIssuesList />} />
           <Route path="/:user/warden-list" element={<WardenList />} />
           <Route path="/:user/create-warden" element={<CreateWarden />} />
-          {/* <Route path="/:user/pay-fee" element={<PayFee />} /> */}
+          <Route path="/student/announcement" element={<Announcement />} />
+          <Route path="/warden/announcement" element={<PutAnnouncement />} />
         </Routes>
         {/* <Footer /> */}
       </>

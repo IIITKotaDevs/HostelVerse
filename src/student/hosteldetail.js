@@ -23,7 +23,7 @@ function HostelDetail(id) {
         <img className="w-full" src={Hostel}></img>
 
         <div className="text-center">
-            <h1 className="font-bold text-3xl bg-white z-40 w-40 mx-auto p-4 -mt-8">Hostel 1</h1>
+            <h1 className="font-bold text-3xl bg-white z-40 w-40 mx-auto p-4 -mt-8">{hostel.name}</h1>
         </div>
 
         <div className="rounded-xl py-4 grid grid-cols-5 drop-shadow-[15px_15px_15px_rgba(0,0,0,0.25)] text-center bg-white mx-60">

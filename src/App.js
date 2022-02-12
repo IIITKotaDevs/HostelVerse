@@ -4,6 +4,7 @@ import Landing from './registration/landing';
 import SignUp from './registration/signUp';
 import SignIn from './registration/signIn';
 import { PayFee } from "./student/component/PayFee";
+import Dashboard from "./student/dashboard";
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
         <Route path='/landing' element={<Landing />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/sign-in' element={<SignIn />} />
-        <Route path="/" element={<PayFee />} />
+        <Route path='/:user/dashboard' element={<Dashboard />} />
+        <Route path="/:user/pay-fee" element={<PayFee />} />
       </Routes>
       {/* <Footer /> */}
     </>

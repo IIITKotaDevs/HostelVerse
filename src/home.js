@@ -2,6 +2,9 @@ import React from 'react'
 
 export default function home() {
     return (
-        <div>home</div>
+        <div className='bg-landing-background bg-cover h-screen'>
+            <div></div>
+            <div></div>
+        </div>
     )
 }

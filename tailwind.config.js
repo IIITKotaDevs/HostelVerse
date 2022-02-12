@@ -3,7 +3,11 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'landing-background': 'url("/src/assets/img/LandingBackground.png")',
+      },
+    },
   },
   plugins: [],
 }

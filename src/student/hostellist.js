@@ -28,7 +28,7 @@ function HostelList() {
         getHostels()
     }, [])
 
-    const getHostels = async() => {
+    const getHostels = async () => {
         const hostels = await axios.get(`${baseurl}/getHostelList`)
         setHostels(hostels.data)
     }

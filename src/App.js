@@ -18,6 +18,7 @@ import RoomIssuesList from "./warden/roomIssuesList";
 import WardenList from "./admin/WardenList";
 import { localStorageKey } from "./utils/localStorageKey";
 import { useEffect } from "react";
+import CreateWarden from "./admin/createwarden";
 
 function App(props) {
   useEffect(() => {
@@ -69,6 +70,7 @@ function App(props) {
           <Route path="/:user/leave-applications" element={<LeaveApplications />} />
           <Route path="/:user/room-issues" element={<RoomIssuesList />} />
           <Route path="/:user/warden-list" element={<WardenList />} />
+          <Route path="/admin/createWarden" element={<CreateWarden />} />
           {/* <Route path="/:user/pay-fee" element={<PayFee />} /> */}
         </Routes>
         {/* <Footer /> */}

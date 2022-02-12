@@ -16,48 +16,40 @@ import Navbar from './components/Navbar';
 import StudentList from "./student/studentList";
 
 function App(props) {
-  const fetchLocationName = async (lat, lng) => {
-    await fetch(
-      "https://www.mapquestapi.com/geocoding/v1/reverse?key=G6q7WRpEhG4OUGMA6eALCiebUcYfakEx&location=" +
-      props.coords.latitude +
-      "%2C" +
-      props.coords.longitude +
-      "&outFormat=json&thumbMaps=false"
-    )
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(
-          "ADDRESS GEOCODE is BACK!! => " + JSON.stringify(responseJson)
-        );
-      });
-  };
-
-  fetchLocationName();
-
-
-  return (
-    <>
-      <Navbar />
-      <Routes>
-        <Route path="/hostels" element={<HostelList />} />
-        <Route path="/hostels/:id" element={<HostelDetail />} />
-        <Route path="/" element={<Landing />} />
-        <Route path="/landing" element={<Landing />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/otp" element={<Otp />} />
-        <Route path="/:user/dashboard" element={<Dashboard />} />
-        <Route path="/:user/leave" element={<LeaveApplication />} />
-        <Route path="/:user/issue" element={<RoomIssue />} />
-        <Route path="/:user/feedback" element={<FeedbackForm />} />
-        <Route path="/:user/profile" element={<Profile />} />
-        <Route path="/:user/update-profile" element={<UpdateProfile />} />
-        <Route path="/:user/student-list" element={<StudentList />} />
-        {/* <Route path="/:user/pay-fee" element={<PayFee />} /> */}
-      </Routes>
-      {/* <Footer /> */}
-    </>
-  );
+  if (!props.coords)
+    return (
+      <div className="w-full h-full flex justify-center align-middle">
+        <img
+          className=""
+          alt="loader"
+          src={require("./assets/img/loading.gif")}
+        />
+      </div>
+    );
+  else
+    return (
+      <>
+        {/* <Navbar /> */}
+        <Routes>
+          <Route path="/hostels" element={<HostelList />} />
+          <Route path="/hostels/:id" element={<HostelDetail />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/landing" element={<Landing />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/otp" element={<Otp />} />
+          <Route path="/:user/dashboard" element={<Dashboard />} />
+          <Route path="/:user/leave" element={<LeaveApplication />} />
+          <Route path="/:user/issue" element={<RoomIssue />} />
+          <Route path="/:user/feedback" element={<FeedbackForm />} />
+          <Route path="/:user/profile" element={<Profile />} />
+          <Route path="/:user/update-profile" element={<UpdateProfile />} />
+          <Route path="/:user/student-list" element={<StudentList />} />
+          {/* <Route path="/:user/pay-fee" element={<PayFee />} /> */}
+        </Routes>
+        {/* <Footer /> */}
+      </>
+    );
 }
 
 export default geolocated({

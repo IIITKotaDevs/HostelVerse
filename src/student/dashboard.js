@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import man from "../assets/img/man.png";
+import { localStorageKey } from "../utils/localStorageKey";
 
 export default function Dashboard() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
@@ -61,7 +62,9 @@ export default function Dashboard() {
         <img src={man} alt="" className="w-32" />
         <div className="flex flex-col gap-1">
           <p className="text-gray-800 font-medium text-xl">Welcome</p>
-          <p className="text-black font-bold text-3xl">Wade Warren</p>
+          <p className="text-black font-bold text-3xl">
+            {localStorage.getItem(localStorageKey.name)}
+          </p>
           <p className="text-gray-800 font-medium text-xl">
             Have a good day !!!
           </p>

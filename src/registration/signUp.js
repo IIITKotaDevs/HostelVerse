@@ -110,8 +110,47 @@ export default function SignUp() {
                             />
                             <label>Male</label>
                         </div>
+                        <div className="align-middle">
+                            <input
+                                type="radio"
+                                className="bg-white mr-2"
+                                checked={gender === "Female"}
+                                onChange={() => setGender("Female")}
+                            />
+                            <label>Female</label>
+                        </div>
                     </div>
+                    <input
+                        type="text"
+                        className="bg-white w-80 px-4 py-2 rounded-xl mb-4"
+                        placeholder="Contact No."
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        className="bg-white w-80 px-4 py-2 rounded-xl mb-4"
+                        placeholder="Location"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                    />
                 </div>
+                <button
+                    type="submit"
+                    className="px-10 py-2 bg-black text-white font-medium rounded-lg"
+                    onClick={() => navigate("/sign-in")}
+                >
+                    Submit
+                </button>
+                <p className="mt-2 ">
+                    Already have an Account ?
+                    <p
+                        className="cursor-pointer underline text-blue-700"
+                        onClick={() => navigate("/sign-in")}
+                    >
+                        Sign In
+                    </p>
+                </p>
             </div>
         </div>
     );

@@ -58,6 +58,15 @@ export default function SignUp() {
         >
           Submit
         </button>
+        <p className="mt-2 ">
+          Already have an Account ?
+          <p
+            className="cursor-pointer underline text-blue-700"
+            onClick={() => navigate("/sign-in")}
+          >
+            Sign In
+          </p>
+        </p>
       </div>
     </div>
   );

@@ -1,21 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import Home from './home';
-import { HostelList, HostelDetail } from './student'
-import Landing from './registration/landing';
-import SignUp from './registration/signUp';
-import SignIn from './registration/signIn';
+import Landing from "./landing";
+import { PayFee } from "./student/component/PayFee";
 
 function App() {
   return (
     <>
       {/* <Navbar /> */}
       <Routes>
-        <Route path="/:user/hostels" element={<HostelList />} />
-        <Route path="/hostels/:id" element={<HostelDetail />} />
-        <Route path="/" element={<Landing />} />
-        <Route path='/home' element={<Landing />} />
-        <Route path='/sign-up' element={<SignUp />} />
-        <Route path='/sign-in' element={<SignIn />} />
+        <Route path="/" element={<PayFee />} />
       </Routes>
       {/* <Footer /> */}
     </>

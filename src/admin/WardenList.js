@@ -3,24 +3,25 @@ import React, { useState, useEffect } from "react";
 import baseurl from "../config";
 import { localStorageKey } from "../utils/localStorageKey";
 
-export default function StudentList() {
-  const [students, setStudents] = useState([]);
+export default function WardenList() {
+  const [wardens, setWardens] = useState([]);
 
-  const getStudentsList = async () => {
-    const student = await axios.get(`${baseurl}/warden/studentList`);
-    setStudents(student.data);
+  const getWardenList = async () => {
+    const warden = await axios.get(`${baseurl}/admin/viewWarden`);
+    setWardens(warden.data);
   };
 
   useEffect(() => {
-    getStudentsList();
+    console.log(localStorage.getItem("location"));
+    getWardenList();
   }, []);
 
-  const removeStudent = async (studentItem) => {
+  const removeWarden = async (wardenItem) => {
     axios
       .post(
-        `${baseurl}/warden/removeStudent`,
+        `${baseurl}/admin/removeWarden`,
         {
-          studentid: studentItem.studentid,
+          wardenid: wardenItem.wardenid,
         },
         {
           headers: {
@@ -32,38 +33,38 @@ export default function StudentList() {
         }
       )
       .then(() => {
-        getStudentsList();
+        getWardenList();
       });
   };
 
   return (
     <>
-      <p className="font-bold text-3xl text-center mt-12 mb-8">Student List</p>
+      <p className="font-bold text-3xl text-center mt-12 mb-8">Warden List</p>
       <div className="flex flex-col gap-4">
-        {students.map((student, index) => {
+        {wardens.map((warden, index) => {
           return (
             <div
               key={index}
               className="flex justify-between items-center mx-32 px-10 py-4 border border-gray-200 rounded-lg"
             >
               <div>
-                <p className="text-3xl font-semibold">{student.profile.name}</p>
-                {student.roomid && student.hostelid ? (
+                <p className="text-3xl font-semibold">{warden.wardenname}</p>
+                {warden.roomid && warden.hostelid ? (
                   <p className="text-lg mt-2">
-                    {student?.roomid} | {student?.hostelid}
+                    {warden?.roomid} | {warden?.hostelid}
                   </p>
                 ) : (
                   <p className="text-lg mt-2">No Room/Hostel Assigned</p>
                 )}
                 <p
                   className="text-red-500 text-lg cursor-pointer font-medium mt-2"
-                  onClick={() => removeStudent(student)}
+                  onClick={() => removeWarden(warden)}
                 >
-                  Remove Student
+                  Remove Warden
                 </p>
               </div>
               <img
-                src={student.profile.picture}
+                src={warden.profile.picture}
                 alt=""
                 className="w-20 rounded-full"
               />

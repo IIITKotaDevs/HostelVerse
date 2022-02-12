@@ -13,9 +13,29 @@ import Profile from "./student/profile";
 import Otp from "./registration/otp";
 import Navbar from "./components/Navbar";
 import StudentList from "./student/studentList";
+import WardenList from "./admin/WardenList";
+import { localStorageKey } from "./utils/localStorageKey";
+import { useEffect } from "react";
 
 function App(props) {
-  if (!props.coords)
+  useEffect(() => {
+    if (
+      (props.coords && !localStorage.getItem(localStorageKey.location)) ||
+      localStorage.getItem(localStorageKey.location) === "null"
+    ) {
+      localStorage.setItem(
+        localStorageKey.location,
+        props.coords.latitude.toString() +
+          "," +
+          props.coords.longitude.toString()
+      );
+    }
+  });
+
+  if (
+    !localStorage.getItem(localStorageKey.location) ||
+    localStorage.getItem(localStorageKey.location) === "null"
+  )
     return (
       <div className="w-full h-full flex justify-center align-middle">
         <img
@@ -44,6 +64,7 @@ function App(props) {
           <Route path="/:user/profile" element={<Profile />} />
           <Route path="/:user/update-profile" element={<UpdateProfile />} />
           <Route path="/:user/student-list" element={<StudentList />} />
+          <Route path="/:user/warden-list" element={<WardenList />} />
           {/* <Route path="/:user/pay-fee" element={<PayFee />} /> */}
         </Routes>
         {/* <Footer /> */}

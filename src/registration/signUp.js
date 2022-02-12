@@ -5,13 +5,14 @@ import axios from "axios";
 export default function SignUp() {
   const navigate = useNavigate();
   const [name, setName] = useState("akash");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [id, setId] = useState("");
+  const [email, setEmail] = useState("akash123@yopmail.com");
+  const [password, setPassword] = useState("12345678");
+  const [confirmPassword, setConfirmPassword] = useState("12345678");
+  const [id, setId] = useState("1234");
   const [gender, setGender] = useState("Male");
-  const [phone, setPhone] = useState("");
-  const [location, setLocation] = useState("");
+  const [phone, setPhone] = useState("1234567890");
+  const [location, setLocation] = useState("uttar pradesh");
+  const [error, setError] = useState(false);
 
   const isValidated = (email) => {
     return String(email)
@@ -33,28 +34,43 @@ export default function SignUp() {
         location: location,
       })
       .then(function (response) {
-        console.log(response);
+        navigate("/otp");
       })
       .catch(function (error) {
-        console.log(error);
+        setError(true);
       });
   };
 
   const validate = () => {
+    setError(false);
     if (name.length > 4) {
       if (isValidated(email)) {
-        if (password.length > 7) {
+        if (password.length > 5) {
           if (password == confirmPassword) {
             if (id.length > 0) {
               if (phone.length > 9) {
                 if (location.length > 5) {
                   userSignUp();
+                } else {
+                  setError(true);
                 }
+              } else {
+                setError(true);
               }
+            } else {
+              setError(true);
             }
+          } else {
+            setError(true);
           }
+        } else {
+          setError(true);
         }
+      } else {
+        setError(true);
       }
+    } else {
+      setError(true);
     }
   };
 
@@ -138,18 +154,19 @@ export default function SignUp() {
         <button
           type="submit"
           className="px-10 py-2 bg-black text-white font-medium rounded-lg"
-          onClick={() => navigate("/sign-in")}
+          onClick={validate}
         >
           Submit
         </button>
-        <p className="mt-2 ">
-          Already have an Account ?
-          <p
-            className="cursor-pointer underline text-blue-700"
-            onClick={() => navigate("/sign-in")}
-          >
-            Sign In
-          </p>
+        {error ? (
+          <p className="text-xl text-red-500">Something went wrong</p>
+        ) : null}
+        <p className="mt-2 ">Already have an Account ?</p>
+        <p
+          className="cursor-pointer underline text-blue-700"
+          onClick={() => navigate("/sign-in")}
+        >
+          Sign In
         </p>
       </div>
     </div>

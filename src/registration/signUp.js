@@ -19,7 +19,7 @@ export default function SignUp() {
                     <input type="text" className='bg-white w-80 px-4 py-2 rounded-full mb-4' placeholder='Contact No.' />
                     <input type="text" className='bg-white w-80 px-4 py-2 rounded-full mb-4' placeholder='Location' />
                 </div>
-                <button type="submit" className='px-10 py-2 bg-black text-white font-medium rounded-lg' onClick={() => navigate('/sign-in')}>Submit</button>
+                <button type="submit" className='px-10 py-2 bg-black text-white font-medium rounded-lg' onClick={() => navigate('/sign-in')}>Create Account</button>
             </div>
         </div>
     )

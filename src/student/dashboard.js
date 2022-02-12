@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import man from '../assets/img/man.png'
 
-export default function dashboard() {
+export default function Dashboard() {
     const [time, setTime] = useState(new Date().toLocaleTimeString())
     setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
 
@@ -52,6 +52,9 @@ export default function dashboard() {
                     </div>
                 ))}
             </div>
+            <p className='text-xl font-bold mt-10 mb-2'>Check In / Out</p>
+            <button className='bg-green-700 w-1/3 text-white font-bold py-2 rounded-full text-lg'>IN</button>
+            <p className='text-xs mt-1'>Pro Tip: Click on the button to Check In or Check Out.</p>
         </div>
     )
 }

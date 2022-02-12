@@ -1,7 +1,5 @@
 import React from 'react'
+import HostelList from './hostellist'
+import HostelDetail from './hosteldetail'
 
-export default function index() {
-    return (
-        <div>index</div>
-    )
-}
+export { HostelList, HostelDetail }

@@ -4,19 +4,18 @@ import axios from "axios";
 
 export default function Otp() {
   const navigate = useNavigate();
-  const [otp, setOtp] = useState("671013");
+  const [otp, setOtp] = useState("213620");
   const [error, setError] = useState(false);
 
   const otpLogin = () => {
     axios
       .post("https://hostelverse-aztecs.herokuapp.com/activate", {
-        email: "akash1234@gmail.com",
+        email: "akash1234@yopmail.com",
         code: otp,
       })
       .then(function (response) {
-        // setError(false);
-        // navigate("/sign-in");
-        console.log(response);
+        setError(false);
+        navigate("/sign-in");
       })
       .catch(function (error) {
         setError(true);
@@ -29,9 +28,8 @@ export default function Otp() {
         email: "akash1234@gmail.com",
       })
       .then(function (response) {
-        // setError(false);
-        // navigate("/sign-in");
-        console.log(response);
+        setError(false);
+        navigate("/sign-in");
       })
       .catch(function (error) {
         setError(true);

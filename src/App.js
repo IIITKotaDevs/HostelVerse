@@ -1,9 +1,8 @@
 import { Routes, Route, useParams } from "react-router-dom";
-import { HostelList, HostelDetail } from './student'
-import Landing from './registration/landing';
-import SignUp from './registration/signUp';
-import SignIn from './registration/signIn';
-import { PayFee } from "./student/components/PayFee";
+import { HostelList, HostelDetail } from "./student";
+import Landing from "./registration/landing";
+import SignUp from "./registration/signUp";
+import SignIn from "./registration/signIn";
 import Dashboard from "./student/dashboard";
 import LeaveApplication from "./student/leaveapplication";
 import RoomIssue from "./student/roomissue";
@@ -11,8 +10,8 @@ import FeedbackForm from "./student/feedbackform";
 import UpdateProfile from "./student/updateprofile";
 import { geolocated } from "react-geolocated";
 import Profile from "./student/profile";
-import Otp from './registration/otp';
-import Navbar from './components/Navbar';
+import Otp from "./registration/otp";
+import Navbar from "./components/Navbar";
 import StudentList from "./student/studentList";
 
 function App(props) {

@@ -5,10 +5,10 @@ import axios from "axios";
 export default function SignUp() {
   const navigate = useNavigate();
   const [name, setName] = useState("akash");
-  const [email, setEmail] = useState("akash123@yopmail.com");
+  const [email, setEmail] = useState("akash1234@yopmail.com");
   const [password, setPassword] = useState("12345678");
   const [confirmPassword, setConfirmPassword] = useState("12345678");
-  const [id, setId] = useState("1234");
+  const [id, setId] = useState("12345");
   const [gender, setGender] = useState("Male");
   const [phone, setPhone] = useState("1234567890");
   const [location, setLocation] = useState("uttar pradesh");
@@ -46,7 +46,7 @@ export default function SignUp() {
     if (name.length > 4) {
       if (isValidated(email)) {
         if (password.length > 5) {
-          if (password == confirmPassword) {
+          if (password === confirmPassword) {
             if (id.length > 0) {
               if (phone.length > 9) {
                 if (location.length > 5) {

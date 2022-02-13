@@ -67,7 +67,7 @@ export default function SignIn() {
               localStorageKey.id,
               response.data.profile.wardenid
             );
-            navigate("/warden/studentList");
+            navigate("/warden/student-list");
           } else if (response?.data?.profile?.role === "admin") {
             navigate("/admin/dashboard");
           }

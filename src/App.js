@@ -20,7 +20,8 @@ import { localStorageKey } from "./utils/localStorageKey";
 import { useEffect } from "react";
 import CreateWarden from "./admin/createwarden";
 import { Announcement } from "./student/components/Announcement";
-import PutAnnouncement from './warden/putAnnouncement';
+import PutAnnouncement from "./warden/putAnnouncement";
+import { Attendes } from "./warden/Attendes";
 
 function App(props) {
   useEffect(() => {
@@ -31,8 +32,8 @@ function App(props) {
       localStorage.setItem(
         localStorageKey.location,
         props.coords.latitude.toString() +
-        "," +
-        props.coords.longitude.toString()
+          "," +
+          props.coords.longitude.toString()
       );
     }
   });
@@ -69,13 +70,17 @@ function App(props) {
           <Route path="/:user/profile" element={<Profile />} />
           <Route path="/:user/update-profile" element={<UpdateProfile />} />
           <Route path="/:user/student-list" element={<StudentList />} />
-          <Route path="/:user/leave-applications" element={<LeaveApplications />} />
+          <Route
+            path="/:user/leave-applications"
+            element={<LeaveApplications />}
+          />
           <Route path="/:user/room-issues" element={<RoomIssuesList />} />
           <Route path="/:user/warden-list" element={<WardenList />} />
           <Route path="/:user/create-warden" element={<CreateWarden />} />
           <Route path="/student/announcement" element={<Announcement />} />
           <Route path="/warden/announcement" element={<PutAnnouncement />} />
           <Route path="/:user/hostels/:id" element={<HostelDetail />} />
+          <Route path="/warden/attendees" element={<Attendes />} />
         </Routes>
         {/* <Footer /> */}
       </>

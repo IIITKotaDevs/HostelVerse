@@ -5,8 +5,8 @@ import { localStorageKey } from "../utils/localStorageKey";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("2020kucp1065@iiitkota.ac.in");
-  const [password, setPassword] = useState("raghhav");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [type, setType] = useState("student");
   const [error, setError] = useState(false);
 

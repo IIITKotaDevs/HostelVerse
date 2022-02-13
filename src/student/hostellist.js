@@ -3,10 +3,12 @@ import { Menu } from '@headlessui/react'
 import Slider from "@material-ui/core/Slider";
 import axios from "axios"
 import baseurl from '../config';
+import { useNavigate } from 'react-router-dom';
 
 function HostelList() {
     const [val, setVal] = useState([5000, 15000])
     const [hostelData, setHostelData] = useState([])
+    const navigate = useNavigate()
     
     const updateChange = (e, data) => {
         e.preventDefault()
@@ -63,7 +65,7 @@ function HostelList() {
             <div className="col-span-10 border-l-4 grid grid-cols-3">
                 {hostelData && hostelData.map(hostel => {
                     return (
-                        <div className="text-center border-2 rounded-lg mx-8 mb-8 shadow-lg h-40">
+                        <div onClick={() => {navigate(`./${hostel.hostelid}`)}} className="text-center border-2 rounded-lg mx-8 mb-8 shadow-lg h-40">
                             <h1 className="font-bold text-xl my-2">{hostel.hostelname}</h1>
                             <h1 className="text-gray-500">{hostel.location} | ₹{hostel.fees}/month</h1>
                             <h1 className="text-gray-500">{hostel.stars}⭐️ | {hostel.totalrooms} students </h1>

@@ -75,6 +75,7 @@ function App(props) {
           <Route path="/:user/create-warden" element={<CreateWarden />} />
           <Route path="/student/announcement" element={<Announcement />} />
           <Route path="/warden/announcement" element={<PutAnnouncement />} />
+          <Route path="/:user/hostels/:id" element={<HostelDetail />} />
         </Routes>
         {/* <Footer /> */}
       </>

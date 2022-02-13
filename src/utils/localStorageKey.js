@@ -8,4 +8,5 @@ export const localStorageKey = {
   role: "role",
   id: "id",
   hostelId: "hostelId",
+  roomId: "roomId",
 };

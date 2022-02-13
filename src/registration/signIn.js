@@ -5,8 +5,8 @@ import { localStorageKey } from "../utils/localStorageKey";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("2020kucp1065@iiitkota.ac.in");
-  const [password, setPassword] = useState("raghhav");
+  const [email, setEmail] = useState("2020kucp1003@iiitkota.ac.in");
+  const [password, setPassword] = useState("12345678");
   const [type, setType] = useState("student");
   const [error, setError] = useState(false);
 
@@ -50,6 +50,14 @@ export default function SignIn() {
               response.data.profile.profile.gender
             );
             localStorage.setItem(
+              localStorageKey.roomId,
+              response.data.profile.roomid
+            );
+            localStorage.setItem(
+              localStorageKey.hostelId,
+              response.data.profile.hostelid
+            );
+            localStorage.setItem(
               localStorageKey.id,
               response.data.profile.studentid
             );
@@ -59,7 +67,7 @@ export default function SignIn() {
               localStorageKey.id,
               response.data.profile.wardenid
             );
-            navigate("/warden/dashboard");
+            navigate("/warden/studentList");
           } else if (response?.data?.profile?.role === "admin") {
             navigate("/admin/dashboard");
           }

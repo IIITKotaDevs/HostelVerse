@@ -82,7 +82,7 @@ export default function Navbar() {
                                             <button
                                                 className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
                                                     } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                                                onClick={() => navigate(`/${location.pathname.split("/")[1]}/hostels`)}
+                                                onClick={() => navigate(`/${location.pathname.split("/")[1]}/student-list`)}
                                             >
                                                 <FontAwesomeIcon
                                                     icon={solid("users")}
@@ -239,7 +239,7 @@ export default function Navbar() {
                                             <button
                                                 className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
                                                     } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                                                onClick={() => navigate("/warden/put-announcement")}
+                                                onClick={() => navigate("/warden/announcement")}
                                             >
                                                 <FontAwesomeIcon
                                                     icon={solid("bullhorn")}

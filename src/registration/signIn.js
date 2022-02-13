@@ -50,6 +50,14 @@ export default function SignIn() {
               response.data.profile.profile.gender
             );
             localStorage.setItem(
+              localStorageKey.roomId,
+              response.data.profile.roomid
+            );
+            localStorage.setItem(
+              localStorageKey.hostelId,
+              response.data.profile.hostelid
+            );
+            localStorage.setItem(
               localStorageKey.id,
               response.data.profile.studentid
             );
@@ -59,7 +67,7 @@ export default function SignIn() {
               localStorageKey.id,
               response.data.profile.wardenid
             );
-            navigate("/warden/dashboard");
+            navigate("/warden/studentList");
           } else if (response?.data?.profile?.role === "admin") {
             navigate("/admin/dashboard");
           }

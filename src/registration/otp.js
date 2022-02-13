@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function Otp() {
+export default function Otp(props) {
   const navigate = useNavigate();
-  const [otp, setOtp] = useState("213620");
+  const [otp, setOtp] = useState("");
   const [error, setError] = useState(false);
 
   const otpLogin = () => {
     axios
       .post("https://hostelverse-aztecs.herokuapp.com/activate", {
-        email: "akash1234@yopmail.com",
+        email: props.email,
         code: otp,
       })
       .then(function (response) {
@@ -25,7 +25,7 @@ export default function Otp() {
   const resendCode = () => {
     axios
       .post("https://hostelverse-aztecs.herokuapp.com/resendOTP", {
-        email: "akash1234@gmail.com",
+        email: props.email,
       })
       .then(function (response) {
         setError(false);

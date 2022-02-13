@@ -166,7 +166,7 @@ export default function Dashboard() {
         </div>
         <p className={`text-xl font-bold mt-10 mb-2`}>Check In / Out</p>
         <button
-          className={`w-1/3 text-white font-bold py-2 rounded-full text-lg ${
+          className={`w-1/3 text-white font-bold py-2 rounded-xl text-lg ${
             !isChecked ? "bg-red-600" : "bg-green-600"
           }`}
           onClick={doCheck}

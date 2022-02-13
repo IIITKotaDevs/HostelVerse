@@ -7,4 +7,5 @@ export const localStorageKey = {
   location: "location",
   role: "role",
   id: "id",
+  hostelId: "hostelId",
 };

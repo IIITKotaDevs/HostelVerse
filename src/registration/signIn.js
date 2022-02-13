@@ -18,6 +18,7 @@ export default function SignIn() {
         role: type,
       })
       .then(function (response) {
+        console.log(response);
         if (response.status === 200) {
           localStorage.setItem(
             localStorageKey.name,
@@ -44,6 +45,10 @@ export default function SignIn() {
             response.data.profile.email
           );
           if (response?.data?.profile?.role === "student") {
+            localStorage.setItem(
+              localStorageKey.gender,
+              response.data.profile.profile.gender
+            );
             localStorage.setItem(
               localStorageKey.id,
               response.data.profile.studentid

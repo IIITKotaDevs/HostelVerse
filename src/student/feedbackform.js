@@ -59,23 +59,25 @@ function FeedbackForm() {
 
       <div className="mx-auto text-center w-80">
         <h1 className="text-center text-2xl mt-20 mb-8">Review</h1>
-        <TextField
-          id="date"
-          label="Enter your reason..."
-          type="text"
-          multiline
-          rows={4}
-          onChange={handleReviewChange}
-          defaultValue=""
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
+        <div className="border-2 border-gray-500 py-6 rounded-lg shadow-lg bg-white">
+          <TextField
+            id="date"
+            label="Enter your reason..."
+            type="text"
+            multiline
+            rows={4}
+            onChange={handleReviewChange}
+            defaultValue=""
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </div>
       </div>
 
       <div className="mx-auto text-center mt-20">
         <button
-          className="text-white bg-black px-4 py-2 rounded-3xl"
+          className="text-white bg-black px-4 py-2 rounded-xl"
           onClick={handleSubmit}
         >
           Submit

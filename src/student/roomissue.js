@@ -5,14 +5,19 @@ import baseurl from "../config";
 
 function RoomIssue() {
   const [reason, setReason] = useState("");
+  const [message, setMessage] = useState("");
+  const [name, setName] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
   const handleReasonChange = (e) => {
     setReason(e.target.value);
-    console.log(reason);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("Submitting your room issue...");
     const res = await axios.post(
-      `${baseurl}/student/createRoomIssue`,
+      `${baseurl}/createRoomIssue`,
       {
         hostelid: localStorage.getItem("hostelid"),
         roomno: localStorage.getItem("roomno"),
@@ -29,19 +34,26 @@ function RoomIssue() {
     );
     if (res.status === 200) {
       console.log("Room issue submitted successfully");
+      setMessage("");
+      setSuccessMessage("Room issue submitted successfully!");
     } else {
       console.error("Something went wrong!");
     }
+    document.getElementById("reason").value = "";
   };
   return (
     <div className="bg-room-issue h-screen bg-cover">
       <h1 className="text-4xl mt-2 text-center">Room Issue</h1>
 
       <div className="">
+        <h1 className="text-center mt-12 text-3xl text-red-500">{message}</h1>
+        <h1 className="text-center mt-12 text-3xl text-green-500">
+          {successMessage}
+        </h1>
         <h1 className="text-center text-2xl mt-20">Reason</h1>
         <div className="mx-auto text-center mt-12 w-80 border-2 border-gray-500 py-6 rounded-lg shadow-lg bg-white">
           <TextField
-            id="date"
+            id="reason"
             label="Enter your reason..."
             type="text"
             multiline

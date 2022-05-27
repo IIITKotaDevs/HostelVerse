@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
-import Rating from "@mui/material/Rating";
+import FormData from "form-data"
 import baseurl from "../config";
 import axios from "axios";
 
@@ -11,6 +11,7 @@ function CreateWarden() {
   const [warden, setWarden] = useState("")
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [percentage, setPercentage] = useState(0)
   const handleSubmit = async (e) => {
     e.preventDefault();
         const res = await axios.post(
@@ -46,6 +47,64 @@ function CreateWarden() {
         console.error("Something went wrong!");
         }
     }
+
+    const selectFile = async(e) => {
+      const files = Array.from(e.target.files)
+      const file = files[0]
+
+      var bodyFormData = new FormData()
+
+      bodyFormData.append('photo', file)
+
+      const options = {
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
+        onUploadProgress: (progressEvent) => {
+          const { loaded, total } = progressEvent
+          let percent = Math.floor(loaded * 100 / total)
+          console.log(`${percent}%`)
+
+          if(percent < 100) {
+            setPercentage(percent)
+          }
+        }
+      }
+
+      const res = await axios.post(
+        `${baseurl}/sendPhoto`,
+        bodyFormData,
+        options
+      )
+      var content = res.data.url
+      const response = await axios.post(
+        `${baseurl}/admin/createWardenAccount`,
+        {
+          email: email,
+          name: name,
+          password: password,
+          wardenid: warden,
+          hostelid: hostel,
+          contactno: phone,
+          image: content
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwtToken")
+              ? `Bearer ${localStorage.getItem("jwtToken")}`
+              : "",
+            "Content-type": "application/json",
+          },
+        }
+      )
+
+      if(response.status === 200) {
+        console.log('Warden created successfully')
+      } else {
+        console.error('Something went wrong!')
+      }
+    }
+
   const handleNameChange = (e) => {
     e.preventDefault();
     setName(e.target.value);
@@ -163,6 +222,18 @@ function CreateWarden() {
             shrink: true,
           }}
         />
+      </div>
+      <div className="mx-auto text-center w-80 col-span-1">
+        <h1 className="text-center text-2xl mt-20 mb-8">Upload Photo</h1>
+        
+        <input id="file-image" onChange={selectFile} type="file" name="avatar"></input>
+
+        {percentage > 0 && 
+        <div className="w-full bg-gray-200 rounded-full">
+          <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-l-full" style="width: 25%"> 25%</div>
+        </div>
+        }
+        
       </div>
       </div>
 

@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import baseurl from "../config";
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [name, setName] = useState("akash");
-  const [email, setEmail] = useState("akash1234@yopmail.com");
+  const [name, setName] = useState("Vinamra");
+  const [email, setEmail] = useState("sedita4320@steamoh.com");
   const [password, setPassword] = useState("12345678");
   const [confirmPassword, setConfirmPassword] = useState("12345678");
   const [id, setId] = useState("12345");
   const [gender, setGender] = useState("Male");
   const [phone, setPhone] = useState("1234567890");
-  const [location, setLocation] = useState("uttar pradesh");
+  const [location, setLocation] = useState("Uttar Pradesh");
   const [error, setError] = useState(false);
 
   const isValidated = (email) => {
@@ -22,9 +23,13 @@ export default function SignUp() {
       );
   };
 
+  const toOtp = () => {
+    navigate("/otp", { state: { email: email } });
+  };
+
   const userSignUp = () => {
     axios
-      .post("https://hostelverse-aztecs.herokuapp.com/signup", {
+      .post(`${baseurl}/student/signup`, {
         email: email,
         password: password,
         studentid: id,
@@ -34,10 +39,11 @@ export default function SignUp() {
         location: location,
       })
       .then(function (response) {
-        navigate("/otp");
+        toOtp();
       })
       .catch(function (error) {
         setError(true);
+        console.log("post request error");
       });
   };
 

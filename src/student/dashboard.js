@@ -8,6 +8,7 @@ import { localStorageKey } from "../utils/localStorageKey";
 export default function Dashboard() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
   const [isChecked, setIsChecked] = useState(null);
+  const [error, setError] = useState(false);
 
   setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
 
@@ -43,19 +44,11 @@ export default function Dashboard() {
   const data = [
     {
       title: "Hostel No.",
-      value: "1",
+      value: localStorage.getItem(localStorageKey.hostelId),
     },
     {
       title: "Room No.",
-      value: "101",
-    },
-    {
-      title: "Hostel No.",
-      value: "1",
-    },
-    {
-      title: "Room No.",
-      value: "101",
+      value: localStorage.getItem(localStorageKey.roomId),
     },
   ];
 
@@ -125,11 +118,17 @@ export default function Dashboard() {
   };
 
   const doCheck = async () => {
-    const state = await axios.post(`${baseurl}/student/checkin`, {
-      studentid: localStorage.getItem(localStorageKey.id),
-      location: localStorage.getItem(localStorageKey.location),
-    });
-    setIsChecked(!isChecked);
+    setError(false);
+    try {
+      const state = await axios.post(`${baseurl}/student/checkin`, {
+        studentid: localStorage.getItem(localStorageKey.id),
+        location: localStorage.getItem(localStorageKey.location),
+      });
+      setIsChecked(!isChecked);
+    }
+    catch (e) {
+      setError(true);
+    }
   };
 
   useEffect(() => {
@@ -165,10 +164,12 @@ export default function Dashboard() {
           ))}
         </div>
         <p className={`text-xl font-bold mt-10 mb-2`}>Check In / Out</p>
+        {error ? (
+          <p className="text-lg text-red-500">Can't Checkout due to some reasons. Try again later near campus.</p>
+        ) : null}
         <button
-          className={`w-1/3 text-white font-bold py-2 rounded-xl text-lg ${
-            !isChecked ? "bg-red-600" : "bg-green-600"
-          }`}
+          className={`w-1/3 text-white font-bold py-2 rounded-xl text-lg ${!isChecked ? "bg-red-600" : "bg-green-600"
+            }`}
           onClick={doCheck}
         >
           {isChecked ? "IN" : "OUT"}

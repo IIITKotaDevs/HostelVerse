@@ -5,14 +5,14 @@ import baseurl from "../config";
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [name, setName] = useState("Vinamra");
-  const [email, setEmail] = useState("sedita4320@steamoh.com");
-  const [password, setPassword] = useState("12345678");
-  const [confirmPassword, setConfirmPassword] = useState("12345678");
-  const [id, setId] = useState("12345");
-  const [gender, setGender] = useState("Male");
-  const [phone, setPhone] = useState("1234567890");
-  const [location, setLocation] = useState("Uttar Pradesh");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [id, setId] = useState("");
+  const [gender, setGender] = useState("");
+  const [phone, setPhone] = useState("");
+  const [location, setLocation] = useState("");
   const [error, setError] = useState(false);
 
   const isValidated = (email) => {

@@ -8,8 +8,10 @@ import {
   brands,
 } from "@fortawesome/fontawesome-svg-core/import.macro";
 import { localStorageKey } from "../utils/localStorageKey";
+import { useLocation } from "react-router";
 
 export default function Profile() {
+  const location = useLocation();
   return (
     <>
       <div className="flex flex-col items-center pt-12 bg-profile bg-cover h-screen">
@@ -30,19 +32,21 @@ export default function Profile() {
         <p className="text-lg font-bold mt-0.5">
           {localStorage.getItem(localStorageKey.email)}
         </p>
-        <p className="text-sm mt-3">Room No</p>
-        <p className="text-lg font-bold mt-0.5">
-          {localStorage.getItem(localStorageKey.hostelId)
-            ? localStorage.getItem(localStorageKey.hostelId)
-            : "Not Assigned"}
-        </p>
+        {location.pathname.split("/")[1] === 'student' ? (<><p className="text-sm mt-3">Hostel No</p>
+          < p className="text-lg font-bold mt-0.5">
+            {localStorage.getItem(localStorageKey.hostelId)
+              ? localStorage.getItem(localStorageKey.hostelId)
+              : "Not Assigned"}
+          </p>
+          <p className="text-sm mt-3">Room No</p>
+          <p className="text-lg font-bold mt-0.5">
+            {localStorage.getItem(localStorageKey.roomId)
+              ? localStorage.getItem(localStorageKey.roomId)
+              : "Not Assigned"}
+          </p></>) : null}
         <p className="text-sm mt-3">Gender</p>
         <p className="text-lg font-bold mt-0.5">
           {localStorage.getItem(localStorageKey.gender)}
-        </p>
-        <p className="text-sm mt-3">Address</p>
-        <p className="text-lg font-bold mt-0.5">
-          {localStorage.getItem(localStorageKey.location)}
         </p>
       </div>
     </>

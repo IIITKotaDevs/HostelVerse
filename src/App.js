@@ -21,6 +21,7 @@ import { useEffect } from "react";
 import CreateWarden from "./admin/createwarden";
 import { Announcement } from "./student/components/Announcement";
 import PutAnnouncement from "./warden/putAnnouncement";
+import { Attendes } from "./warden/Attendes";
 
 function App(props) {
   useEffect(() => {
@@ -79,6 +80,7 @@ function App(props) {
           <Route path="/student/announcement" element={<Announcement />} />
           <Route path="/warden/announcement" element={<PutAnnouncement />} />
           <Route path="/:user/hostels/:id" element={<HostelDetail />} />
+          <Route path="/warden/attendees" element={<Attendes />} />
         </Routes>
         {/* <Footer /> */}
       </>

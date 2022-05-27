@@ -50,7 +50,7 @@ export default function StudentList() {
                 <p className="text-3xl font-semibold">{student.profile.name}</p>
                 {student.roomid && student.hostelid ? (
                   <p className="text-lg mt-2">
-                    {student?.roomid} | {student?.hostelid}
+                    Room: {student?.roomid} | Hostel: {student?.hostelid}
                   </p>
                 ) : (
                   <p className="text-lg mt-2">No Room/Hostel Assigned</p>

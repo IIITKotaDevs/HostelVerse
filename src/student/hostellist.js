@@ -34,9 +34,10 @@ function HostelList() {
     }, [val])
 
     return (
-        <div className="py-8 px-8">
-            <div className="">
-                <Menu>
+        <div className="py-8 px-8 divide-y-4 divide-gray-200">
+            <div className="pb-4">
+                <p className='text-3xl font-bold text-gray-900 text-center mb-4'>Hostel List</p>
+                < Menu >
                     {({ open }) => (
                         <div className='flex flex-col items-center'>
                             <Menu.Button className="text-gray-900 font-semibold italic text-lg">
@@ -55,24 +56,24 @@ function HostelList() {
                                 />
                             </div>
                         </div>
-                    )}
-                </Menu>
-            </div>
+                    )
+                    }
+                </Menu >
+            </div >
 
-            <div className="col-span-10 border-l-4 grid grid-cols-3">
-                {hostelData && hostelData.map(hostel => {
+            <div className="flex flex-col items-center pt-8">
+                {hostelData.data && hostelData.data.map(hostel => {
                     return (
-                        <div onClick={() => { navigate(`./ ${hostel.hostelid}`) }} className="text-center border-2 rounded-lg mx-8 mb-8 shadow-lg h-40">
-                            <h1 className="font-bold text-xl my-2">{hostel.hostelname}</h1>
-                            <h1 className="text-gray-500">{hostel.location} | ₹{hostel.fees}/month</h1>
-                            <h1 className="text-gray-500">{hostel.stars}⭐️ | {hostel.totalrooms} students </h1>
-                            <h1 className="text-lg font-bold mt-2">Seats Left: {hostel.roomsleft}</h1>
+                        <div className="border-2 rounded-lg w-1/2 mb-8 shadow-lg pt-2 pb-4 px-8 cursor-pointer" key={hostel.hostelid} onClick={() => { navigate(`./${hostel.hostelid}`) }}>
+                            <h1 className="font-bold text-2xl my-2">{hostel.name}</h1>
+                            <h1 className="text-gray-500">{hostel.location} | ₹{hostel.fees}/month | ⭐️{hostel.stars || 'Unrated'} | {hostel.totalCapacity} Students</h1>
+                            <h1 className="text-lg font-semibold mt-2">Rooms Left: {`${hostel.singleRoomsLeft ? hostel.singleRoomsLeft : 0} Single Rooms`} | {`${hostel.doubleRoomsLeft ? hostel.doubleRoomsLeft : 0} Double Rooms`} | {`${hostel.tripleRoomsLeft ? hostel.tripleRoomsLeft : 0} Triple Rooms`}</h1>
                         </div>
                     )
                 })}
             </div>
 
-        </div>
+        </div >
     )
 }
 

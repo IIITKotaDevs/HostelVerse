@@ -35,7 +35,7 @@ export default function Navbar() {
   else {
     return (
       <div className="bg-primary2 fixed top-4 right-16">
-        <Menu as="div" className="relative inline-block text-left">
+        <Menu as="div" className="relative inline-block text-left z-20">
           <div>
             <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium bg-white hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
               Menu

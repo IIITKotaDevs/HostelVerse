@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { localStorageKey } from "../utils/localStorageKey";
+import baseurl from "../config";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -10,44 +11,46 @@ export default function SignIn() {
   const [type, setType] = useState("student");
   const [error, setError] = useState(false);
 
-  const userSignIn = () => {
-    axios
-      .post("https://hostelverse-backend.azurewebsites.net/api/login", {
-        email: email,
-        password: password,
-        role: type,
-      })
+  const userSignIn = async () => {
+    await axios
+      .post(
+        `${baseurl}/login`,
+        {
+          email: email,
+          password: password,
+          role: type,
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      )
       .then(function (response) {
         console.log(response);
         if (response.status === 200) {
           localStorage.setItem(
             localStorageKey.name,
-            response.data.profile.profile.name
+            response.data.profile.name
           );
-          localStorage.setItem(
-            localStorageKey.jwtToken,
-            response.data.jwtToken
-          );
+          localStorage.setItem(localStorageKey.jwtToken, response.data.token);
           localStorage.setItem(
             localStorageKey.contactNo,
-            response.data.profile.profile.contactno
+            response.data.profile.contactno
           );
           localStorage.setItem(
             localStorageKey.role,
             response.data.profile.role
           );
           localStorage.setItem(
-            localStorageKey.name,
-            response.data.profile.profile.name
-          );
-          localStorage.setItem(
             localStorageKey.email,
             response.data.profile.email
           );
+
           if (response?.data?.profile?.role === "student") {
             localStorage.setItem(
               localStorageKey.gender,
-              response.data.profile.profile.gender
+              response.data.profile.gender
             );
             localStorage.setItem(
               localStorageKey.roomId,
@@ -67,7 +70,7 @@ export default function SignIn() {
               localStorageKey.id,
               response.data.profile.wardenid
             );
-            navigate("/warden/studentList");
+            navigate("/warden/student-list");
           } else if (response?.data?.profile?.role === "admin") {
             navigate("/admin/dashboard");
           }

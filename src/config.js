@@ -1,3 +1,3 @@
-const baseurl = "https://hostelverse-aztecs.herokuapp.com"
+const baseurl = "https://hostelverse-backend.azurewebsites.net/api";
 
-module.exports = baseurl
+module.exports = baseurl;

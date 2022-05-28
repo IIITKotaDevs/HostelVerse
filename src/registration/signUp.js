@@ -35,7 +35,7 @@ export default function SignUp() {
       contactno: phone,
       location: "27.2046, 77.4977",
     }).then(function (response) {
-      navigate("/otp")
+      navigate("/otp", { state: { email: email } });
     }).catch(function (error) {
       console.log(error);
     })
@@ -297,7 +297,7 @@ export default function SignUp() {
         <button
           type="submit"
           className="px-10 py-2 bg-gray-800 hover:bg-black text-white font-medium rounded-lg shadow-lg hover:shadow-none"
-          onClick={(e) => { validate(); if (error.length === 0) { userSignUp() } }}
+          onClick={(e) => { validate() }}
         >
           Submit
         </button>

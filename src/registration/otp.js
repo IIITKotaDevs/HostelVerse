@@ -1,38 +1,53 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import baseurl from "../config";
+import { useLocation } from "react-router-dom";
 
 export default function Otp(props) {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
+
+  const { state } = useLocation();
 
   const otpLogin = () => {
+    console.log(+otp);
+    console.log(state);
     axios
-      .post("https://hostelverse-backend.azurewebsites.net/api/activate", {
-        email: props.email,
-        code: otp,
-      })
+      .post(
+        `${baseurl}/student/verifyemail`,
+        {
+          email: state.email,
+          code: +otp,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then(function (response) {
-        setError(false);
+        setError("");
         navigate("/sign-in");
       })
       .catch(function (error) {
-        setError(true);
+        console.log(error);
+        setError(error.message);
       });
   };
 
   const resendCode = () => {
     axios
-      .post("https://hostelverse-backend.azurewebsites.net/api/resendOTP", {
+      .post(`${baseurl}/resendOTP`, {
         email: props.email,
       })
       .then(function (response) {
-        setError(false);
+        setError("");
         navigate("/sign-in");
       })
       .catch(function (error) {
-        setError(true);
+        setError(error.message);
       });
   };
 
@@ -49,25 +64,21 @@ export default function Otp(props) {
           value={otp}
           onChange={(e) => setOtp(e.target.value)}
         />
-        <div className="flex gap-10">
-          <button
-            type="submit"
-            className="px-10 py-2 bg-black text-white font-medium rounded-lg"
-            onClick={otpLogin}
-          >
-            Verify
-          </button>
-          <button
-            type="submit"
-            className="px-10 py-2 bg-black text-white font-medium rounded-lg"
-            onClick={resendCode}
-          >
-            Resend
-          </button>
-        </div>
-        {error ? (
-          <p className="text-xl text-red-500 mt-2">Enter correct otp</p>
-        ) : null}
+        <button
+          type="submit"
+          className="px-10 py-2 bg-black text-white font-medium rounded-lg"
+          onClick={otpLogin}
+        >
+          Verify
+        </button>
+        <button
+          type="submit"
+          className="px-10 py-2 bg-black text-white font-medium rounded-lg mt-2"
+          onClick={resendCode}
+        >
+          Resend Code
+        </button>
+        {error ? <p className="text-xl text-red-500 mt-2">{error}</p> : null}
       </div>
     </div>
   );

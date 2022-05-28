@@ -7,6 +7,8 @@ function LeaveApplication() {
   const [startDate, setStartDate] = useState("2022-02-12");
   const [endDate, setEndDate] = useState("2022-02-13");
   const [reason, setReason] = useState("");
+  const [message, setMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const handleStartDateChange = (e) => {
     setStartDate(e.target.value);
   };
@@ -18,8 +20,9 @@ function LeaveApplication() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("Submitting your leave application...");
     const res = await axios.post(
-      `${baseurl}/student/createLeaveApplication`,
+      `${baseurl}/createLeaveApplication`,
       {
         studentid: localStorage.getItem("id"),
         message: reason,
@@ -38,9 +41,15 @@ function LeaveApplication() {
 
     if (res.status === 200) {
       console.log("Your application is submitted successfully");
+      setMessage("");
+      setSuccessMessage("Leave application submitted successfully!");
     } else {
       console.log("Something went wrong!");
     }
+
+    document.getElementById("startdate").value = "2022-02-12";
+    document.getElementById("enddate").value = "2022-02-13";
+    document.getElementById("reason").value = "";
   };
   return (
     <div className="bg-leave-application bg-cover h-screen">
@@ -49,7 +58,7 @@ function LeaveApplication() {
       <div className="mx-24 mt-4 grid md:grid-cols-2 grid-cols-1 mt-20">
         <div className="col-span-1 mx-auto">
           <TextField
-            id="date"
+            id="startdate"
             label="Choose starting date"
             type="date"
             onChange={handleStartDateChange}
@@ -61,7 +70,7 @@ function LeaveApplication() {
         </div>
         <div className="col-span-1 mx-auto">
           <TextField
-            id="date"
+            id="enddate"
             label="Choose ending date"
             type="date"
             onChange={handleEndDateChange}
@@ -74,10 +83,14 @@ function LeaveApplication() {
       </div>
 
       <div className="">
+        <h1 className="text-center mt-12 text-3xl text-red-500">{message}</h1>
+        <h1 className="text-center mt-12 text-3xl text-green-500">
+          {successMessage}
+        </h1>
         <h1 className="text-center text-2xl mt-20">Reason</h1>
         <div className="mx-auto text-center mt-12 w-80 border-2 border-gray-500 py-6 rounded-lg shadow-lg bg-white">
           <TextField
-            id="date"
+            id="reason"
             label="Enter your reason..."
             type="text"
             multiline

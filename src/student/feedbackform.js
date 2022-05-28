@@ -3,17 +3,19 @@ import TextField from "@material-ui/core/TextField";
 import Rating from "@mui/material/Rating";
 import baseurl from "../config";
 import axios from "axios";
-import Typography from "@mui/material/Typography";
-import localStorageKey from "../utils/localStorageKey";
 
 function FeedbackForm() {
   const [value, setValue] = useState(0);
   const [review, setReview] = useState("");
+  const [message, setMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("Submitting your feeback...");
     if (localStorage.getItem("hostelid")) {
       const res = await axios.post(
-        `${baseurl}/student/Feedback`,
+        `${baseurl}/createFeedback`,
         {
           studentid: localStorage.getItem("id"),
           name: localStorage.getItem("name"),
@@ -32,9 +34,13 @@ function FeedbackForm() {
       );
       if (res.status === 200) {
         console.log("Submitted successfully");
+        setMessage("");
+        setSuccessMessage("Feedback submitted successfully!");
       } else {
         console.error("Something went wrong!");
       }
+
+      document.getElementById("feedback").input = "";
     }
   };
   const handleReviewChange = (e) => {
@@ -46,6 +52,10 @@ function FeedbackForm() {
     <div className="bg-room-issue h-screen bg-cover">
       <h1 className="text-4xl mt-2 text-center">Feedback Form</h1>
       <div className="mx-auto text-center w-80">
+        <h1 className="text-center mt-12 text-3xl text-red-500">{message}</h1>
+        <h1 className="text-center mt-12 text-3xl text-green-500">
+          {successMessage}
+        </h1>
         <h1 className="text-center text-2xl mt-20 mb-8">Rating</h1>
         <Rating
           name="simple-controlled"
@@ -61,7 +71,7 @@ function FeedbackForm() {
         <h1 className="text-center text-2xl mt-20 mb-8">Review</h1>
         <div className="border-2 border-gray-500 py-6 rounded-lg shadow-lg bg-white">
           <TextField
-            id="date"
+            id="feedback"
             label="Enter your reason..."
             type="text"
             multiline

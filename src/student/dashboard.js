@@ -131,12 +131,13 @@ export default function Dashboard() {
     }
   };
 
-  useEffect(() => {
-    getInitialState();
-  }, [isChecked]);
+  // useEffect(() => {
+  //   getInitialState();
+  // }, [isChecked]);
 
-  if (isChecked == null) return null;
-  else if (location.pathname.split("/")[1] === "student")
+  // if (isChecked == null) return null;
+  // else
+  if (location.pathname.split("/")[1] === "student")
     return (
       <div className="px-16 py-10 bg-dashboard bg-cover h-screen">
         <p className="font-medium text-gray-800 text-xl">{time}</p>
@@ -167,13 +168,13 @@ export default function Dashboard() {
         {error ? (
           <p className="text-lg text-red-500">Can't Checkout due to some reasons. Try again later near campus.</p>
         ) : null}
-        <button
+        {/* <button
           className={`w-1/3 text-white font-bold py-2 rounded-xl text-lg ${!isChecked ? "bg-red-600" : "bg-green-600"
             }`}
           onClick={doCheck}
         >
           {isChecked ? "IN" : "OUT"}
-        </button>
+        </button> */}
         <p className="text-xs mt-1">
           Pro Tip: Click on the button to Check In or Check Out.
         </p>

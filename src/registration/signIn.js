@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { localStorageKey } from "../utils/localStorageKey";
@@ -80,6 +80,19 @@ export default function SignIn() {
         setError(true);
       });
   };
+
+  // Auto Login
+  useEffect(() => {
+    if (localStorage.getItem(localStorageKey.jwtToken)) {
+      if (localStorage.getItem(localStorageKey.role) === "student") {
+        navigate("/student/dashboard");
+      } else if (localStorage.getItem(localStorageKey.role) === "warden") {
+        navigate("/warden/student-list");
+      } else if (localStorage.getItem(localStorageKey.role) === "admin") {
+        navigate("/admin/dashboard");
+      }
+    }
+  }, []);
 
   const isValidated = (email) => {
     return String(email)

@@ -7,7 +7,17 @@ export default function StudentList() {
   const [students, setStudents] = useState([]);
 
   const getStudentsList = async () => {
-    const student = await axios.get(`${baseurl}/warden/studentList`);
+    const student = await axios.get(
+      `${baseurl}/getStudent`,
+      {},
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwtToken")
+            ? `Bearer ${localStorage.getItem("jwtToken")}`
+            : "",
+        },
+      }
+    );
     setStudents(student.data);
   };
 

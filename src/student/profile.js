@@ -1,12 +1,7 @@
 import React from "react";
 import man from "../assets/img/man.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
-import {
-  solid,
-  regular,
-  brands,
-} from "@fortawesome/fontawesome-svg-core/import.macro";
+import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import { localStorageKey } from "../utils/localStorageKey";
 import { useLocation } from "react-router";
 
@@ -32,18 +27,22 @@ export default function Profile() {
         <p className="text-lg font-bold mt-0.5">
           {localStorage.getItem(localStorageKey.email)}
         </p>
-        {location.pathname.split("/")[1] === 'student' ? (<><p className="text-sm mt-3">Hostel No</p>
-          < p className="text-lg font-bold mt-0.5">
-            {localStorage.getItem(localStorageKey.hostelId)
-              ? localStorage.getItem(localStorageKey.hostelId)
-              : "Not Assigned"}
-          </p>
-          <p className="text-sm mt-3">Room No</p>
-          <p className="text-lg font-bold mt-0.5">
-            {localStorage.getItem(localStorageKey.roomId)
-              ? localStorage.getItem(localStorageKey.roomId)
-              : "Not Assigned"}
-          </p></>) : null}
+        {location.pathname.split("/")[1] === "student" ? (
+          <>
+            <p className="text-sm mt-3">Hostel No</p>
+            <p className="text-lg font-bold mt-0.5">
+              {localStorage.getItem(localStorageKey.hostelId)
+                ? localStorage.getItem(localStorageKey.hostelId)
+                : "Not Assigned"}
+            </p>
+            <p className="text-sm mt-3">Room No</p>
+            <p className="text-lg font-bold mt-0.5">
+              {localStorage.getItem(localStorageKey.roomId)
+                ? localStorage.getItem(localStorageKey.roomId)
+                : "Not Assigned"}
+            </p>
+          </>
+        ) : null}
         <p className="text-sm mt-3">Gender</p>
         <p className="text-lg font-bold mt-0.5">
           {localStorage.getItem(localStorageKey.gender)}

@@ -18,7 +18,7 @@ export const Attendes = () => {
   return (
     <div>
       <p className="font-bold text-3xl text-center mt-12 mb-8">Room Issues</p>
-      <div className="flex gap-4 flex-col"></div>
+      <div className="flex gap-4 flex-col">{atendees}</div>
     </div>
   );
 };

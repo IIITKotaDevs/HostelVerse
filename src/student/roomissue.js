@@ -6,7 +6,6 @@ import baseurl from "../config";
 function RoomIssue() {
   const [reason, setReason] = useState("");
   const [message, setMessage] = useState("");
-  const [name, setName] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleReasonChange = (e) => {

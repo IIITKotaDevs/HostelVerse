@@ -11,11 +11,13 @@ function CreateWarden() {
   const [warden, setWarden] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [percentage, setPercentage] = useState(0);
+
+  const [success, setSuccess] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await axios.post(
-      `${baseurl}/admin/createWardenAccount`,
+      `${baseurl}/createWarden`,
       {
         email: email,
         name: name,
@@ -34,18 +36,25 @@ function CreateWarden() {
       }
     );
 
-    setHostel("");
-    setName("");
-    setPassword("");
-    setWarden("");
-    setEmail("");
-    setPhone("");
-
     if (res.status === 200) {
       console.log("Submitted successfully");
+      setHostel("");
+      setName("");
+      setPassword("");
+      setWarden("");
+      setEmail("");
+      setPhone("");
+      setSuccess("Warden created successfully!");
     } else {
       console.error("Something went wrong!");
     }
+
+    document.getElementById("email").value = "";
+    document.getElementById("name").value = "";
+    document.getElementById("hostelid").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("wardenid").value = "";
   };
   const handleNameChange = (e) => {
     e.preventDefault();
@@ -75,12 +84,15 @@ function CreateWarden() {
   return (
     <div className="">
       <h1 className="text-4xl mt-2 text-center">Create Warden</h1>
+      {success && (
+        <h1 className="text-center mt-12 text-3xl text-green-500">{success}</h1>
+      )}
       <div className="grid grid-cols-3">
         <div className="mx-auto text-center w-80 col-span-1">
           <h1 className="text-center text-2xl mt-20 mb-8">Email</h1>
           <TextField
             id="email"
-            label="Enter your email..."
+            label="Enter warden email..."
             type="email"
             multiline
             onChange={handleEmailChange}
@@ -95,7 +107,7 @@ function CreateWarden() {
           <h1 className="text-center text-2xl mt-20 mb-8">Name</h1>
           <TextField
             id="name"
-            label="Enter your name..."
+            label="Enter warden name..."
             type="text"
             multiline
             onChange={handleNameChange}
@@ -110,7 +122,7 @@ function CreateWarden() {
           <h1 className="text-center text-2xl mt-20 mb-8">Hostel ID</h1>
           <TextField
             id="hostelid"
-            label="Enter your hostel..."
+            label="Enter warden hostel..."
             type="text"
             multiline
             onChange={handleHostelChange}
@@ -125,7 +137,7 @@ function CreateWarden() {
           <h1 className="text-center text-2xl mt-20 mb-8">Phone</h1>
           <TextField
             id="phone"
-            label="Enter your phone..."
+            label="Enter warden phone..."
             type="text"
             multiline
             onChange={handlePhoneChange}
@@ -140,7 +152,7 @@ function CreateWarden() {
           <h1 className="text-center text-2xl mt-20 mb-8">Password</h1>
           <TextField
             id="password"
-            label="Enter your password..."
+            label="Enter password..."
             type="text"
             multiline
             onChange={handlePasswordChange}
@@ -154,8 +166,8 @@ function CreateWarden() {
         <div className="mx-auto text-center w-80 col-span-1">
           <h1 className="text-center text-2xl mt-20 mb-8">Warden ID</h1>
           <TextField
-            id="warden"
-            label="Enter your warden..."
+            id="wardenid"
+            label="Enter warden ID..."
             type="text"
             multiline
             onChange={handleWardenChange}

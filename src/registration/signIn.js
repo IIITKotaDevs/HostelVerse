@@ -65,13 +65,13 @@ export default function SignIn() {
               response.data.profile.studentid
             );
             navigate("/student/dashboard");
-          } else if (response?.data?.profile?.role === "warden") {
+          } else if (response?.status === 200 && type === "warden") {
             localStorage.setItem(
-              localStorageKey.id,
+              localStorageKey.wardenid,
               response.data.profile.wardenid
             );
             navigate("/warden/student-list");
-          } else if (response?.data?.profile?.role === "admin") {
+          } else if (response?.status === 200 && type === "admin") {
             navigate("/admin/dashboard");
           }
         }
@@ -120,7 +120,7 @@ export default function SignIn() {
   const reset = () => {
     setEmail("");
     setPassword("");
-  }
+  };
 
   return (
     <div className="bg-landing-background bg-cover h-screen grid grid-cols-2 font-roboto">

@@ -12,8 +12,6 @@ export default function Otp(props) {
   const { state } = useLocation();
 
   const otpLogin = () => {
-    console.log(+otp);
-    console.log(state);
     axios
       .post(
         `${baseurl}/student/verifyemail`,

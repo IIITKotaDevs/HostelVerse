@@ -5,14 +5,14 @@ import { localStorageKey } from "../utils/localStorageKey";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("2020kucp1003@iiitkota.ac.in");
-  const [password, setPassword] = useState("12345678");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [type, setType] = useState("student");
   const [error, setError] = useState(false);
 
   const userSignIn = () => {
     axios
-      .post("https://hostelverse-aztecs.herokuapp.com/login", {
+      .post("https://hostelverse-backend.azurewebsites.net/api/login", {
         email: email,
         password: password,
         role: type,
@@ -97,7 +97,14 @@ export default function SignIn() {
     } else {
       setError(true);
     }
+
+    reset();
   };
+
+  const reset = () => {
+    setEmail("");
+    setPassword("");
+  }
 
   return (
     <div className="bg-landing-background bg-cover h-screen grid grid-cols-2 font-roboto">

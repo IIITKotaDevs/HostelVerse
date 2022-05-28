@@ -9,7 +9,7 @@ export default function Otp(props) {
 
   const otpLogin = () => {
     axios
-      .post("https://hostelverse-aztecs.herokuapp.com/activate", {
+      .post("https://hostelverse-backend.azurewebsites.net/api/activate", {
         email: props.email,
         code: otp,
       })
@@ -24,7 +24,7 @@ export default function Otp(props) {
 
   const resendCode = () => {
     axios
-      .post("https://hostelverse-aztecs.herokuapp.com/resendOTP", {
+      .post("https://hostelverse-backend.azurewebsites.net/api/resendOTP", {
         email: props.email,
       })
       .then(function (response) {
@@ -49,20 +49,22 @@ export default function Otp(props) {
           value={otp}
           onChange={(e) => setOtp(e.target.value)}
         />
-        <button
-          type="submit"
-          className="px-10 py-2 bg-black text-white font-medium rounded-lg"
-          onClick={otpLogin}
-        >
-          Verify
-        </button>
-        <button
-          type="submit"
-          className="px-10 py-2 bg-black text-white font-medium rounded-lg mt-2"
-          onClick={resendCode}
-        >
-          Resend Code
-        </button>
+        <div className="flex gap-10">
+          <button
+            type="submit"
+            className="px-10 py-2 bg-black text-white font-medium rounded-lg"
+            onClick={otpLogin}
+          >
+            Verify
+          </button>
+          <button
+            type="submit"
+            className="px-10 py-2 bg-black text-white font-medium rounded-lg"
+            onClick={resendCode}
+          >
+            Resend
+          </button>
+        </div>
         {error ? (
           <p className="text-xl text-red-500 mt-2">Enter correct otp</p>
         ) : null}

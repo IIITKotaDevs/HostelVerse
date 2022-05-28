@@ -71,7 +71,7 @@ export default function Dashboard() {
       ],
     },
     {
-      name: "Hostel 1",
+      name: "Hostel 2",
       advance: [
         {
           title: "Occupancy Rate",
@@ -88,7 +88,7 @@ export default function Dashboard() {
       ],
     },
     {
-      name: "Hostel 1",
+      name: "Hostel 3",
       advance: [
         {
           title: "Occupancy Rate",

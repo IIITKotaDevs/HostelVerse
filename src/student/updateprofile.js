@@ -20,11 +20,11 @@ function UpdateProfile() {
     // const selectFile = async (e) => {
     //     const files = Array.from(e.target.files)
     //     const file = files[0]
-    
+
     //     var bodyFormData = new FormData()
-    
+
     //     bodyFormData.append('photo', file)
-    
+
     //     const options = {
     //       headers: {
     //         Authorization: localStorage.getItem(localStorageKey.jwtToken) ? `Bearer ${localStorage.getItem(localStorageKey.jwtToken)}` : "",
@@ -34,13 +34,13 @@ function UpdateProfile() {
     //         const { loaded, total } = progressEvent
     //         let percent = Math.floor(loaded * 100 / total)
     //         console.log(`${percent} %`)
-    
+
     //         if(percent < 100) {
     //           setPercentage(percent)
     //         }
     //       }
     //     }
-    
+
     //     const res = await axios.post(
     //       `${baseurl}/uploadImage`,
     //       bodyFormData,
@@ -79,13 +79,13 @@ function UpdateProfile() {
             location: location,
             gender: gender
         },
-        {
-            headers: {
-                Authorization: localStorage.getItem(localStorageKey.jwtToken) ? `Bearer ${localStorage.getItem(localStorageKey.jwtToken)}` : "",
-                "Content-type": "application/json",
-            }
-        })
-        if(res.status === 200) {
+            {
+                headers: {
+                    Authorization: localStorage.getItem(localStorageKey.jwtToken) ? `Bearer ${localStorage.getItem(localStorageKey.jwtToken)}` : "",
+                    "Content-type": "application/json",
+                }
+            })
+        if (res.status === 200) {
             console.log("Updated successfully")
         } else {
             console.error("Something went wrong!")
@@ -97,10 +97,10 @@ function UpdateProfile() {
             <div className="mx-auto text-center w-80 flex items-center gap-4 mt-20 mb-8">
                 <h1 className="text-center text-2xl">Update Profile Photo</h1>
                 {/* <input id="file-image" onChange={() => console.log('Changed')} type="file"> */}
-                    <FontAwesomeIcon icon={solid('upload')} />
+                <FontAwesomeIcon icon={solid('upload')} />
                 {/* </input> */}
             </div>
-            
+
             {/* {percentage > 0 && <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-l-full" style={`width=${percentage}%`}> {percentage}%</div>} */}
 
             <div className="mx-auto text-center px-60 grid grid-cols-1 md:grid-cols-4">

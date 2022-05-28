@@ -18,7 +18,7 @@ import RoomIssuesList from "./warden/roomIssuesList";
 import WardenList from "./admin/WardenList";
 import { localStorageKey } from "./utils/localStorageKey";
 import { useEffect } from "react";
-import CreateWarden from "./admin/createwarden";
+import CreateWarden from "./admin/createWarden";
 import { Announcement } from "./student/components/Announcement";
 import PutAnnouncement from "./warden/putAnnouncement";
 import { Attendes } from "./warden/Attendes";
@@ -32,8 +32,8 @@ function App(props) {
       localStorage.setItem(
         localStorageKey.location,
         props.coords.latitude.toString() +
-          "," +
-          props.coords.longitude.toString()
+        "," +
+        props.coords.longitude.toString()
       );
     }
   });

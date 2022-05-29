@@ -9,23 +9,21 @@ export default function StudentList() {
   const getStudentsList = async () => {
     try {
       const student = await axios.get(
-        `${baseurl}/getStudent`,
-        {
-          params: { wardenid: localStorage.getItem("id") },
+        `${baseurl}/getStudent`, {
+        params: {
+          wardenid: localStorage.getItem(localStorageKey.id)
         },
-        {
-          headers: {
-            Authorization: localStorage.getItem("jwtToken")
-              ? `Bearer ${localStorage.getItem("jwtToken")}`
-              : "",
-          },
-        }
-      );
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem(localStorageKey.jwtToken)}`
+        },
+      })
       setStudents(student.data);
     } catch (error) {
       console.log("error aa gaya bro...");
     }
   };
+
+  console.log(localStorage.getItem(localStorageKey.jwtToken))
 
   useEffect(() => {
     const fetchStudentsList = async () => {

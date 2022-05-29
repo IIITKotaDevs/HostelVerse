@@ -21,6 +21,8 @@ HostelVerse is a Hostel Management System, which aims to digitize and automate t
 
 - [ReactJS](https://reactjs.org/) 
 - [Tailwind CSS](https://tailwindcss.com/)
+- [GeoLocation Api](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
+- [Material UI](https://mui.com/)
 
 ### Backend 
 

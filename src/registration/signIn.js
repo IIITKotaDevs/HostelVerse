@@ -36,6 +36,7 @@ export default function SignIn() {
       )
       .then(function (response) {
         if (response.status === 200) {
+          console.log(response);
           localStorage.setItem(
             localStorageKey.name,
             response.data.profile.name
@@ -72,13 +73,19 @@ export default function SignIn() {
               response.data.profile.studentid
             );
             navigate("/student/dashboard");
-          } else if (response?.status === 200 && type === "warden") {
+          } else if (
+            response?.status === 200 &&
+            type.name.toLowerCase() === "warden"
+          ) {
             localStorage.setItem(
-              localStorageKey.wardenid,
+              localStorageKey.id,
               response.data.profile.wardenid
             );
             navigate("/warden/student-list");
-          } else if (response?.status === 200 && type === "admin") {
+          } else if (
+            response?.status === 200 &&
+            type.name.toLowerCase() === "admin"
+          ) {
             navigate("/admin/dashboard");
           }
         }

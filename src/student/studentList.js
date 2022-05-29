@@ -7,22 +7,31 @@ export default function StudentList() {
   const [students, setStudents] = useState([]);
 
   const getStudentsList = async () => {
-    const student = await axios.get(
-      `${baseurl}/getStudent`,
-      {},
-      {
-        headers: {
-          Authorization: localStorage.getItem("jwtToken")
-            ? `Bearer ${localStorage.getItem("jwtToken")}`
-            : "",
+    try {
+      const student = await axios.get(
+        `${baseurl}/getStudent`,
+        {
+          params: { wardenid: localStorage.getItem("id") },
         },
-      }
-    );
-    setStudents(student.data);
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwtToken")
+              ? `Bearer ${localStorage.getItem("jwtToken")}`
+              : "",
+          },
+        }
+      );
+      setStudents(student.data);
+    } catch (error) {
+      console.log("error aa gaya bro...");
+    }
   };
 
   useEffect(() => {
-    getStudentsList();
+    const fetchStudentsList = async () => {
+      await getStudentsList();
+    };
+    fetchStudentsList();
   }, []);
 
   const removeStudent = async (studentItem) => {

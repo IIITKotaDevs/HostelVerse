@@ -125,8 +125,7 @@ export default function Dashboard() {
         location: localStorage.getItem(localStorageKey.location),
       });
       setIsChecked(!isChecked);
-    }
-    catch (e) {
+    } catch (e) {
       setError(true);
     }
   };
@@ -166,7 +165,9 @@ export default function Dashboard() {
         </div>
         <p className={`text-xl font-bold mt-10 mb-2`}>Check In / Out</p>
         {error ? (
-          <p className="text-lg text-red-500">Can't Checkout due to some reasons. Try again later near campus.</p>
+          <p className="text-lg text-red-500">
+            Can't Checkout due to some reasons. Try again later near campus.
+          </p>
         ) : null}
         {/* <button
           className={`w-1/3 text-white font-bold py-2 rounded-xl text-lg ${!isChecked ? "bg-red-600" : "bg-green-600"
@@ -199,14 +200,17 @@ export default function Dashboard() {
         <div className="flex flex-col gap-4">
           {data2.map((item, index) => {
             return (
-              <div className="w-1/2 border-2 border-gray-400 rounded-lg">
+              <div
+                className="w-1/2 border-2 border-gray-400 rounded-lg"
+                key={index}
+              >
                 <div className="border-b-2 border-gray-400 text-center font-bold py-1">
                   {item.name}
                 </div>
                 <div className="flex justify-around">
                   {item.advance.map((item, index) => {
                     return (
-                      <div className="text-center py-2">
+                      <div className="text-center py-2" key={index}>
                         <p>{item.title}</p>
                         <p className="font-bold">{item.value}</p>
                       </div>

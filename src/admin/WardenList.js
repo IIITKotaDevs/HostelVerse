@@ -7,7 +7,18 @@ export default function WardenList() {
   const [wardens, setWardens] = useState([]);
 
   const getWardenList = async () => {
-    const warden = await axios.get(`${baseurl}/admin/viewWarden`);
+    console.log(`Bearer ${localStorage.getItem("jwtToken")}`);
+    const warden = await axios.get(
+      `${baseurl}/getWarden`,
+      {},
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwtToken")
+            ? `Bearer ${localStorage.getItem("jwtToken")}`
+            : "",
+        },
+      }
+    );
     setWardens(warden.data);
   };
 

@@ -33,8 +33,8 @@ function App(props) {
       localStorage.setItem(
         localStorageKey.location,
         props.coords.latitude.toString() +
-        "," +
-        props.coords.longitude.toString()
+          "," +
+          props.coords.longitude.toString()
       );
     }
   });
@@ -76,7 +76,7 @@ function App(props) {
             element={<LeaveApplications />}
           />
           <Route path="/:user/room-issues" element={<RoomIssuesList />} />
-          <Route path="/:user/warden-list" element={<WardenList />} />
+          <Route path="/admin/warden-list" element={<WardenList />} />
           <Route path="/admin/create-hostel" element={<CreateHostel />} />
           <Route path="/admin/create-warden" element={<CreateWarden />} />
           <Route path="/student/announcement" element={<Announcement />} />

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { localStorageKey } from "../utils/localStorageKey";
 
 function HostelList() {
-    const [val, setVal] = useState([5000, 15000])
+    const [val, setVal] = useState([0, 30000])
     const [hostelData, setHostelData] = useState([])
     const navigate = useNavigate()
 

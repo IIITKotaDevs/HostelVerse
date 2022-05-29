@@ -8,12 +8,8 @@ import { localStorageKey } from "../utils/localStorageKey";
 export default function Dashboard() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    if (localStorage.getItem(localStorageKey.checked) === null) {
-      localStorage.setItem(localStorageKey.checked, 'Checked-Out');
-    }
-  }, []);
+  const [studentData, setStudentData] = useState([]);
+  const [checkedIn, setCheckedIn] = useState('');
 
   setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
 
@@ -49,11 +45,11 @@ export default function Dashboard() {
   const data = [
     {
       title: "Hostel No.",
-      value: localStorage.getItem(localStorageKey.hostelId),
+      value: studentData?.hostelid,
     },
     {
       title: "Room No.",
-      value: localStorage.getItem(localStorageKey.roomId),
+      value: studentData?.roomid,
     },
   ];
 
@@ -130,7 +126,7 @@ export default function Dashboard() {
         },
       }
     ).then(res => {
-      localStorage.setItem(localStorageKey.checked, 'Checked-In');
+      setCheckedIn('In Hostel');
     })
       .catch(err => {
         setError(err.response.data.message);
@@ -161,13 +157,44 @@ export default function Dashboard() {
         },
       }
     )
-      .then(res => {
-        localStorage.setItem(localStorageKey.checked, 'Checked-Out');
-      }
-      ).catch(err => {
+      .then(
+        res => {
+          setCheckedIn('Not In Hostel');
+        }
+      )
+      .catch(err => {
         setError(err.response.data.message);
-      });
+      }
+      );
   };
+
+  const getStudentDetails = async () => {
+    const response = await axios.get(
+      `${baseurl}/getStudentProfile`, {
+      params: {
+        studentid: localStorage.getItem(localStorageKey.id),
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(
+          localStorageKey.jwtToken
+        )}`,
+        "Content-type": "application/json",
+      },
+    }
+    ).then(res => {
+      console.log(res.data);
+      setStudentData(res.data.student);
+      setCheckedIn(res.data.attendenceStatus.data === 'In Hostel' ? 'In Hostel' : 'Not In Hostel');
+    }).catch(err => {
+      setError(err.response.data.message);
+    }
+    );
+  };
+
+  useEffect(() => {
+    getStudentDetails();
+  }, []);
+
 
   if (localStorage.getItem(localStorageKey.checked) === null) return null;
   else
@@ -181,7 +208,7 @@ export default function Dashboard() {
             <div className="flex flex-col gap-1">
               <p className="text-gray-800 font-medium text-xl">Welcome</p>
               <p className="text-black font-bold text-3xl">
-                {localStorage.getItem(localStorageKey.name)}
+                {studentData?.profile?.name}
               </p>
               <p className="text-gray-800 font-medium text-xl">
                 Have a good day !!!
@@ -200,11 +227,11 @@ export default function Dashboard() {
           </div>
           <p className={`text-xl font-bold mt-10 mb-2`}>Check In / Out</p>
           <button
-            className={`w-96 text-white font-bold py-2 rounded-xl text-lg ${localStorage.getItem(localStorageKey.checked) === 'Checked-Out' ? "bg-red-600" : "bg-green-600"
+            className={`w-96 text-white font-bold py-2 rounded-xl text-lg ${checkedIn !== 'In Hostel' ? "bg-red-600" : "bg-green-600"
               }`}
-            onClick={localStorage.getItem(localStorageKey.checked) === 'Checked-Out' ? () => checkIn() : () => checkOut()}
+            onClick={checkedIn !== 'In Hostel' ? () => checkIn() : () => checkOut()}
           >
-            You are {localStorage.getItem(localStorageKey.checked) === 'Checked-In' ? "IN" : "OUT"}
+            You are {checkedIn === 'In Hostel' ? "IN" : "OUT"}
           </button>
           <span>
             <p className="text-sm text-red-500 italic pt-1 font-medium">{error}</p>

@@ -5,32 +5,34 @@ import { localStorageKey } from "../utils/localStorageKey";
 
 export default function WardenList() {
   const [wardens, setWardens] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getWardenList = async () => {
-    console.log(`Bearer ${localStorage.getItem("jwtToken")}`);
-    const warden = await axios.get(
-      `${baseurl}/getWarden`,
-      {},
-      {
+    setLoading(true);
+    try {
+      const warden = await axios.get(`${baseurl}/getWarden`, {
         headers: {
-          Authorization: localStorage.getItem("jwtToken")
-            ? `Bearer ${localStorage.getItem("jwtToken")}`
-            : "",
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
         },
-      }
-    );
-    setWardens(warden.data);
+      });
+      setWardens(warden.data.data);
+      setLoading(false);
+    } catch (error) {
+      console.log("error aa gaya bro");
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    console.log(localStorage.getItem("location"));
     getWardenList();
   }, []);
 
   const removeWarden = async (wardenItem) => {
     axios
       .post(
-        `${baseurl}/admin/removeWarden`,
+        `${baseurl}/deleteWarden`,
         {
           wardenid: wardenItem.wardenid,
         },
@@ -51,6 +53,7 @@ export default function WardenList() {
   return (
     <>
       <p className="font-bold text-3xl text-center mt-12 mb-8">Warden List</p>
+      {loading && <p className="text-2xl text-center mt-8">Loading...</p>}
       <div className="flex flex-col gap-4">
         {wardens.map((warden, index) => {
           return (
@@ -59,7 +62,7 @@ export default function WardenList() {
               className="flex justify-between items-center mx-32 px-10 py-4 border border-gray-200 rounded-lg"
             >
               <div>
-                <p className="text-3xl font-semibold">{warden.wardenname}</p>
+                <p className="text-3xl font-semibold">{warden.name}</p>
                 {warden.roomid && warden.hostelid ? (
                   <p className="text-lg mt-2">
                     {warden?.roomid} | {warden?.hostelid}

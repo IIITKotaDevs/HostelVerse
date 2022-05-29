@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Rating from "@mui/material/Rating";
 import baseurl from "../config";
 import axios from "axios";
+import { localStorageKey } from "../utils/localStorageKey";
 
 function FeedbackForm() {
   const [value, setValue] = useState(0);
@@ -25,9 +26,9 @@ function FeedbackForm() {
         },
         {
           headers: {
-            Authorization: localStorage.getItem("jwtToken")
-              ? `Bearer ${localStorage.getItem("jwtToken")}`
-              : "",
+            Authorization: `Bearer ${localStorage.getItem(
+              localStorageKey.jwtToken
+            )}`,
             "Content-type": "application/json",
           },
         }
@@ -38,6 +39,7 @@ function FeedbackForm() {
         setSuccessMessage("Feedback submitted successfully!");
       } else {
         console.error("Something went wrong!");
+        setMessage("Something went wrong!");
       }
 
       document.getElementById("feedback").input = "";

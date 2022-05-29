@@ -1,15 +1,15 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Listbox, Transition } from '@headlessui/react'
+import { Listbox, Transition } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import.macro'
+import {
+  solid,
+  regular,
+  brands,
+} from "@fortawesome/fontawesome-svg-core/import.macro";
 
-const genderType = [
-  { name: 'Male' },
-  { name: 'Female' },
-  { name: 'Other' }
-]
+const genderType = [{ name: "Male" }, { name: "Female" }, { name: "Other" }];
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -26,76 +26,165 @@ export default function SignUp() {
   const [error, setError] = useState({});
 
   const userSignUp = () => {
-    axios.post("https://hostelverse-backend.azurewebsites.net/api/student/signup/", {
-      email: email,
-      password: password,
-      studentid: id,
-      name: name,
-      gender: gender.name,
-      contactno: phone,
-      location: "27.2046, 77.4977",
-    }).then(function (response) {
-      navigate("/otp", { state: { email: email } });
-    }).catch(function (error) {
-      console.log(error);
-    })
+    axios
+      .post(
+        "https://hostelverse-backend.azurewebsites.net/api/student/signup",
+        {
+          email: email,
+          password: password,
+          studentid: id,
+          name: name,
+          gender: gender.name,
+          contactno: phone,
+          location: "27.2046, 77.4977",
+        }
+      )
+      .then(function (response) {
+        navigate("/otp", { state: { email: email } });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const validate = () => {
     setError([]);
     if (name === "") {
-      setError(error => [...error, { type: "name", message: "Name is required" }]);
+      setError((error) => [
+        ...error,
+        { type: "name", message: "Name is required" },
+      ]);
     }
     if (name.length > 0 && name.length < 3) {
-      setError(error => [...error, { type: "name", message: "Name must be atleast 3 characters" }]);
+      setError((error) => [
+        ...error,
+        { type: "name", message: "Name must be atleast 3 characters" },
+      ]);
     }
     if (name.length > 0 && name.length > 30) {
-      setError(error => [...error, { type: "name", message: "Name must be less than 30 characters" }]);
+      setError((error) => [
+        ...error,
+        { type: "name", message: "Name must be less than 30 characters" },
+      ]);
     }
     if (email === "") {
-      setError(error => [...error, { type: "email", message: "Email is required" }]);
+      setError((error) => [
+        ...error,
+        { type: "email", message: "Email is required" },
+      ]);
     }
-    if (email.length > 0 && email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === null) {
-      setError(error => [...error, { type: "email", message: "Email is invalid" }]);
+    if (
+      email.length > 0 &&
+      email
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        ) === null
+    ) {
+      setError((error) => [
+        ...error,
+        { type: "email", message: "Email is invalid" },
+      ]);
     }
     if (password === "") {
-      setError(error => [...error, { type: "password", message: "Password is required" }]);
+      setError((error) => [
+        ...error,
+        { type: "password", message: "Password is required" },
+      ]);
     }
     if (password.length > 0 && password.length < 8) {
-      setError(error => [...error, { type: "password", message: "Password must be atleast 8 characters" }]);
+      setError((error) => [
+        ...error,
+        { type: "password", message: "Password must be atleast 8 characters" },
+      ]);
     }
     if (password.length > 0 && password.match(/[a-z]/g) === null) {
-      setError(error => [...error, { type: "password", message: "Password must contain atleast one lowercase letter" }]);
+      setError((error) => [
+        ...error,
+        {
+          type: "password",
+          message: "Password must contain atleast one lowercase letter",
+        },
+      ]);
     }
     if (password.length > 0 && password.match(/[A-Z]/g) === null) {
-      setError(error => [...error, { type: "password", message: "Password must contain atleast one uppercase letter" }]);
+      setError((error) => [
+        ...error,
+        {
+          type: "password",
+          message: "Password must contain atleast one uppercase letter",
+        },
+      ]);
     }
     if (password.length > 0 && password.match(/[0-9]/g) === null) {
-      setError(error => [...error, { type: "password", message: "Password must contain atleast one number" }]);
+      setError((error) => [
+        ...error,
+        {
+          type: "password",
+          message: "Password must contain atleast one number",
+        },
+      ]);
     }
-    if (password.length > 0 && password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g) === null) {
-      setError(error => [...error, { type: "password", message: "Password must contain atleast one special character" }]);
+    if (
+      password.length > 0 &&
+      password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g) === null
+    ) {
+      setError((error) => [
+        ...error,
+        {
+          type: "password",
+          message: "Password must contain atleast one special character",
+        },
+      ]);
     }
     if (password.length > 0 && confirmPassword === "") {
-      setError(error => [...error, { type: "confirmPassword", message: "Confirm Password is required" }]);
+      setError((error) => [
+        ...error,
+        { type: "confirmPassword", message: "Confirm Password is required" },
+      ]);
     }
-    if (password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword) {
-      setError(error => [...error, { type: "confirmPassword", message: "Password and Confirm Password must be same" }]);
+    if (
+      password.length > 0 &&
+      confirmPassword.length > 0 &&
+      password !== confirmPassword
+    ) {
+      setError((error) => [
+        ...error,
+        {
+          type: "confirmPassword",
+          message: "Password and Confirm Password must be same",
+        },
+      ]);
     }
     if (id === "") {
-      setError(error => [...error, { type: "id", message: "ID is required" }]);
+      setError((error) => [
+        ...error,
+        { type: "id", message: "ID is required" },
+      ]);
     }
-    if (gender.name === 'Select Gender') {
-      setError(error => [...error, { type: "gender", message: "Gender is required" }]);
+    if (gender.name === "Select Gender") {
+      setError((error) => [
+        ...error,
+        { type: "gender", message: "Gender is required" },
+      ]);
     }
     if (phone === "") {
-      setError(error => [...error, { type: "phone", message: "Phone is required" }]);
+      setError((error) => [
+        ...error,
+        { type: "phone", message: "Phone is required" },
+      ]);
     }
     if (phone.length > 0 && phone.length !== 10) {
-      setError(error => [...error, { type: "phone", message: "Phone must be only of 10 digits" }]);
+      setError((error) => [
+        ...error,
+        { type: "phone", message: "Phone must be only of 10 digits" },
+      ]);
     }
     if (phone.length > 0 && phone.match(/[0-9]/g) === null) {
-      setError(error => [...error, { type: "phone", message: "Phone must contain only numbers" }]);
+      setError((error) => [
+        ...error,
+        { type: "phone", message: "Phone must contain only numbers" },
+      ]);
     }
     // if (location === "") {
     //   setError("Location is required");
@@ -122,15 +211,17 @@ export default function SignUp() {
             onChange={(e) => setName(e.target.value)}
           />
           <div className="-mt-2 mb-1 text-left">
-            {error.length > 0 ? error.map((item, index) => {
-              if (item.type === "name") {
-                return (
-                  <p className="text-red-500 text-xs" key={index}>
-                    {item.message}
-                  </p>
-                );
-              }
-            }) : null}
+            {error.length > 0
+              ? error.map((item, index) => {
+                  if (item.type === "name") {
+                    return (
+                      <p className="text-red-500 text-xs" key={index}>
+                        {item.message}
+                      </p>
+                    );
+                  }
+                })
+              : null}
           </div>
           <input
             type="email"
@@ -140,15 +231,17 @@ export default function SignUp() {
             onChange={(e) => setEmail(e.target.value)}
           />
           <div className="-mt-2 mb-1 text-left">
-            {error.length > 0 ? error.map((item, index) => {
-              if (item.type === "email") {
-                return (
-                  <p className="text-red-500 text-xs" key={index}>
-                    {item.message}
-                  </p>
-                );
-              }
-            }) : null}
+            {error.length > 0
+              ? error.map((item, index) => {
+                  if (item.type === "email") {
+                    return (
+                      <p className="text-red-500 text-xs" key={index}>
+                        {item.message}
+                      </p>
+                    );
+                  }
+                })
+              : null}
           </div>
           <div className="bg-white w-80 rounded-lg mb-4 shadow-lg text-sm flex justify-between items-center gap-4">
             <input
@@ -158,18 +251,24 @@ export default function SignUp() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <FontAwesomeIcon icon={eyePassword ? solid("eye") : solid("eye-slash")} className="h-3.5 text-gray-800 pr-4" onClick={() => setEyePassword(!eyePassword)} />
+            <FontAwesomeIcon
+              icon={eyePassword ? solid("eye") : solid("eye-slash")}
+              className="h-3.5 text-gray-800 pr-4"
+              onClick={() => setEyePassword(!eyePassword)}
+            />
           </div>
           <div className="-mt-2 mb-1 text-left">
-            {error.length > 0 ? error.map((item, index) => {
-              if (item.type === "password") {
-                return (
-                  <p className="text-red-500 text-xs" key={index}>
-                    {item.message}
-                  </p>
-                );
-              }
-            }) : null}
+            {error.length > 0
+              ? error.map((item, index) => {
+                  if (item.type === "password") {
+                    return (
+                      <p className="text-red-500 text-xs" key={index}>
+                        {item.message}
+                      </p>
+                    );
+                  }
+                })
+              : null}
           </div>
           <div className="bg-white w-80 rounded-lg mb-4 shadow-lg text-sm flex justify-between items-center gap-4">
             <input
@@ -179,18 +278,24 @@ export default function SignUp() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            <FontAwesomeIcon icon={eyeConfirmPassword ? solid("eye") : solid("eye-slash")} className="h-3.5 text-gray-800 pr-4" onClick={() => setEyeConfirmPassword(!eyeConfirmPassword)} />
+            <FontAwesomeIcon
+              icon={eyeConfirmPassword ? solid("eye") : solid("eye-slash")}
+              className="h-3.5 text-gray-800 pr-4"
+              onClick={() => setEyeConfirmPassword(!eyeConfirmPassword)}
+            />
           </div>
           <div className="-mt-2 mb-1 text-left">
-            {error.length > 0 ? error.map((item, index) => {
-              if (item.type === "confirmPassword") {
-                return (
-                  <p className="text-red-500 text-xs" key={index}>
-                    {item.message}
-                  </p>
-                );
-              }
-            }) : null}
+            {error.length > 0
+              ? error.map((item, index) => {
+                  if (item.type === "confirmPassword") {
+                    return (
+                      <p className="text-red-500 text-xs" key={index}>
+                        {item.message}
+                      </p>
+                    );
+                  }
+                })
+              : null}
           </div>
           <input
             type="text"
@@ -200,15 +305,17 @@ export default function SignUp() {
             onChange={(e) => setId(e.target.value)}
           />
           <div className="-mt-2 mb-1 text-left">
-            {error.length > 0 ? error.map((item, index) => {
-              if (item.type === "id") {
-                return (
-                  <p className="text-red-500 text-xs" key={index}>
-                    {item.message}
-                  </p>
-                );
-              }
-            }) : null}
+            {error.length > 0
+              ? error.map((item, index) => {
+                  if (item.type === "id") {
+                    return (
+                      <p className="text-red-500 text-xs" key={index}>
+                        {item.message}
+                      </p>
+                    );
+                  }
+                })
+              : null}
           </div>
           <div className="bg-white w-80 rounded-lg mb-4 text-sm">
             <Listbox value={gender} onChange={setGender}>
@@ -216,7 +323,10 @@ export default function SignUp() {
                 <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-4 pr-10 text-left shadow-lg focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300">
                   <span className="block truncate">{gender.name}</span>
                   <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
-                    <FontAwesomeIcon icon={solid('angle-down')} className="w-3.5 h-3.5" />
+                    <FontAwesomeIcon
+                      icon={solid("angle-down")}
+                      className="w-3.5 h-3.5"
+                    />
                   </span>
                 </Listbox.Button>
                 <Transition
@@ -230,7 +340,10 @@ export default function SignUp() {
                       <Listbox.Option
                         key={genderIdx}
                         className={({ active }) =>
-                          `relative cursor-default select-none py-2 pl-4 pr-4 ${active ? 'bg-amber-100 text-primary' : 'text-gray-900'
+                          `relative cursor-default select-none py-2 pl-4 pr-4 ${
+                            active
+                              ? "bg-amber-100 text-primary"
+                              : "text-gray-900"
                           }`
                         }
                         value={gender}
@@ -238,14 +351,18 @@ export default function SignUp() {
                         {({ selected }) => (
                           <>
                             <span
-                              className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                                }`}
+                              className={`block truncate ${
+                                selected ? "font-medium" : "font-normal"
+                              }`}
                             >
                               {gender.name}
                             </span>
                             {selected ? (
                               <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-primary2">
-                                <FontAwesomeIcon icon={solid('check')} className="w-3.5 h-3.5" />
+                                <FontAwesomeIcon
+                                  icon={solid("check")}
+                                  className="w-3.5 h-3.5"
+                                />
                               </span>
                             ) : null}
                           </>
@@ -258,15 +375,17 @@ export default function SignUp() {
             </Listbox>
           </div>
           <div className="-mt-2 mb-1 text-left">
-            {error.length > 0 ? error.map((item, index) => {
-              if (item.type === "gender") {
-                return (
-                  <p className="text-red-500 text-xs" key={index}>
-                    {item.message}
-                  </p>
-                );
-              }
-            }) : null}
+            {error.length > 0
+              ? error.map((item, index) => {
+                  if (item.type === "gender") {
+                    return (
+                      <p className="text-red-500 text-xs" key={index}>
+                        {item.message}
+                      </p>
+                    );
+                  }
+                })
+              : null}
           </div>
           <input
             type="text"
@@ -276,15 +395,17 @@ export default function SignUp() {
             onChange={(e) => setPhone(e.target.value)}
           />
           <div className="-mt-2 mb-1 text-left">
-            {error.length > 0 ? error.map((item, index) => {
-              if (item.type === "phone") {
-                return (
-                  <p className="text-red-500 text-xs" key={index}>
-                    {item.message}
-                  </p>
-                );
-              }
-            }) : null}
+            {error.length > 0
+              ? error.map((item, index) => {
+                  if (item.type === "phone") {
+                    return (
+                      <p className="text-red-500 text-xs" key={index}>
+                        {item.message}
+                      </p>
+                    );
+                  }
+                })
+              : null}
           </div>
           {/* <input
             type="text"
@@ -297,7 +418,9 @@ export default function SignUp() {
         <button
           type="submit"
           className="px-10 py-2 bg-gray-800 hover:bg-black text-white font-medium rounded-lg shadow-lg hover:shadow-none"
-          onClick={(e) => { validate() }}
+          onClick={(e) => {
+            validate();
+          }}
         >
           Submit
         </button>
@@ -311,6 +434,6 @@ export default function SignUp() {
           </p>
         </div>
       </div>
-    </div >
+    </div>
   );
 }

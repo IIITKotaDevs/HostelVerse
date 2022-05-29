@@ -8,22 +8,19 @@ export default function StudentList() {
 
   const getStudentsList = async () => {
     try {
-      const student = await axios.get(
-        `${baseurl}/getStudent`,
-        {
-          params: { wardenid: localStorage.getItem("id") },
+      const student = await axios.get(`${baseurl}/getStudent`, {
+        params: {
+          wardenid: localStorage.getItem(localStorageKey.id),
         },
-        {
-          headers: {
-            Authorization: localStorage.getItem("jwtToken")
-              ? `Bearer ${localStorage.getItem("jwtToken")}`
-              : "",
-          },
-        }
-      );
-      setStudents(student.data);
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+        },
+      });
+      setStudents(student.data.data);
     } catch (error) {
-      console.log("error aa gaya bro...");
+      console.log("error aa gaya bro ");
     }
   };
 

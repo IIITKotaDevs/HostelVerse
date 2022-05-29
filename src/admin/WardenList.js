@@ -59,7 +59,7 @@ export default function WardenList() {
           return (
             <div
               key={index}
-              className="flex justify-between items-center mx-32 px-10 py-4 border border-gray-200 rounded-lg"
+              className="flex justify-between items-center mx-32 px-10 py-4 border border-gray-200 rounded-lg shadow-md"
             >
               <div>
                 <p className="text-3xl font-semibold">{warden.name}</p>

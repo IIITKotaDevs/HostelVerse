@@ -3,11 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Listbox, Transition } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  solid,
-  regular,
-  brands,
-} from "@fortawesome/fontawesome-svg-core/import.macro";
+import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { localStorageKey } from "../utils/localStorageKey";
 
 const genderType = [{ name: "Male" }, { name: "Female" }, { name: "Other" }];
 
@@ -26,26 +23,21 @@ export default function SignUp() {
   const [error, setError] = useState({});
 
   const userSignUp = () => {
-    axios
-      .post(
-        "https://hostelverse-backend.azurewebsites.net/api/student/signup",
-        {
-          email: email,
-          password: password,
-          studentid: id,
-          name: name,
-          gender: gender.name,
-          contactno: phone,
-          location: "27.2046, 77.4977",
-        }
-      )
-      .then(function (response) {
-        navigate("/otp", { state: { email: email } });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
+    axios.post("https://hostelverse-backend.azurewebsites.net/api/student/signup/", {
+      email: email,
+      password: password,
+      studentid: id,
+      name: name,
+      gender: gender.name,
+      contactno: phone,
+      location: localStorage.getItem(localStorageKey.location)
+    }).then(function (response) {
+      navigate("/otp", { state: { email: email } });
+    }).catch(function (error) {
+      console.log(error);
+      setError(...error, { type: "undefined", message: "Some error occurred" });
+    });
+  }
 
   const validate = () => {
     setError([]);
@@ -213,14 +205,14 @@ export default function SignUp() {
           <div className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
-                  if (item.type === "name") {
-                    return (
-                      <p className="text-red-500 text-xs" key={index}>
-                        {item.message}
-                      </p>
-                    );
-                  }
-                })
+                if (item.type === "name") {
+                  return (
+                    <p className="text-red-500 text-xs" key={index}>
+                      {item.message}
+                    </p>
+                  );
+                }
+              })
               : null}
           </div>
           <input
@@ -233,14 +225,14 @@ export default function SignUp() {
           <div className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
-                  if (item.type === "email") {
-                    return (
-                      <p className="text-red-500 text-xs" key={index}>
-                        {item.message}
-                      </p>
-                    );
-                  }
-                })
+                if (item.type === "email") {
+                  return (
+                    <p className="text-red-500 text-xs" key={index}>
+                      {item.message}
+                    </p>
+                  );
+                }
+              })
               : null}
           </div>
           <div className="bg-white w-80 rounded-lg mb-4 shadow-lg text-sm flex justify-between items-center gap-4">
@@ -260,14 +252,14 @@ export default function SignUp() {
           <div className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
-                  if (item.type === "password") {
-                    return (
-                      <p className="text-red-500 text-xs" key={index}>
-                        {item.message}
-                      </p>
-                    );
-                  }
-                })
+                if (item.type === "password") {
+                  return (
+                    <p className="text-red-500 text-xs" key={index}>
+                      {item.message}
+                    </p>
+                  );
+                }
+              })
               : null}
           </div>
           <div className="bg-white w-80 rounded-lg mb-4 shadow-lg text-sm flex justify-between items-center gap-4">
@@ -287,14 +279,14 @@ export default function SignUp() {
           <div className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
-                  if (item.type === "confirmPassword") {
-                    return (
-                      <p className="text-red-500 text-xs" key={index}>
-                        {item.message}
-                      </p>
-                    );
-                  }
-                })
+                if (item.type === "confirmPassword") {
+                  return (
+                    <p className="text-red-500 text-xs" key={index}>
+                      {item.message}
+                    </p>
+                  );
+                }
+              })
               : null}
           </div>
           <input
@@ -307,14 +299,14 @@ export default function SignUp() {
           <div className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
-                  if (item.type === "id") {
-                    return (
-                      <p className="text-red-500 text-xs" key={index}>
-                        {item.message}
-                      </p>
-                    );
-                  }
-                })
+                if (item.type === "id") {
+                  return (
+                    <p className="text-red-500 text-xs" key={index}>
+                      {item.message}
+                    </p>
+                  );
+                }
+              })
               : null}
           </div>
           <div className="bg-white w-80 rounded-lg mb-4 text-sm">
@@ -340,10 +332,9 @@ export default function SignUp() {
                       <Listbox.Option
                         key={genderIdx}
                         className={({ active }) =>
-                          `relative cursor-default select-none py-2 pl-4 pr-4 ${
-                            active
-                              ? "bg-amber-100 text-primary"
-                              : "text-gray-900"
+                          `relative cursor-default select-none py-2 pl-4 pr-4 ${active
+                            ? "bg-amber-100 text-primary"
+                            : "text-gray-900"
                           }`
                         }
                         value={gender}
@@ -351,9 +342,8 @@ export default function SignUp() {
                         {({ selected }) => (
                           <>
                             <span
-                              className={`block truncate ${
-                                selected ? "font-medium" : "font-normal"
-                              }`}
+                              className={`block truncate ${selected ? "font-medium" : "font-normal"
+                                }`}
                             >
                               {gender.name}
                             </span>
@@ -377,14 +367,14 @@ export default function SignUp() {
           <div className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
-                  if (item.type === "gender") {
-                    return (
-                      <p className="text-red-500 text-xs" key={index}>
-                        {item.message}
-                      </p>
-                    );
-                  }
-                })
+                if (item.type === "gender") {
+                  return (
+                    <p className="text-red-500 text-xs" key={index}>
+                      {item.message}
+                    </p>
+                  );
+                }
+              })
               : null}
           </div>
           <input
@@ -397,14 +387,14 @@ export default function SignUp() {
           <div className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
-                  if (item.type === "phone") {
-                    return (
-                      <p className="text-red-500 text-xs" key={index}>
-                        {item.message}
-                      </p>
-                    );
-                  }
-                })
+                if (item.type === "phone") {
+                  return (
+                    <p className="text-red-500 text-xs" key={index}>
+                      {item.message}
+                    </p>
+                  );
+                }
+              })
               : null}
           </div>
           {/* <input

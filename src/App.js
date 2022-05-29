@@ -17,7 +17,7 @@ import LeaveApplications from "./warden/leaveApplications";
 import RoomIssuesList from "./warden/roomIssuesList";
 import WardenList from "./admin/WardenList";
 import { localStorageKey } from "./utils/localStorageKey";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CreateWarden from "./admin/createWarden";
 import { Announcement } from "./student/components/Announcement";
 import PutAnnouncement from "./warden/putAnnouncement";
@@ -27,18 +27,10 @@ import ViewFeedback from "./admin/viewfeedback";
 
 function App(props) {
   useEffect(() => {
-    if (
-      (props.coords && !localStorage.getItem(localStorageKey.location)) ||
-      localStorage.getItem(localStorageKey.location) === "null"
-    ) {
-      localStorage.setItem(
-        localStorageKey.location,
-        props.coords.latitude.toString() +
-          "," +
-          props.coords.longitude.toString()
-      );
+    if (props.coords !== null) {
+      localStorage.setItem(localStorageKey.location, props.coords.latitude.toString() + "," + props.coords.longitude.toString());
     }
-  });
+  }, [props.coords]);
 
   if (
     !localStorage.getItem(localStorageKey.location) ||

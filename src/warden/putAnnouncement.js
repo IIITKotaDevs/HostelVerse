@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import baseurl from "../config";
 import axios from "axios";
+import { localStorageKey } from "../utils/localStorageKey";
 
 function PutAnnouncement() {
   const [heading, setHeading] = useState("");
@@ -12,15 +13,15 @@ function PutAnnouncement() {
     const res = await axios.post(
       `${baseurl}/createAnnouncement`,
       {
-        wardenid: localStorage.getItem("wardenid"),
+        wardenid: localStorage.getItem(localStorageKey.id),
         heading: heading,
         message: content,
       },
       {
         headers: {
-          Authorization: localStorage.getItem("jwtToken")
-            ? `Bearer ${localStorage.getItem("jwtToken")}`
-            : "",
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
           "Content-type": "application/json",
         },
       }

@@ -63,13 +63,7 @@ export default function WardenList() {
             >
               <div>
                 <p className="text-3xl font-semibold">{warden.name}</p>
-                {warden.roomid && warden.hostelid ? (
-                  <p className="text-lg mt-2">
-                    {warden?.roomid} | {warden?.hostelid}
-                  </p>
-                ) : (
-                  <p className="text-lg mt-2">No Room/Hostel Assigned</p>
-                )}
+                <p className="text-lg mt-2">Warden of: {warden?.hostelid}</p>
                 <p
                   className="text-red-500 text-lg cursor-pointer font-medium mt-2"
                   onClick={() => removeWarden(warden)}

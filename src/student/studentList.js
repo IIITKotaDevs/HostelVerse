@@ -20,11 +20,9 @@ export default function StudentList() {
       });
       setStudents(student.data.data);
     } catch (error) {
-      console.log("error aa gaya bro ");
+      console.log(error);
     }
   };
-
-  console.log(localStorage.getItem(localStorageKey.jwtToken));
 
   useEffect(() => {
     const fetchStudentsList = async () => {

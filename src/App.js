@@ -24,6 +24,7 @@ import PutAnnouncement from "./warden/putAnnouncement";
 import { Attendes } from "./warden/Attendes";
 import CreateHostel from "./admin/createHostel";
 import ViewFeedback from "./admin/viewfeedback";
+import AllotHostel from "./admin/allotHostel";
 
 function App(props) {
   useEffect(() => {
@@ -81,6 +82,7 @@ function App(props) {
           <Route path="/admin/create-hostel" element={<CreateHostel />} />
           <Route path="/admin/create-warden" element={<CreateWarden />} />
           <Route path="/admin/view-feedback" element={<ViewFeedback />} />
+          <Route path="/admin/allot-hostel" element={<AllotHostel />} />
           <Route path="/student/announcement" element={<Announcement />} />
           <Route path="/warden/announcement" element={<PutAnnouncement />} />
           <Route path="/:user/hostels/:id" element={<HostelDetail />} />

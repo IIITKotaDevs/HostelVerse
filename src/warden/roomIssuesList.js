@@ -7,17 +7,14 @@ export default function RoomIssuesList() {
 
   const getRoomIssues = async () =>
     await axios
-      .get(
-        `${baseurl}/getRoomIssue`,
-        { params: { wardenid: localStorage.getItem("id") } },
-        {
-          headers: {
-            Authorization: localStorage.getItem("jwtToken")
-              ? `Bearer ${localStorage.getItem("jwtToken")}`
-              : "",
-          },
-        }
-      )
+      .get(`${baseurl}/getRoomIssue`, {
+        params: { wardenid: localStorage.getItem("id") },
+        headers: {
+          Authorization: localStorage.getItem("jwtToken")
+            ? `Bearer ${localStorage.getItem("jwtToken")}`
+            : "",
+        },
+      })
       .then((res) => {
         setIssues(res.data);
       });
@@ -32,7 +29,10 @@ export default function RoomIssuesList() {
       <div className="flex gap-4 flex-col">
         {issues.map((issues, index) => {
           return (
-            <div className="mx-32 px-6 py-4 border border-gray-400 rounded-lg">
+            <div
+              className="mx-32 px-6 py-4 border border-gray-400 rounded-lg"
+              key={index}
+            >
               <p className="text-2xl">{issues?.studentid}</p>
               {issues.roomno && issues.hostelid ? (
                 <p>

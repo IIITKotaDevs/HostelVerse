@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
 import baseurl from "../config";
+import { localStorageKey } from "../utils/localStorageKey";
 
 function RoomIssue() {
   const [reason, setReason] = useState("");
@@ -18,8 +19,7 @@ function RoomIssue() {
     const res = await axios.post(
       `${baseurl}/createRoomIssue`,
       {
-        hostelid: localStorage.getItem("hostelid"),
-        roomno: localStorage.getItem("roomno"),
+        studentid: localStorage.getItem(localStorageKey.id),
         remarks: reason,
       },
       {

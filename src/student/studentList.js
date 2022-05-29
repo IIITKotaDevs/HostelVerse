@@ -60,7 +60,7 @@ export default function StudentList() {
           return (
             <div
               key={index}
-              className="flex justify-between items-center mx-32 px-10 py-4 border border-gray-200 rounded-lg"
+              className="flex justify-between items-center mx-32 px-10 py-4 border bg-yellow-300 border-gray-200 rounded-lg"
             >
               <div>
                 <p className="text-3xl font-semibold">{student.profile.name}</p>

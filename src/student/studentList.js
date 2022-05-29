@@ -24,6 +24,8 @@ export default function StudentList() {
     }
   };
 
+  console.log(localStorage.getItem(localStorageKey.jwtToken));
+
   useEffect(() => {
     const fetchStudentsList = async () => {
       await getStudentsList();

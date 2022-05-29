@@ -6,8 +6,8 @@ import { TextField } from "@material-ui/core";
 
 export default function LeaveApplications() {
   const [application, setApplication] = useState([]);
-  const [approved, setApproved] = useState(false);
-  const [rejected, setRejected] = useState(false);
+  const [resolveStatus, SetResolveStatus] = useState(false); // true, false
+  const [boxIndex, setBoxIndex] = useState(undefined);
   const [reason, setReason] = useState("");
   const [resolved, setResolved] = useState(false);
   const [message, setMessage] = useState("");
@@ -26,7 +26,7 @@ export default function LeaveApplications() {
         studentid: studentid,
         wardenid: localStorage.getItem(localStorageKey.id),
         name: localStorage.getItem(localStorageKey.name),
-        status: approved ? "approved" : "rejected",
+        status: resolveStatus ? "Approved" : "Rejected",
         remarks: reason,
       },
       {
@@ -73,8 +73,9 @@ export default function LeaveApplications() {
         Leave Applications
       </p>
       <div className="flex gap-4 flex-col">
-        {application &&
-          application.map((application, index) => {
+        {application
+          .filter((e) => e.status === "Pending")
+          ?.map((application, index) => {
             return (
               <div
                 className="mx-32 px-6 py-4 border border-gray-400 rounded-lg"
@@ -95,8 +96,8 @@ export default function LeaveApplications() {
                   <button
                     className="bg-green-500 text-white px-10 py-1 rounded"
                     onClick={() => {
-                      setApproved(true);
-                      setRejected(false);
+                      SetResolveStatus(true);
+                      setBoxIndex(index);
                     }}
                   >
                     Approve
@@ -104,41 +105,20 @@ export default function LeaveApplications() {
                   <button
                     className="bg-red-500 text-white px-10 py-1 rounded"
                     onClick={() => {
-                      setRejected(true);
-                      setApproved(false);
+                      SetResolveStatus(false);
+                      setBoxIndex(index);
                     }}
                   >
                     Reject
                   </button>
                 </div>
 
-                {approved && (
-                  <div className="mx-auto grid grid-row grid-rows-2 mt-12  w-80 border-2 border-green-500 py-6 rounded-lg shadow-lg">
-                    <div className="text-center ">
-                      <TextField
-                        id="reason"
-                        label="Enter your reason..."
-                        type="text"
-                        multiline
-                        rows={4}
-                        onChange={handleReasonChange}
-                        defaultValue=""
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                    </div>
-                    <div className="mx-auto mt-12 bg-black text-white rounded-md px-4 py-2 my-4">
-                      <button
-                        onClick={(e) => handleSubmit(e, application.studentid)}
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                )}
-                {rejected && (
-                  <div className="mx-auto grid grid-row grid-rows-2 mt-12  w-80 border-2 border-red-500 py-6 rounded-lg shadow-lg">
+                {boxIndex == index && (
+                  <div
+                    className={` mx-auto grid grid-row grid-rows-2 mt-12 ${
+                      resolveStatus ? "border-green-500" : "border-red-500"
+                    } w-80 border-2 py-6 rounded-lg shadow-lg `}
+                  >
                     <div className="text-center ">
                       <TextField
                         id="reason"

@@ -48,7 +48,7 @@ const AllotHostel = () => {
 
   return (
     <div className="bg-room-issue h-screen bg-cover">
-      <h1 className="text-4xl mt-2 text-center">Feedback Form</h1>
+      <h1 className="text-4xl mt-2 text-center">Allot Hostel</h1>
       <div className="mx-auto text-center w-80">
         <h1 className="text-center mt-12 text-3xl text-red-500">{message}</h1>
         <h1 className="text-center mt-12 text-3xl text-green-500">

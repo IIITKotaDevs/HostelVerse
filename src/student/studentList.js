@@ -1,35 +1,13 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import baseurl from "../config";
 import { localStorageKey } from "../utils/localStorageKey";
+import { useStudentList } from "../queries/hooks";
 
 export default function StudentList() {
-  const [students, setStudents] = useState([]);
-
-  const getStudentsList = async () => {
-    try {
-      const student = await axios.get(`${baseurl}/getStudent`, {
-        params: {
-          wardenid: localStorage.getItem(localStorageKey.id),
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            localStorageKey.jwtToken
-          )}`,
-        },
-      });
-      setStudents(student.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    const fetchStudentsList = async () => {
-      await getStudentsList();
-    };
-    fetchStudentsList();
-  }, []);
+  const studentList = useStudentList({
+    wardenid: localStorage.getItem(localStorageKey.id),
+  });
 
   const removeStudent = async (studentItem) => {
     axios
@@ -48,7 +26,7 @@ export default function StudentList() {
         }
       )
       .then(() => {
-        getStudentsList();
+        studentList.refetch();
       });
   };
 
@@ -56,7 +34,7 @@ export default function StudentList() {
     <>
       <p className="font-bold text-3xl text-center mt-12 mb-8">Student List</p>
       <div className="flex flex-col gap-4">
-        {students.map((student, index) => {
+        {studentList?.data?.data > 0 ? studentList?.data?.data?.map((student, index) => {
           return (
             <div
               key={index}
@@ -85,7 +63,7 @@ export default function StudentList() {
               />
             </div>
           );
-        })}
+        }) : <p className="italic text-center">No students under this warden yet.</p>}
       </div>
     </>
   );

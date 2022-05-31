@@ -5,6 +5,7 @@ import Man from '../assets/img/man.svg'
 import axios from "axios"
 import baseurl from "../config"
 import { localStorageKey } from "../utils/localStorageKey";
+import { useHostelDetails } from "../queries/hooks"
 
 function HostelDetail(id) {
     const feedbacks = [
@@ -23,10 +24,6 @@ function HostelDetail(id) {
     console.log(params.id)
     const [hostelData, setHostelData] = useState(null)
 
-    useEffect(() => {
-        getHostel()
-    }, [])
-
     const getHostel = async () => {
         const hostels = await axios.get(`${baseurl}/hostelList`, {
             params: {
@@ -39,8 +36,14 @@ function HostelDetail(id) {
         setHostelData(hostels.data.data)
     }
 
-    if (!hostelData)
-        return null
+    const hostelDetails = useHostelDetails({
+        hostelid: params.id
+    })
+
+    useEffect(() => {
+        setHostelData(hostelDetails.data?.data)
+    }, [hostelDetails.isSuccess === true])
+
     return (
         <div>
             <img className="w-full" src={Hostel}></img>
@@ -52,8 +55,8 @@ function HostelDetail(id) {
                 <h1 className="font-bold text-3xl">{hostelData?.name}</h1>
                 <p className='font-medium text-gray-700'>{hostelData?.location}</p>
                 <div className='flex justify-around mt-4 text-sm'>
-                    <p>{hostelData.overallRating ? `${hostelData.overallRating}/5` : "Not rated yet"}</p>
-                    <p>{hostelData.numberOfReviews ? `${hostelData.numberOfReviews} reviews` : "No reviews yet"}</p>
+                    <p>{hostelData?.overallRating ? `${hostelData?.overallRating}/5` : "Not rated yet"}</p>
+                    <p>{hostelData?.numberOfReviews ? `${hostelData?.numberOfReviews} reviews` : "No reviews yet"}</p>
                 </div>
             </div>
 
@@ -106,8 +109,8 @@ function HostelDetail(id) {
 
             <div className="bg-yellow-500 flex justify-between px-24 items-center fixed bottom-0 w-full py-2 shadow-inner">
                 <div className="">
-                    <h1 className="text-2xl font-bold">₹{hostelData.fees}/month</h1>
-                    <h1 className="">Available: {hostelData.singleRoomsLeft} Single, {hostelData.doubleRoomsLeft} Double, {hostelData.tripleRooms} Triple | Max Capacity: {hostelData.totalCapacity}</h1>
+                    <h1 className="text-2xl font-bold">₹{hostelData?.fees}/month</h1>
+                    <h1 className="">Available: {hostelData?.singleRoomsLeft} Single, {hostelData?.doubleRoomsLeft} Double, {hostelData?.tripleRooms} Triple | Max Capacity: {hostelData?.totalCapacity}</h1>
                 </div>
                 <div className="">
                     <button className="bg-black text-white py-2 px-8 text-lg rounded-3xl">Apply Now</button>

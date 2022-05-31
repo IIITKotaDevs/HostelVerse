@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import man from "../assets/img/man.png";
+import { useStudentDetails } from "../queries/hooks";
 import baseurl from "../config";
 import { useLocation } from "react-router";
 import { localStorageKey } from "../utils/localStorageKey";
+import { useMutateCheckIn, useMutateCheckOut } from "../queries/mutations";
 
 export default function Dashboard() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
@@ -110,7 +112,7 @@ export default function Dashboard() {
   const location = useLocation();
 
   const checkIn = async () => {
-    const response = await axios.post(
+    await axios.post(
       `${baseurl}/checkin`,
       {
         studentid: localStorage.getItem(localStorageKey.id),
@@ -133,6 +135,16 @@ export default function Dashboard() {
       });
   };
 
+  const { mutateAsync: checkInData } = useMutateCheckIn({
+    onSuccess: () => { },
+    onError: () => { },
+  });
+
+  const { mutateAsync: checkOutData } = useMutateCheckOut({
+    onSuccess: () => { },
+    onError: () => { },
+  });
+
   useEffect(() => {
     // SetError after 2 seconds
     setTimeout(() => {
@@ -141,7 +153,7 @@ export default function Dashboard() {
   }, [error.length > 0]);
 
   const checkOut = async () => {
-    const response = await axios.post(
+    await axios.post(
       `${baseurl}/checkout`,
       {
         studentid: localStorage.getItem(localStorageKey.id),
@@ -168,32 +180,14 @@ export default function Dashboard() {
       );
   };
 
-  const getStudentDetails = async () => {
-    const response = await axios.get(
-      `${baseurl}/getStudentProfile`, {
-      params: {
-        studentid: localStorage.getItem(localStorageKey.id),
-      },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(
-          localStorageKey.jwtToken
-        )}`,
-        "Content-type": "application/json",
-      },
-    }
-    ).then(res => {
-      console.log(res.data);
-      setStudentData(res.data.student);
-      setCheckedIn(res.data.attendenceStatus.data === 'In Hostel' ? 'In Hostel' : 'Not In Hostel');
-    }).catch(err => {
-      setError(err.response.data.message);
-    }
-    );
-  };
+  const studentDetails = useStudentDetails({
+    studentid: localStorage.getItem(localStorageKey.id),
+  });
 
   useEffect(() => {
-    getStudentDetails();
-  }, []);
+    setStudentData(studentDetails.data?.student);
+    setCheckedIn(studentDetails.data?.attendenceStatus?.data === 'In Hostel' ? 'In Hostel' : 'Not In Hostel');
+  }, [studentDetails.isSuccess === true]);
 
 
   if (localStorage.getItem(localStorageKey.checked) === null) return null;
@@ -229,7 +223,15 @@ export default function Dashboard() {
           <button
             className={`w-96 text-white font-bold py-2 rounded-xl text-lg ${checkedIn !== 'In Hostel' ? "bg-red-600" : "bg-green-600"
               }`}
-            onClick={checkedIn !== 'In Hostel' ? () => checkIn() : () => checkOut()}
+            onClick={checkedIn !== 'In Hostel' ? () => checkInData({
+              studentid: localStorage.getItem(localStorageKey.id),
+              location: "26.9124, 75.7873",
+              // location: localStorage.getItem(localStorageKey.location),
+            }) : () => checkOutData({
+              studentid: localStorage.getItem(localStorageKey.id),
+              // location: "26.9124,75.7873",
+              location: localStorage.getItem(localStorageKey.location),
+            })}
           >
             You are {checkedIn === 'In Hostel' ? "IN" : "OUT"}
           </button>

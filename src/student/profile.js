@@ -4,8 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import { localStorageKey } from "../utils/localStorageKey";
 import { useLocation } from "react-router";
+import { useStudentDetails } from "../queries/hooks";
 
 export default function Profile() {
+
+  const studentDetails = useStudentDetails({
+    studentid: localStorage.getItem(localStorageKey.id),
+  });
+
   const location = useLocation();
   return (
     <>
@@ -17,35 +23,31 @@ export default function Profile() {
         <img src={man} alt="" className="w-32 h-32 my-4" />
         <p className="text-sm">Name</p>
         <p className="text-lg font-bold mt-0.5">
-          {localStorage.getItem(localStorageKey.name)}
+          {studentDetails?.data?.student?.profile?.name}
         </p>
         <p className="text-sm mt-3">Contact No.</p>
         <p className="text-lg font-bold mt-0.5">
-          {localStorage.getItem(localStorageKey.contactNo)}
+          {studentDetails?.data?.student?.profile?.contactno}
         </p>
         <p className="text-sm mt-3">Email</p>
         <p className="text-lg font-bold mt-0.5">
-          {localStorage.getItem(localStorageKey.email)}
+          {studentDetails?.data?.student?.profile?.email}
         </p>
         {location.pathname.split("/")[1] === "student" ? (
           <>
             <p className="text-sm mt-3">Hostel No</p>
             <p className="text-lg font-bold mt-0.5">
-              {localStorage.getItem(localStorageKey.hostelId)
-                ? localStorage.getItem(localStorageKey.hostelId)
-                : "Not Assigned"}
+              {studentDetails?.data?.student?.hostelid || "Not Yet Assigned"}
             </p>
             <p className="text-sm mt-3">Room No</p>
             <p className="text-lg font-bold mt-0.5">
-              {localStorage.getItem(localStorageKey.roomId)
-                ? localStorage.getItem(localStorageKey.roomId)
-                : "Not Assigned"}
+              {studentDetails?.data?.student?.roomid || "Not Yet Assigned"}
             </p>
           </>
         ) : null}
         <p className="text-sm mt-3">Gender</p>
         <p className="text-lg font-bold mt-0.5">
-          {localStorage.getItem(localStorageKey.gender)}
+          {studentDetails?.data?.student?.profile?.gender}
         </p>
       </div>
     </>

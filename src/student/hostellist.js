@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Menu } from '@headlessui/react'
 import Slider from "@material-ui/core/Slider";
-import axios from "axios"
-import baseurl from '../config';
 import { useNavigate } from 'react-router-dom';
-import { localStorageKey } from "../utils/localStorageKey";
+import { useHostelList } from '../queries/hooks';
 
 function HostelList() {
     const [val, setVal] = useState([0, 30000])
@@ -16,21 +14,17 @@ function HostelList() {
         setVal(data)
     }
 
-    const getHostels = async () => {
-        const hostels = await axios.get(`${baseurl}/hostelList`, {
-            params: {
-                low: val[0],
-                high: val[1]
-            },
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem(localStorageKey.jwtToken)}`
-            },
-        })
-        setHostelData(hostels.data)
-    }
+    const hostelList = useHostelList({
+        low: val[0],
+        high: val[1],
+    })
 
     useEffect(() => {
-        getHostels()
+        setHostelData(hostelList.data)
+    }, [hostelList.isSuccess === true])
+
+    useEffect(() => {
+        hostelList.refetch()
     }, [val])
 
     return (
@@ -62,7 +56,7 @@ function HostelList() {
             </div >
 
             <div className="flex flex-col items-center pt-8">
-                {hostelData.data && hostelData.data.map(hostel => {
+                {hostelData?.data && hostelData.data.map(hostel => {
                     return (
                         <div className="border-2 rounded-lg w-1/2 mb-8 shadow-lg pt-2 pb-4 px-8 cursor-pointer" key={hostel.hostelid} onClick={() => { navigate(`./${hostel.hostelid}`) }}>
                             <h1 className="font-bold text-2xl my-2">{hostel.name}</h1>

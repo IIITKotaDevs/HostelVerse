@@ -1,5 +1,5 @@
-const baseUrl = "https://hostelverse-backend.azurewebsites.net/api";
 import { localStorageKey } from "../utils/localStorageKey";
+const baseUrl = "https://hostelverse-backend.azurewebsites.net/api";
 
 const apiEndPoints = {
   getStudentDetails: `/getStudentProfile`,

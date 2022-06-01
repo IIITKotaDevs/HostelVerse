@@ -10,6 +10,7 @@ const apiEndPoints = {
   getStudentAttendanceList: `/getStudentAttendence`,
   submitCheckIn: `/checkin`,
   submitCheckOut: `/checkout`,
+  submitLeaveApplication: `/createLeaveApplication`,
 };
 
 export async function getStudentDetails(params) {
@@ -150,14 +151,15 @@ export async function getStudentAttendanceList(params) {
 export async function submitCheckIn(data) {
   try {
     const res = (
-      await fetch(baseUrl + apiEndPoints.submitCheckIn + `?studentid=${data.studentid}&location=${data.location.toString()}`, {
+      await fetch(baseUrl + apiEndPoints.submitCheckIn, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem(
             localStorageKey.jwtToken
           )}`,
           "Content-type": "application/json",
-        }
+        },
+        body: JSON.stringify(data),
       }).then((res) => res.json())
     );
     return res;
@@ -169,14 +171,35 @@ export async function submitCheckIn(data) {
 export async function submitCheckOut(data) {
   try {
     const res = (
-      await fetch(baseUrl + apiEndPoints.submitCheckOut + `?studentid=${data.studentid}&location=${data.location}`, {
+      await fetch(baseUrl + apiEndPoints.submitCheckOut, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem(
             localStorageKey.jwtToken
           )}`,
           "Content-type": "application/json",
-        }
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function submitLeaveApplication(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.submitLeaveApplication, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
       }).then((res) => res.json())
     );
     return res;

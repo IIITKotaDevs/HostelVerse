@@ -1,117 +1,165 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@material-ui/core/TextField";
-import baseurl from "../config";
-import axios from "axios";
+import { useMutateLeaveApplication } from "../queries/mutations";
 
 function LeaveApplication() {
-  const [startDate, setStartDate] = useState("2022-02-12");
-  const [endDate, setEndDate] = useState("2022-02-13");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [reason, setReason] = useState("");
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
-  const handleStartDateChange = (e) => {
-    setStartDate(e.target.value);
-  };
-  const handleEndDateChange = (e) => {
-    setEndDate(e.target.value);
-  };
-  const handleReasonChange = (e) => {
-    setReason(e.target.value);
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("Submitting your leave application...");
-    const res = await axios.post(
-      `${baseurl}/createLeaveApplication`,
-      {
-        studentid: localStorage.getItem("id"),
-        message: reason,
-        date_to: endDate,
-        date_from: startDate,
-      },
-      {
-        headers: {
-          Authorization: localStorage.getItem("jwtToken")
-            ? `Bearer ${localStorage.getItem("jwtToken")}`
-            : "",
-          "Content-type": "application/json",
-        },
-      }
-    );
 
-    if (res.status === 200) {
-      console.log("Your application is submitted successfully");
-      setMessage("");
-      setSuccessMessage("Leave application submitted successfully!");
-    } else {
-      console.log("Something went wrong!");
+  var errorLength = 0;
+
+  const validate = () => {
+    if (!startDate) {
+      setError(error => [...error, { type: "StartDate", message: "Start Date is required" }]);
+      errorLength++;
     }
-
-    document.getElementById("startdate").value = "2022-02-12";
-    document.getElementById("enddate").value = "2022-02-13";
-    document.getElementById("reason").value = "";
+    // Check if start date is less than current date
+    if (startDate.length === 10 && new Date(startDate) <= new Date()) {
+      setError(error => [...error, { type: "StartDate", message: "Start Date must not be less than current date" }]);
+      errorLength++;
+    }
+    if (!endDate) {
+      setError(error => [...error, { type: "EndDate", message: "End Date is required" }]);
+      errorLength++;
+    }
+    // Check if end date is less than current date
+    if (endDate.length === 10 && new Date(endDate) <= new Date()) {
+      setError(error => [...error, { type: "EndDate", message: "End Date must not be less than current date" }]);
+      errorLength++;
+    }
+    // Check if start date is greater than end date
+    if (startDate.length === 10 && endDate.length === 10 && new Date(startDate) >= new Date(endDate)) {
+      setError(error => [...error, { type: "EndDate", message: "End Date must be greater or equal to Start Date" }]);
+      errorLength++;
+    }
+    if (!reason) {
+      setError(error => [...error, { type: "Reason", message: "Reason is required" }]);
+      errorLength++;
+    }
+    if (errorLength === 0) {
+      return true;
+    }
+    return false;
   };
+
+  const { mutateAsync: LeaveApplicationData } = useMutateLeaveApplication({
+    onSuccess: () => {
+      setSuccessMessage("Leave Application submitted successfully");
+      setStartDate("");
+      setEndDate("");
+      setReason("");
+    },
+    onError: () => { }
+  });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 5000);
+  }, [successMessage.length > 0]);
+
   return (
     <div className="bg-leave-application bg-cover h-screen">
-      <h1 className="text-4xl mt-2 text-center">Leave Application</h1>
+      <h1 className="text-3xl font-semibold mt-12 text-center">Leave Application</h1>
 
-      <div className="mx-24 mt-4 grid md:grid-cols-2 grid-cols-1 mt-20">
-        <div className="col-span-1 mx-auto">
+      <div className="mx-24 mt-20 flex justify-around">
+        <div>
           <TextField
             id="startdate"
-            label="Choose starting date"
+            label="Choose Starting Date"
             type="date"
-            onChange={handleStartDateChange}
-            defaultValue="2022-02-12"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
             InputLabelProps={{
               shrink: true,
             }}
+            className="w-64"
           />
+          {error.length > 0
+            ? error.map((item, index) => {
+              if (item.type === "StartDate") {
+                return (
+                  <p className="text-red-500 text-xs" key={index}>
+                    {item.message}
+                  </p>
+                );
+              }
+            })
+            : null}
         </div>
-        <div className="col-span-1 mx-auto">
+        <div>
           <TextField
             id="enddate"
-            label="Choose ending date"
+            label="Choose Ending Date"
+            value={endDate}
             type="date"
-            onChange={handleEndDateChange}
-            defaultValue="2022-02-13"
+            onChange={(e) => setEndDate(e.target.value)}
             InputLabelProps={{
               shrink: true,
             }}
+            className="w-64"
           />
+          {error.length > 0
+            ? error.map((item, index) => {
+              if (item.type === "EndDate") {
+                return (
+                  <p className="text-red-500 text-xs" key={index}>
+                    {item.message}
+                  </p>
+                );
+              }
+            })
+            : null}
         </div>
       </div>
 
-      <div className="">
-        <h1 className="text-center mt-12 text-3xl text-red-500">{message}</h1>
-        <h1 className="text-center mt-12 text-3xl text-green-500">
-          {successMessage}
-        </h1>
-        <h1 className="text-center text-2xl mt-20">Reason</h1>
-        <div className="mx-auto text-center mt-12 w-80 border-2 border-gray-500 py-6 rounded-lg shadow-lg bg-white">
-          <TextField
-            id="reason"
-            label="Enter your reason..."
-            type="text"
-            multiline
-            rows={4}
-            onChange={handleReasonChange}
-            defaultValue=""
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </div>
+      <h1 className="text-center text-2xl mt-12">Reason</h1>
+      <div className="mx-auto text-center mt-4 w-1/2 border-2 border-gray-500 py-6 rounded-lg shadow-lg bg-white mb-12">
+        <TextField
+          id="reason"
+          label="Enter your reason..."
+          type="text"
+          value={reason}
+          multiline
+          rows={4}
+          onChange={(e) => setReason(e.target.value)}
+          defaultValue=""
+          InputLabelProps={{
+            shrink: true,
+          }}
+          className="w-11/12"
+        />
+        {error.length > 0
+          ? error.map((item, index) => {
+            if (item.type === "Reason") {
+              return (
+                <p className="text-red-500 text-xs" key={index}>
+                  {item.message}
+                </p>
+              );
+            }
+          })
+          : null}
       </div>
 
-      <div className="mx-auto text-center mt-20">
+      <h1 className="text-center font-semibold mb-4 text-sm text-green-500">{successMessage}</h1>
+
+      <div className="mx-auto text-center">
         <button
           className="text-white bg-black px-4 py-2 rounded-xl"
-          onClick={handleSubmit}
+          onClick={(e) => {
+            e.preventDefault();
+            validate() && LeaveApplicationData({ studentid: localStorage.getItem("id"), message: reason, date_to: endDate, date_from: startDate });
+          }
+          }
         >
           Submit
         </button>
       </div>
+
     </div>
   );
 }

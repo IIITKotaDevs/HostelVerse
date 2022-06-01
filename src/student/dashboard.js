@@ -138,7 +138,7 @@ export default function Dashboard() {
   useEffect(() => {
     setStudentData(studentDetails?.data?.student);
     setCheckedIn(studentDetails?.data?.attendenceStatus?.data === 'In Hostel' ? 'In Hostel' : 'Not In Hostel');
-  }, [studentDetails.isSuccess, studentDetails.refetch()]);
+  }, [studentDetails]);
 
   if (localStorage.getItem(localStorageKey.checked) === null) return null;
   else

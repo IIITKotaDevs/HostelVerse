@@ -12,6 +12,7 @@ function LeaveApplication() {
   var errorLength = 0;
 
   const validate = () => {
+    errorLength = 0;
     if (!startDate) {
       setError(error => [...error, { type: "StartDate", message: "Start Date is required" }]);
       errorLength++;

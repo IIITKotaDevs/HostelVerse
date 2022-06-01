@@ -111,84 +111,34 @@ export default function Dashboard() {
 
   const location = useLocation();
 
-  const checkIn = async () => {
-    await axios.post(
-      `${baseurl}/checkin`,
-      {
-        studentid: localStorage.getItem(localStorageKey.id),
-        // location: localStorage.getItem(localStorageKey.location),
-        location: "26.9124, 75.7873",
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            localStorageKey.jwtToken
-          )}`,
-          "Content-type": "application/json",
-        },
-      }
-    ).then(res => {
-      setCheckedIn('In Hostel');
-    })
-      .catch(err => {
-        setError(err.response.data.message);
-      });
-  };
-
   const { mutateAsync: checkInData } = useMutateCheckIn({
-    onSuccess: () => { },
+    onSuccess: () => {
+      studentDetails.refetch();
+    },
     onError: () => { },
   });
 
   const { mutateAsync: checkOutData } = useMutateCheckOut({
-    onSuccess: () => { },
+    onSuccess: () => {
+      studentDetails.refetch();
+    },
     onError: () => { },
   });
 
   useEffect(() => {
-    // SetError after 2 seconds
     setTimeout(() => {
       setError('');
     }, 5000);
   }, [error.length > 0]);
-
-  const checkOut = async () => {
-    await axios.post(
-      `${baseurl}/checkout`,
-      {
-        studentid: localStorage.getItem(localStorageKey.id),
-        location: localStorage.getItem(localStorageKey.location),
-        // location: "26.9124, 75.7873",
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            localStorageKey.jwtToken
-          )}`,
-          "Content-type": "application/json",
-        },
-      }
-    )
-      .then(
-        res => {
-          setCheckedIn('Not In Hostel');
-        }
-      )
-      .catch(err => {
-        setError(err.response.data.message);
-      }
-      );
-  };
 
   const studentDetails = useStudentDetails({
     studentid: localStorage.getItem(localStorageKey.id),
   });
 
   useEffect(() => {
-    setStudentData(studentDetails.data?.student);
-    setCheckedIn(studentDetails.data?.attendenceStatus?.data === 'In Hostel' ? 'In Hostel' : 'Not In Hostel');
-  }, [studentDetails.isSuccess === true]);
-
+    setStudentData(studentDetails?.data?.student);
+    setCheckedIn(studentDetails?.data?.attendenceStatus?.data === 'In Hostel' ? 'In Hostel' : 'Not In Hostel');
+  }, [studentDetails.isSuccess, studentDetails.refetch()]);
 
   if (localStorage.getItem(localStorageKey.checked) === null) return null;
   else

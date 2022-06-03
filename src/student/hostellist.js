@@ -3,6 +3,8 @@ import { Menu } from '@headlessui/react'
 import Slider from "@material-ui/core/Slider";
 import { useNavigate } from 'react-router-dom';
 import { useHostelList } from '../queries/hooks';
+import Man from '../assets/img/man.svg'
+import Rating from '@mui/material/Rating';
 
 function HostelList() {
     const [val, setVal] = useState([0, 30000])
@@ -58,10 +60,36 @@ function HostelList() {
             <div className="flex flex-col items-center pt-8">
                 {hostelData?.data && hostelData.data.map(hostel => {
                     return (
-                        <div className="border-2 rounded-lg w-1/2 mb-8 shadow-lg pt-2 pb-4 px-8 cursor-pointer" key={hostel.hostelid} onClick={() => { navigate(`./${hostel.hostelid}`) }}>
-                            <h1 className="font-bold text-2xl my-2">{hostel.name}</h1>
-                            <h1 className="text-gray-500">{hostel.location} | ₹{hostel.fees}/month | ⭐️{hostel.stars || 'Unrated'} | {hostel.totalCapacity} Students</h1>
-                            <h1 className="text-lg font-semibold mt-2">Rooms Left: {`${hostel.singleRoomsLeft ? hostel.singleRoomsLeft : 0} Single Rooms`} | {`${hostel.doubleRoomsLeft ? hostel.doubleRoomsLeft : 0} Double Rooms`} | {`${hostel.tripleRoomsLeft ? hostel.tripleRoomsLeft : 0} Triple Rooms`}</h1>
+                        <div className="border-2 rounded-3xl w-1/2 mb-8 shadow-lg cursor-pointer bg-gray-800" key={hostel.hostelid} onClick={() => { navigate(`./${hostel.hostelid}`) }}>
+                            <div className='flex items-center justify-between py-1 px-6 my-2'>
+                                <div className='flex items-end gap-2'>
+                                    <p className="font-bold text-2xl text-gray-100">{hostel.name}</p>
+                                    <p className='text-sm'>{hostel.overallRating ? <Rating name="read-only" value={hostel.overallRating} size="small" readOnly precision={0.1} /> : ''}</p>
+                                </div>
+                                <p className="text-gray-100 font-medium">{hostel.location}</p>
+                            </div>
+                            <div className='bg-white rounded-t-3xl rounded-b-2xl px-6 py-4'>
+                                <p className="text-gray-700">₹{hostel.fees}/month | {hostel.totalCapacity} Students</p>
+                                <p className='text-gray-900 pt-2 font-semibold text-lg'>Room Type: </p>
+                                <div className='flex gap-12'>
+                                    <div className='flex flex-col items-center'>
+                                        <img className="w-6 mt-1" src={Man} />
+                                    </div>
+                                    <div className='flex flex-col items-center'>
+                                        <div className='flex mt-1 text-sm'>
+                                            <img className="w-6" src={Man} />
+                                            <img className="w-6 -ml-1" src={Man} />
+                                        </div>
+                                    </div>
+                                    <div className='flex flex-col items-center'>
+                                        <div className='flex mt-1'>
+                                            <img className="w-6" src={Man} />
+                                            <img className="w-6 -ml-1" src={Man} />
+                                            <img className="w-6 -ml-1" src={Man} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     )
                 })}

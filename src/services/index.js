@@ -9,6 +9,7 @@ const apiEndPoints = {
   getStudentList: `/getStudent`,
   getStudentAttendanceList: `/getStudentAttendence`,
   getAnnouncementList: `/getAnnouncements`,
+  getFeedback: `/getFeedback`,
   signUp: `/student/signup`,
   verifyEmail: `/student/verifyEmail`,
   login: `/login`,
@@ -157,6 +158,25 @@ export async function getAnnouncementList(params) {
   try {
     const res = (
       await fetch(baseUrl + apiEndPoints.getAnnouncementList + `?studentid=${params.studentid}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+      }).then((res) => res.json())
+    );
+    return res;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getFeedback(params) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.getFeedback + `?studentid=${params.studentid}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem(
             localStorageKey.jwtToken

@@ -13,6 +13,7 @@ function LeaveApplication() {
 
   const validate = () => {
     errorLength = 0;
+    setError([]);
     if (!startDate) {
       setError(error => [...error, { type: "StartDate", message: "Start Date is required" }]);
       errorLength++;
@@ -127,7 +128,6 @@ function LeaveApplication() {
           multiline
           rows={4}
           onChange={(e) => setReason(e.target.value)}
-          defaultValue=""
           InputLabelProps={{
             shrink: true,
           }}

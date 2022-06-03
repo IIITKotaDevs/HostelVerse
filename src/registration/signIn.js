@@ -10,93 +10,55 @@ import {
   regular,
   brands,
 } from "@fortawesome/fontawesome-svg-core/import.macro";
+import { useMutateLogin } from "../queries/mutations";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [type, setType] = useState({ name: "Select Profession" });
-  const [error, setError] = useState([{}]);
+  const [error, setError] = useState([]);
   const [eyePassword, setEyePassword] = useState(false);
 
-  const userSignIn = async () => {
-    await axios
-      .post(
-        `${baseurl}/login`,
-        {
-          email: email,
-          password: password,
-          role: type.name.toLowerCase(),
-        },
-        {
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      )
-      .then(function (response) {
-        if (response.status === 200) {
-          console.log(response);
-          localStorage.setItem(
-            localStorageKey.name,
-            response.data.profile.name
-          );
-          localStorage.setItem(localStorageKey.jwtToken, response.data.token);
-          localStorage.setItem(
-            localStorageKey.contactNo,
-            response.data.profile.contactno
-          );
-          localStorage.setItem(
-            localStorageKey.role,
-            response.data.profile.role
-          );
-          localStorage.setItem(
-            localStorageKey.email,
-            response.data.profile.email
-          );
+  var errorLength = 0;
 
-          if (response?.data?.profile?.role === "student") {
-            localStorage.setItem(
-              localStorageKey.type,
-              response.data.profile.type
-            );
-            localStorage.setItem(
-              localStorageKey.roomId,
-              response.data.profile.roomid
-            );
-            localStorage.setItem(
-              localStorageKey.hostelId,
-              response.data.profile.hostelid
-            );
-            localStorage.setItem(
-              localStorageKey.id,
-              response.data.profile.studentid
-            );
-            navigate("/student/dashboard");
-          } else if (
-            response?.status === 200 &&
-            type.name.toLowerCase() === "warden"
-          ) {
-            localStorage.setItem(
-              localStorageKey.id,
-              response.data.profile.wardenid
-            );
-            navigate("/warden/student-list");
-          } else if (
-            response?.status === 200 &&
-            type.name.toLowerCase() === "admin"
-          ) {
-            navigate("/admin/dashboard");
-          }
+  const { mutateAsync: signInData } = useMutateLogin({
+    onSuccess: (response) => {
+      if (response.message === "Login successful!") {
+        localStorage.setItem(localStorageKey.jwtToken, response.token);
+        if (response?.profile?.role === "student") {
+          localStorage.setItem(
+            localStorageKey.id,
+            response.profile.studentid
+          );
+          navigate("/student/dashboard");
+        } else if (
+          response?.status === 200 &&
+          type.name.toLowerCase() === "warden"
+        ) {
+          localStorage.setItem(
+            localStorageKey.id,
+            response.profile.wardenid
+          );
+          navigate("/warden/student-list");
+        } else if (
+          response?.status === 200 &&
+          type.name.toLowerCase() === "admin"
+        ) {
+          navigate("/admin/dashboard");
         }
-      })
-      .catch(function (error) {
-        setError((error) => [
-          ...error,
-          { type: "error", message: "Invalid Credentials" },
-        ]);
-      });
-  };
+      }
+      else {
+        setError(error => [...error, { type: "error", message: response.message }]);
+      }
+    },
+    onError: (data) => {
+      setError((error) => [
+        ...error,
+        { type: "error", message: data.message },
+      ]);
+    }
+  });
 
   // Auto Login
   useEffect(() => {
@@ -112,12 +74,14 @@ export default function SignIn() {
   }, []);
 
   const validate = () => {
+    errorLength = 0;
     setError([]);
     if (email === "") {
       setError((error) => [
         ...error,
         { type: "email", message: "Email is required" },
       ]);
+      errorLength++;
     }
     if (
       email.length > 0 &&
@@ -131,18 +95,21 @@ export default function SignIn() {
         ...error,
         { type: "email", message: "Email is invalid" },
       ]);
+      errorLength++;
     }
     if (password === "") {
       setError((error) => [
         ...error,
         { type: "password", message: "Password is required" },
       ]);
+      errorLength++;
     }
     if (password.length > 0 && password.length < 8) {
       setError((error) => [
         ...error,
         { type: "password", message: "Password must be atleast 8 characters" },
       ]);
+      errorLength++;
     }
     if (password.length > 0 && password.match(/[a-z]/g) === null) {
       setError((error) => [
@@ -152,6 +119,7 @@ export default function SignIn() {
           message: "Password must contain atleast one lowercase letter",
         },
       ]);
+      errorLength++;
     }
     if (password.length > 0 && password.match(/[A-Z]/g) === null) {
       setError((error) => [
@@ -161,6 +129,7 @@ export default function SignIn() {
           message: "Password must contain atleast one uppercase letter",
         },
       ]);
+      errorLength++;
     }
     if (password.length > 0 && password.match(/[0-9]/g) === null) {
       setError((error) => [
@@ -170,6 +139,7 @@ export default function SignIn() {
           message: "Password must contain atleast one number",
         },
       ]);
+      errorLength++;
     }
     if (
       password.length > 0 &&
@@ -182,22 +152,21 @@ export default function SignIn() {
           message: "Password must contain atleast one special character",
         },
       ]);
+      errorLength++;
     }
     if (type.name === "Select Profession") {
       setError((error) => [
         ...error,
-        { type: "type", message: "Gender is required" },
+        { type: "type", message: "Profession is required" },
       ]);
+      errorLength++;
     }
-  };
 
-  const reset = () => {
-    setEmail("");
-    setPassword("");
+    if (errorLength === 0) {
+      return true;
+    }
+    return false;
   };
-  if (error.length === 0) {
-    userSignIn();
-  }
 
   const typeOptions = [
     { name: "Student" },
@@ -222,14 +191,14 @@ export default function SignIn() {
           <div className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
-                  if (item.type === "email") {
-                    return (
-                      <p className="text-red-500 text-xs" key={index}>
-                        {item.message}
-                      </p>
-                    );
-                  }
-                })
+                if (item.type === "email") {
+                  return (
+                    <p className="text-red-500 text-xs" key={index}>
+                      {item.message}
+                    </p>
+                  );
+                }
+              })
               : null}
           </div>
           <div className="bg-white w-80 rounded-lg mb-4 shadow-lg text-sm flex justify-between items-center gap-4">
@@ -249,14 +218,14 @@ export default function SignIn() {
           <div className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
-                  if (item.type === "password") {
-                    return (
-                      <p className="text-red-500 text-xs" key={index}>
-                        {item.message}
-                      </p>
-                    );
-                  }
-                })
+                if (item.type === "password") {
+                  return (
+                    <p className="text-red-500 text-xs" key={index}>
+                      {item.message}
+                    </p>
+                  );
+                }
+              })
               : null}
           </div>
           <div className="bg-white w-80 rounded-lg mb-4 text-sm">
@@ -282,10 +251,9 @@ export default function SignIn() {
                       <Listbox.Option
                         key={genderIdx}
                         className={({ active }) =>
-                          `relative cursor-default select-none py-2 pl-4 pr-4 ${
-                            active
-                              ? "bg-amber-100 text-primary"
-                              : "text-gray-900"
+                          `relative cursor-default select-none py-2 pl-4 pr-4 ${active
+                            ? "bg-amber-100 text-primary"
+                            : "text-gray-900"
                           }`
                         }
                         value={type}
@@ -293,9 +261,8 @@ export default function SignIn() {
                         {({ selected }) => (
                           <>
                             <span
-                              className={`block truncate ${
-                                selected ? "font-medium" : "font-normal"
-                              }`}
+                              className={`block truncate ${selected ? "font-medium" : "font-normal"
+                                }`}
                             >
                               {type.name}
                             </span>
@@ -319,31 +286,7 @@ export default function SignIn() {
           <div className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
-                  if (item.type === "type") {
-                    return (
-                      <p className="text-red-500 text-xs" key={index}>
-                        {item.message}
-                      </p>
-                    );
-                  }
-                })
-              : null}
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          className="px-10 py-2 bg-black text-white font-medium rounded-lg"
-          onClick={(e) => {
-            validate();
-          }}
-        >
-          Submit
-        </button>
-        <span className="mt-2">
-          {error.length > 0
-            ? error.map((item, index) => {
-                if (item.type === "error") {
+                if (item.type === "type") {
                   return (
                     <p className="text-red-500 text-xs" key={index}>
                       {item.message}
@@ -351,6 +294,34 @@ export default function SignIn() {
                   );
                 }
               })
+              : null}
+          </div>
+        </div>
+
+        <button
+          className="px-10 py-2 bg-black text-white font-medium rounded-lg"
+          onClick={(e) => {
+            e.preventDefault();
+            validate() && signInData({
+              email: email,
+              password: password,
+              role: type.name.toLowerCase(),
+            });
+          }}
+        >
+          Submit
+        </button>
+        <span className="mt-2">
+          {error.length > 0
+            ? error.map((item, index) => {
+              if (item.type === "error") {
+                return (
+                  <p className="text-red-500 text-xs" key={index}>
+                    {item.message}
+                  </p>
+                );
+              }
+            })
             : null}
         </span>
         <div className="flex gap-1 text-xs mt-2">

@@ -5,6 +5,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { localStorageKey } from "../utils/localStorageKey";
+import { useMutateSignUp } from "../queries/mutations";
 
 const genderType = [{ name: "Male" }, { name: "Female" }, { name: "Other" }];
 
@@ -20,50 +21,64 @@ export default function SignUp() {
   const [location, setLocation] = useState("");
   const [eyePassword, setEyePassword] = useState(false);
   const [eyeConfirmPassword, setEyeConfirmPassword] = useState(false);
-  const [error, setError] = useState({});
+  const [error, setError] = useState([]);
 
-  const userSignUp = () => {
-    axios.post("https://hostelverse-backend.azurewebsites.net/api/student/signup/", {
-      email: email,
-      password: password,
-      studentid: id,
-      name: name,
-      gender: gender.name,
-      contactno: phone,
-      location: localStorage.getItem(localStorageKey.location)
-    }).then(function (response) {
-      navigate("/otp", { state: { email: email } });
-    }).catch(function (error) {
-      console.log(error);
-      setError(...error, { type: "undefined", message: "Some error occurred" });
-    });
-  }
+  var errorLength = 0;
+
+  const { mutateAsync: signUpData } = useMutateSignUp({
+    onSuccess: (data) => {
+      // Console the response from the server
+      if (data.message !== "Student created successfully!") {
+        setError(error => [...error, { type: "undefined", message: data.message }]);
+        errorLength++;
+        setEmail("");
+      } else {
+        navigate("/otp", { state: { email: email } });
+      }
+    },
+    onError: (data) => {
+      setError(error => [...error, { type: "undefined", message: data.message }]);
+      errorLength++;
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setId("");
+      setGender({ name: "Select Gender" });
+      setPhone("");
+    }
+  });
 
   const validate = () => {
+    errorLength = 0;
     setError([]);
     if (name === "") {
       setError((error) => [
         ...error,
         { type: "name", message: "Name is required" },
       ]);
+      errorLength++;
     }
     if (name.length > 0 && name.length < 3) {
       setError((error) => [
         ...error,
         { type: "name", message: "Name must be atleast 3 characters" },
       ]);
+      errorLength++;
     }
     if (name.length > 0 && name.length > 30) {
       setError((error) => [
         ...error,
         { type: "name", message: "Name must be less than 30 characters" },
       ]);
+      errorLength++;
     }
     if (email === "") {
       setError((error) => [
         ...error,
         { type: "email", message: "Email is required" },
       ]);
+      errorLength++;
     }
     if (
       email.length > 0 &&
@@ -77,18 +92,21 @@ export default function SignUp() {
         ...error,
         { type: "email", message: "Email is invalid" },
       ]);
+      errorLength++;
     }
     if (password === "") {
       setError((error) => [
         ...error,
         { type: "password", message: "Password is required" },
       ]);
+      errorLength++;
     }
     if (password.length > 0 && password.length < 8) {
       setError((error) => [
         ...error,
         { type: "password", message: "Password must be atleast 8 characters" },
       ]);
+      errorLength++;
     }
     if (password.length > 0 && password.match(/[a-z]/g) === null) {
       setError((error) => [
@@ -98,6 +116,7 @@ export default function SignUp() {
           message: "Password must contain atleast one lowercase letter",
         },
       ]);
+      errorLength++;
     }
     if (password.length > 0 && password.match(/[A-Z]/g) === null) {
       setError((error) => [
@@ -107,6 +126,7 @@ export default function SignUp() {
           message: "Password must contain atleast one uppercase letter",
         },
       ]);
+      errorLength++;
     }
     if (password.length > 0 && password.match(/[0-9]/g) === null) {
       setError((error) => [
@@ -116,6 +136,7 @@ export default function SignUp() {
           message: "Password must contain atleast one number",
         },
       ]);
+      errorLength++;
     }
     if (
       password.length > 0 &&
@@ -128,12 +149,14 @@ export default function SignUp() {
           message: "Password must contain atleast one special character",
         },
       ]);
+      errorLength++;
     }
     if (password.length > 0 && confirmPassword === "") {
       setError((error) => [
         ...error,
         { type: "confirmPassword", message: "Confirm Password is required" },
       ]);
+      errorLength++;
     }
     if (
       password.length > 0 &&
@@ -147,46 +170,49 @@ export default function SignUp() {
           message: "Password and Confirm Password must be same",
         },
       ]);
+      errorLength++;
     }
     if (id === "") {
       setError((error) => [
         ...error,
         { type: "id", message: "ID is required" },
       ]);
+      errorLength++;
     }
     if (gender.name === "Select Gender") {
       setError((error) => [
         ...error,
         { type: "gender", message: "Gender is required" },
       ]);
+      errorLength++;
     }
     if (phone === "") {
       setError((error) => [
         ...error,
         { type: "phone", message: "Phone is required" },
       ]);
+      errorLength++;
     }
     if (phone.length > 0 && phone.length !== 10) {
       setError((error) => [
         ...error,
         { type: "phone", message: "Phone must be only of 10 digits" },
       ]);
+      errorLength++;
     }
     if (phone.length > 0 && phone.match(/[0-9]/g) === null) {
       setError((error) => [
         ...error,
         { type: "phone", message: "Phone must contain only numbers" },
       ]);
+      errorLength++;
     }
-    // if (location === "") {
-    //   setError("Location is required");
-    // }
-  };
 
-  // Call userSignUp function when state of error is set to empty array
-  if (error.length === 0) {
-    userSignUp();
-  }
+    if (errorLength === 0) {
+      return true;
+    }
+    return false;
+  };
 
   return (
     <div className="bg-landing-background bg-cover h-screen grid grid-cols-2 font-roboto">
@@ -202,7 +228,7 @@ export default function SignUp() {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <div className="-mt-2 mb-1 text-left">
+          <span className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
                 if (item.type === "name") {
@@ -214,7 +240,7 @@ export default function SignUp() {
                 }
               })
               : null}
-          </div>
+          </span>
           <input
             type="email"
             className="bg-white w-80 px-4 py-2 rounded-lg mb-4 shadow-lg text-sm"
@@ -222,7 +248,7 @@ export default function SignUp() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <div className="-mt-2 mb-1 text-left">
+          <span className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
                 if (item.type === "email") {
@@ -234,7 +260,7 @@ export default function SignUp() {
                 }
               })
               : null}
-          </div>
+          </span>
           <div className="bg-white w-80 rounded-lg mb-4 shadow-lg text-sm flex justify-between items-center gap-4">
             <input
               type={eyePassword ? "text" : "password"}
@@ -249,7 +275,7 @@ export default function SignUp() {
               onClick={() => setEyePassword(!eyePassword)}
             />
           </div>
-          <div className="-mt-2 mb-1 text-left">
+          <span className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
                 if (item.type === "password") {
@@ -261,7 +287,7 @@ export default function SignUp() {
                 }
               })
               : null}
-          </div>
+          </span>
           <div className="bg-white w-80 rounded-lg mb-4 shadow-lg text-sm flex justify-between items-center gap-4">
             <input
               type={eyeConfirmPassword ? "text" : "password"}
@@ -276,7 +302,7 @@ export default function SignUp() {
               onClick={() => setEyeConfirmPassword(!eyeConfirmPassword)}
             />
           </div>
-          <div className="-mt-2 mb-1 text-left">
+          <span className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
                 if (item.type === "confirmPassword") {
@@ -288,7 +314,7 @@ export default function SignUp() {
                 }
               })
               : null}
-          </div>
+          </span>
           <input
             type="text"
             className="bg-white w-80 px-4 py-2 rounded-lg mb-4 shadow-lg text-sm"
@@ -296,7 +322,7 @@ export default function SignUp() {
             value={id}
             onChange={(e) => setId(e.target.value)}
           />
-          <div className="-mt-2 mb-1 text-left">
+          <span className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
                 if (item.type === "id") {
@@ -308,7 +334,7 @@ export default function SignUp() {
                 }
               })
               : null}
-          </div>
+          </span>
           <div className="bg-white w-80 rounded-lg mb-4 text-sm">
             <Listbox value={gender} onChange={setGender}>
               <div className="relative mt-1">
@@ -364,7 +390,7 @@ export default function SignUp() {
               </div>
             </Listbox>
           </div>
-          <div className="-mt-2 mb-1 text-left">
+          <span className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
                 if (item.type === "gender") {
@@ -376,7 +402,7 @@ export default function SignUp() {
                 }
               })
               : null}
-          </div>
+          </span>
           <input
             type="text"
             className="bg-white w-80 px-4 py-2 rounded-lg mb-4 shadow-lg text-sm"
@@ -384,7 +410,7 @@ export default function SignUp() {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
-          <div className="-mt-2 mb-1 text-left">
+          <span className="-mt-2 mb-1 text-left">
             {error.length > 0
               ? error.map((item, index) => {
                 if (item.type === "phone") {
@@ -396,20 +422,34 @@ export default function SignUp() {
                 }
               })
               : null}
-          </div>
-          {/* <input
-            type="text"
-            className="bg-white w-80 px-4 py-2 rounded-lg mb-4 shadow-lg text-sm"
-            placeholder="Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-          /> */}
+          </span>
         </div>
+        <span className="mb-1 text-left">
+          {error.length > 0
+            ? error.map((item, index) => {
+              if (item.type === "undefined") {
+                return (
+                  <p className="text-red-500 text-xs" key={index}>
+                    {item.message}
+                  </p>
+                );
+              }
+            })
+            : null}
+        </span>
         <button
-          type="submit"
           className="px-10 py-2 bg-gray-800 hover:bg-black text-white font-medium rounded-lg shadow-lg hover:shadow-none"
           onClick={(e) => {
-            validate();
+            e.preventDefault();
+            validate() && signUpData({
+              email: email,
+              password: password,
+              studentid: id,
+              name: name,
+              gender: gender.name,
+              contactno: phone,
+              location: localStorage.getItem(localStorageKey.location)
+            })
           }}
         >
           Submit

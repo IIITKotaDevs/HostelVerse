@@ -18,9 +18,15 @@ module.exports = {
       colors: {
         'primary': 'rgba(241, 174, 0, 1)',
         'primary2': 'rgba(252, 209, 41, 1)',
+        green: {
+          50: '#e9fbee',
+        }
       },
       fontSize: {
         'xxs': '10px',
+      },
+      borderWidth: {
+        '1': '1px',
       },
     },
   },

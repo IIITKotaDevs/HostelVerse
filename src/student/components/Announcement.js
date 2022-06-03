@@ -1,54 +1,35 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import baseurl from "../../config";
+import { useAnnouncementList } from "../../queries/hooks";
 import { localStorageKey } from "../../utils/localStorageKey";
 
 const AnnouncementItem = (item) => {
   const { heading, message, createdAt } = item.data;
   return (
-    <div className="my-8">
-      <h2 className="text-md text-center my-4">{createdAt.substring(0, 10)}</h2>
-      <div className="bg-black py-4 rounded-3xl w-96 mx-auto">
-        <h1 className="text-2xl text-center my-2 mx-auto  text-yellow-500 py-4 rounded-2xl">
-          {heading}
-        </h1>
-        <h2 className="text-xl text-yellow-500 text-center mx-auto px-12">
-          {message}
-        </h2>
+    <div className="my-2 bg-gray-800 w-1/2 rounded-3xl shadow-xl">
+      <p className="text-sm font-medium text-right px-6 text-gray-100 py-3">{(new Date(createdAt)).toDateString()}, {(new Date(createdAt)).toLocaleTimeString()}</p>
+      <div className="bg-white rounded-3xl px-6 py-6">
+        <p className="text-lg font-semibold text-black">{heading}</p>
+        <p className="text-gray-700">{message}</p>
       </div>
     </div>
   );
-  return null;
 };
 
 export const Announcement = () => {
-  const [announcement, setAnnouncement] = useState([]);
+  // const [announcement, setAnnouncement] = useState([]);
 
-  const getAnnouncementList = async () => {
-    const announcements = await axios.get(`${baseurl}/getAnnouncements`, {
-      params: {
-        studentid: localStorage.getItem(localStorageKey.id),
-      },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(
-          localStorageKey.jwtToken
-        )}`,
-        "Content-type": "application/json",
-      },
-    });
-    setAnnouncement(announcements.data.data);
-  };
-
-  useEffect(() => {
-    getAnnouncementList();
-  }, []);
+  const announcementList = useAnnouncementList({
+    studentid: localStorage.getItem(localStorageKey.id),
+  });
 
   return (
-    <div className="">
-      <h1 className="text-5xl text-center my-16">Announcements</h1>
-      {announcement.map((item, index) => {
-        return <AnnouncementItem data={item} key={index} />;
-      })}
+    <div className="bg-green-50 h-screen">
+      <h1 className="text-5xl text-center pt-16 pb-8">Announcements</h1>
+      <div className="flex flex-col items-center">
+        {announcementList?.data?.data?.map((item, index) => {
+          return <AnnouncementItem data={item} key={index} />;
+        })}
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import QUERY_KEYS from "./queryKeys";
 import { useQuery } from "react-query";
-import { getStudentDetails, getHostelList, getHostelDetail, getRoomIssueList, getLeaveApplicationList, getStudentList, getStudentAttendanceList } from "../services";
+import { getStudentDetails, getHostelList, getHostelDetail, getRoomIssueList, getLeaveApplicationList, getStudentList, getStudentAttendanceList, getAnnouncementList } from "../services";
 
 export const useStudentDetails = (params) => {
   return useQuery(
@@ -65,6 +65,16 @@ export const useStudentAttendanceList = (params) => {
   return useQuery(
     [QUERY_KEYS.GET_STUDENT_ATTENDANCE_LIST, params.wardenid],
     () => getStudentAttendanceList(params),
+    {
+      retry: false,
+    }
+  );
+}
+
+export const useAnnouncementList = (params) => {
+  return useQuery(
+    [QUERY_KEYS.GET_ANNOUNCEMENT_LIST, params.studentid],
+    () => getAnnouncementList(params),
     {
       retry: false,
     }

@@ -12,6 +12,7 @@ const QUERY_KEYS = {
   GET_LEAVE_APPLICATIONS_LIST: generateKeyName("get-leave-applications-list"),
   GET_STUDENT_LIST: generateKeyName("get-student-list"),
   GET_STUDENT_ATTENDANCE_LIST: generateKeyName("get-student-attendance-list"),
+  GET_ANNOUNCEMENT_LIST: generateKeyName("get-announcement-list"),
 };
 
 export default QUERY_KEYS;

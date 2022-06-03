@@ -47,11 +47,11 @@ export default function Dashboard() {
   const data = [
     {
       title: "Hostel No.",
-      value: studentData?.hostelid,
+      value: studentData?.hostelid || "Unallocated",
     },
     {
       title: "Room No.",
-      value: studentData?.roomid,
+      value: studentData?.roomid || "Unallocated",
     },
   ];
 
@@ -169,28 +169,32 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
-          <p className={`text-xl font-bold mt-10 mb-2`}>Check In / Out</p>
-          <button
-            className={`w-96 text-white font-bold py-2 rounded-xl text-lg ${checkedIn !== 'In Hostel' ? "bg-red-600" : "bg-green-600"
-              }`}
-            onClick={checkedIn !== 'In Hostel' ? () => checkInData({
-              studentid: localStorage.getItem(localStorageKey.id),
-              location: "26.9124, 75.7873",
-              // location: localStorage.getItem(localStorageKey.location),
-            }) : () => checkOutData({
-              studentid: localStorage.getItem(localStorageKey.id),
-              // location: "26.9124,75.7873",
-              location: localStorage.getItem(localStorageKey.location),
-            })}
-          >
-            You are {checkedIn === 'In Hostel' ? "IN" : "OUT"}
-          </button>
-          <span>
-            <p className="text-sm text-red-500 italic pt-1 font-medium">{error}</p>
-          </span>
-          <p className="text-xs mt-1">
-            Pro Tip: Click on the button to Check In or Check Out.
-          </p>
+          {studentData?.roomAlloted ?
+            <div>
+              <p className={`text-xl font-bold mt-10 mb-2`}>Check In / Out</p>
+              <button
+                className={`w-96 text-white font-bold py-2 rounded-xl text-lg ${checkedIn !== 'In Hostel' ? "bg-red-600" : "bg-green-600"
+                  }`}
+                onClick={checkedIn !== 'In Hostel' ? () => checkInData({
+                  studentid: localStorage.getItem(localStorageKey.id),
+                  location: "26.9124, 75.7873",
+                  // location: localStorage.getItem(localStorageKey.location),
+                }) : () => checkOutData({
+                  studentid: localStorage.getItem(localStorageKey.id),
+                  // location: "26.9124,75.7873",
+                  location: localStorage.getItem(localStorageKey.location),
+                })}
+              >
+                You are {checkedIn === 'In Hostel' ? "IN" : "OUT"}
+              </button>
+              <span>
+                <p className="text-sm text-red-500 italic pt-1 font-medium">{error}</p>
+              </span>
+              <p className="text-xs mt-1">
+                Pro Tip: Click on the button to Check In or Check Out.
+              </p>
+            </div>
+            : null}
         </div>
       );
     else

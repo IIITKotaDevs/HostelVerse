@@ -1,56 +1,78 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import baseurl from "../config";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useMutateVerifyEmail } from "../queries/mutations";
 
 export default function Otp(props) {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState([]);
+  const [resend, setResend] = useState(false);
 
+  const baseUrl = "https://hostelverse-backend.azurewebsites.net/api";
   const { state } = useLocation();
 
-  const otpLogin = () => {
-    axios
-      .post(
-        `${baseurl}/student/verifyemail`,
-        {
-          email: state.email,
-          code: +otp,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then(function (response) {
-        setError("");
-        navigate("/sign-in");
-      })
-      .catch(function (error) {
-        console.log(error);
-        setError(error.message);
-      });
+  const resendOTP = async () => {
+    const response = await fetch(baseUrl + "/resendOTP" + `?email=${state.email}`, {
+      method: "GET",
+    });
+    const data = await response.json();
+    if (data.success) {
+      setResend(!resend);
+    }
   };
 
-  const resendCode = () => {
-    axios
-      .post(`${baseurl}/resendOTP`, {
-        email: props.email,
-      })
-      .then(function (response) {
-        setError("");
-        navigate("/sign-in");
-      })
-      .catch(function (error) {
-        setError(error.message);
-      });
+  useEffect(() => {
+    resendOTP();
+  }, [resend]);
+
+  var errorLength = 0;
+
+  const validate = () => {
+    errorLength = 0;
+    setError([]);
+    if (otp.length === 0) {
+      setError((error) => [
+        ...error,
+        { type: "Reason", message: "OTP is required" },
+      ]);
+      errorLength++;
+    }
+    if (otp.length > 0 && otp.length < 6) {
+      setError((error) => [
+        ...error,
+        { type: "Reason", message: "OTP should be 6 digits" },
+      ]);
+      errorLength++;
+    }
+    if (errorLength === 0) {
+      return true;
+    }
+    return false;
   };
+
+  const { mutateAsync: verifyEmailData } = useMutateVerifyEmail({
+    onSuccess: (data) => {
+      if (data.message === "Student verified successfully! Your account is now activated.") {
+        navigate("/sign-in");
+      }
+      else {
+        setError((error) => [
+          ...error,
+          { type: "Reason", message: data.message },
+        ]);
+      }
+      // navigate("/sign-in");
+    },
+    onError: (data) => {
+      console.log(data);
+      // setError(data);
+    }
+  });
+
+
 
   return (
-    <div className="bg-landing-background bg-cover h-screen grid grid-cols-2 font-roboto">
+    <div className="bg-landing-background bg-cover h-screen grid grid-cols-2 font-roboto" >
       <div></div>
       <div className="flex flex-col items-center my-auto text-center">
         <p className="font-bold text-4xl mb-4">HOSTELVERSE 😇</p>
@@ -62,22 +84,39 @@ export default function Otp(props) {
           value={otp}
           onChange={(e) => setOtp(e.target.value)}
         />
+        {error.length > 0
+          ? error.map((item, index) => {
+            if (item.type === "Reason") {
+              return (
+                <span className="text-red-500 -mt-2 mb-2 text-xs" key={index}>
+                  <p>
+                    {item.message}
+                  </p>
+                </span>
+              );
+            }
+          })
+          : null}
         <button
-          type="submit"
           className="px-10 py-2 bg-black text-white font-medium rounded-lg"
-          onClick={otpLogin}
+          onClick={(e) => {
+            e.preventDefault();
+            validate() && verifyEmailData({
+              email: state.email,
+              code: +otp,
+            })
+          }}
         >
           Verify
         </button>
         <button
-          type="submit"
           className="px-10 py-2 bg-black text-white font-medium rounded-lg mt-2"
-          onClick={resendCode}
+          onClick={() => { setResend(!resend); }}
         >
           Resend Code
         </button>
-        {error ? <p className="text-xl text-red-500 mt-2">{error}</p> : null}
+        {/* {error ? <p className="text-xl text-red-500 mt-2">{error}</p> : null} */}
       </div>
-    </div>
+    </div >
   );
 }

@@ -8,9 +8,14 @@ const apiEndPoints = {
   getLeaveApplicationList: `/getLeaveApplications`,
   getStudentList: `/getStudent`,
   getStudentAttendanceList: `/getStudentAttendence`,
+  getAnnouncementList: `/getAnnouncements`,
+  signUp: `/student/signup`,
+  verifyEmail: `/student/verifyEmail`,
+  login: `/login`,
   submitCheckIn: `/checkin`,
   submitCheckOut: `/checkout`,
   submitLeaveApplication: `/createLeaveApplication`,
+  submitRoomIssue: `/createRoomIssue`,
 };
 
 export async function getStudentDetails(params) {
@@ -148,6 +153,67 @@ export async function getStudentAttendanceList(params) {
   }
 }
 
+export async function getAnnouncementList(params) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.getAnnouncementList + `?studentid=${params.studentid}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+      }).then((res) => res.json())
+    );
+    return res;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+export async function signUp(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.signUp, {
+        method: "POST",
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function verifyEmail(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.verifyEmail, {
+        method: "POST",
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    )
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function login(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.login, {
+        method: "POST",
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function submitCheckIn(data) {
   try {
     const res = (
@@ -192,6 +258,26 @@ export async function submitLeaveApplication(data) {
   try {
     const res = (
       await fetch(baseUrl + apiEndPoints.submitLeaveApplication, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function submitRoomIssue(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.submitRoomIssue, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem(

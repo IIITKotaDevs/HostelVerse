@@ -61,9 +61,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() => navigate("/student/hostels")}
                       >
                         <FontAwesomeIcon
@@ -77,13 +76,12 @@ export default function Navbar() {
                   </Menu.Item>
                 ) : null}
                 {location.pathname.split("/")[1] === "warden" ||
-                location.pathname.split("/")[1] === "admin" ? (
+                  location.pathname.split("/")[1] === "admin" ? (
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() =>
                           navigate(
                             `/${location.pathname.split("/")[1]}/student-list`
@@ -104,9 +102,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() => navigate("/admin/warden-list")}
                       >
                         <FontAwesomeIcon
@@ -123,9 +120,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() => navigate("/student/dashboard")}
                       >
                         <FontAwesomeIcon
@@ -141,9 +137,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() => navigate("/warden/attendees")}
                       >
                         <FontAwesomeIcon
@@ -160,9 +155,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() => navigate("/student/leave")}
                       >
                         <FontAwesomeIcon
@@ -178,9 +172,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() => navigate("/warden/leave-applications")}
                       >
                         <FontAwesomeIcon
@@ -197,9 +190,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() => navigate("/student/issue")}
                       >
                         <FontAwesomeIcon
@@ -215,9 +207,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() => navigate("/warden/room-issues")}
                       >
                         <FontAwesomeIcon
@@ -234,9 +225,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() => navigate("/student/announcement")}
                       >
                         <FontAwesomeIcon
@@ -252,9 +242,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() => navigate("/warden/announcement")}
                       >
                         <FontAwesomeIcon
@@ -271,9 +260,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() => navigate("/admin/create-warden")}
                       >
                         <FontAwesomeIcon
@@ -292,9 +280,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() => navigate("/student/feedback")}
                       >
                         <FontAwesomeIcon
@@ -310,9 +297,8 @@ export default function Navbar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                         onClick={() =>
                           navigate(
                             `/${location.pathname.split("/")[1]}/feedback`
@@ -334,9 +320,8 @@ export default function Navbar() {
                 <Menu.Item>
                   {({ active }) => (
                     <button
-                      className={`${
-                        active ? "bg-violet-500 text-white" : "text-gray-900"
-                      } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                      className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                       onClick={() =>
                         navigate(`/${location.pathname.split("/")[1]}/profile`)
                       }
@@ -353,9 +338,8 @@ export default function Navbar() {
                 <Menu.Item>
                   {({ active }) => (
                     <button
-                      className={`${
-                        active ? "bg-violet-500 text-white" : "text-gray-900"
-                      } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                      className={`${active ? "bg-violet-500 text-white" : "text-gray-900"
+                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                       onClick={() => doLogOut()}
                     >
                       <FontAwesomeIcon

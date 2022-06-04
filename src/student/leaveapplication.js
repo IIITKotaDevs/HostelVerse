@@ -155,7 +155,7 @@ function LeaveApplication() {
         <h1 className="text-center font-semibold mb-2 text-sm text-green-500">{successMessage}</h1>
         <div className="text-center">
           <button
-            className="text-white bg-gray-700 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
+            className="text-white bg-gray-700 hover:bg-gray-900 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
             onClick={(e) => {
               e.preventDefault();
               validate() && LeaveApplicationData({ studentid: localStorage.getItem("id"), message: reason, date_to: endDate, date_from: startDate });

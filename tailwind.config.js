@@ -20,7 +20,10 @@ module.exports = {
         'primary2': 'rgba(252, 209, 41, 1)',
         green: {
           50: '#e9fbee',
-        }
+        },
+        blue: {
+          50: '#e4f5fd',
+        },
       },
       fontSize: {
         'xxs': '10px',

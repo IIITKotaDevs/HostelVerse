@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
-import axios from "axios";
-import baseurl from "../config";
-import { localStorageKey } from "../utils/localStorageKey";
 import { useMutateRoomIssue } from "../queries/mutations";
+import Issue from "../assets/img/Issue.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid, regular, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
 
 function RoomIssue() {
   const [reason, setReason] = useState("");
@@ -33,55 +33,58 @@ function RoomIssue() {
   });
 
   return (
-    <div className="bg-room-issue h-screen bg-cover">
-      <h1 className="text-3xl font-semibold mt-12 text-center">Room Issue</h1>
+    <div className="flex">
+      <div className="w-1/2 my-auto">
+        <div className="">
+          <div className="flex flex-col items-center">
+            <div className="bg-gray-200 p-3 rounded-full border-4 border-gray-300 shadow-lg">
+              <FontAwesomeIcon icon={solid("triangle-exclamation")} size="2x" className="text-red-500 rounded-full" />
+            </div>
+            <h1 className="text-3xl font-bold mt-4 text-gray-800">Room Issue</h1>
+          </div>
+          <div className="mx-auto text-center mt-8 w-2/3 rounded-lg shadow-lg mb-8">
+            <TextField
+              id="reason"
+              label="Issue"
+              type="text"
+              multiline
+              value={reason}
+              rows={6}
+              variant="outlined"
+              onChange={(e) => setReason(e.target.value)}
+              className="w-full"
+            />
+            {error.length > 0
+              ? error.map((item, index) => {
+                if (item.type === "Reason") {
+                  return (
+                    <p className="text-red-500 text-xs" key={index}>
+                      {item.message}
+                    </p>
+                  );
+                }
+              })
+              : null}
+          </div>
+        </div>
 
-      <div className="">
+        <span>
+          <p className="text-center mb-4 text-sm text-green-500">{successMessage}</p>
+        </span>
 
-        <h1 className="text-center text-2xl mt-20">Reason</h1>
-        <div className="mx-auto text-center mt-4 mb-12 border-2 border-gray-500 py-6 rounded-lg shadow-lg bg-white w-1/2">
-          <TextField
-            id="reason"
-            label="Enter your reason..."
-            type="text"
-            multiline
-            value={reason}
-            rows={4}
-            onChange={(e) => setReason(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
+        <div className="mx-auto text-center">
+          <button
+            className="text-white bg-gray-700 hover:bg-gray-900 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
+            onClick={(e) => {
+              e.preventDefault();
+              validate() && RoomIssueData({ studentid: localStorage.getItem("id"), message: reason });
             }}
-            className="w-11/12"
-          />
-          {error.length > 0
-            ? error.map((item, index) => {
-              if (item.type === "Reason") {
-                return (
-                  <p className="text-red-500 text-xs" key={index}>
-                    {item.message}
-                  </p>
-                );
-              }
-            })
-            : null}
+          >
+            Submit
+          </button>
         </div>
       </div>
-
-      <span>
-        <p className="text-center mb-4 text-sm text-green-500">{successMessage}</p>
-      </span>
-
-      <div className="mx-auto text-center">
-        <button
-          className="text-white bg-black px-4 py-2 rounded-xl"
-          onClick={(e) => {
-            e.preventDefault();
-            validate() && RoomIssueData({ studentid: localStorage.getItem("id"), message: reason });
-          }}
-        >
-          Submit
-        </button>
-      </div>
+      <img src={Issue} alt="" className="w-1/2 bg-no-repeat bg-cover bg-center h-screen" />
     </div >
   );
 }

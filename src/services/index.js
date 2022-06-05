@@ -17,6 +17,7 @@ const apiEndPoints = {
   submitCheckOut: `/checkout`,
   submitLeaveApplication: `/createLeaveApplication`,
   submitRoomIssue: `/createRoomIssue`,
+  submitFeedback: `/createFeedback`,
 };
 
 export async function getStudentDetails(params) {

@@ -31,6 +31,10 @@ export default function SignIn() {
             localStorageKey.id,
             response.profile.studentid
           );
+          localStorage.setItem(
+            localStorageKey.role,
+            response.profile.role
+          );
           navigate("/student/dashboard");
         } else if (
           response?.status === 200 &&
@@ -39,6 +43,10 @@ export default function SignIn() {
           localStorage.setItem(
             localStorageKey.id,
             response.profile.wardenid
+          );
+          localStorage.setItem(
+            localStorageKey.role,
+            response.profile.role
           );
           navigate("/warden/student-list");
         } else if (

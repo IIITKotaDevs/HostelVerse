@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  low: 0,
-  high: 30000,
+  low: '',
+  high: '',
 };
 
 export const modal = createSlice({

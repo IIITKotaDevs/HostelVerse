@@ -1,59 +1,56 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import axios from "axios"
 // import FormData from "form-data";
 import baseurl from "../config"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { localStorageKey } from '../utils/localStorageKey';
+import Issue from "../assets/img/updateProfile.jpg";
 // import Rating from '@mui/material/Rating';
 // import Typography from '@mui/material/Typography';
 // import { localStorageKey } from '../utils/localStorageKey';
 
 function UpdateProfile() {
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
     const [gender, setGender] = useState(localStorage.getItem(localStorageKey.gender))
     const [location, setLocation] = useState(localStorage.getItem(localStorageKey.location))
     // const [percentage, setPercentage] = useState(0)
     const [contact, setContact] = useState(localStorage.getItem(localStorageKey.contactNo))
     const [email, setEmail] = useState(localStorage.getItem(localStorageKey.email))
+    const [values, setValues] = useState({
+        amount: '',
+        password: '',
+        weight: '',
+        weightRange: '',
+        showPassword: false,
+    });
 
-    // const selectFile = async (e) => {
-    //     const files = Array.from(e.target.files)
-    //     const file = files[0]
+    const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+    };
 
-    //     var bodyFormData = new FormData()
+    const handleClickShowPassword = () => {
+        setValues({
+            ...values,
+            showPassword: !values.showPassword,
+        });
+    };
 
-    //     bodyFormData.append('photo', file)
-
-    //     const options = {
-    //       headers: {
-    //         Authorization: localStorage.getItem(localStorageKey.jwtToken) ? `Bearer ${localStorage.getItem(localStorageKey.jwtToken)}` : "",
-    //         "Content-type": "multipart/form-data",
-    //       },
-    //       onUploadProgress: (progressEvent) => {
-    //         const { loaded, total } = progressEvent
-    //         let percent = Math.floor(loaded * 100 / total)
-    //         console.log(`${percent} %`)
-
-    //         if(percent < 100) {
-    //           setPercentage(percent)
-    //         }
-    //       }
-    //     }
-
-    //     const res = await axios.post(
-    //       `${baseurl}/uploadImage`,
-    //       bodyFormData,
-    //       options
-    //     );
-    //     var content = res.data.url;
-    //     const result = await axios.post(`${baseurl}/admin/createhostel`,
-    //     {
-    //     })
-    //     setPercentage(0)
-    //     document.getElementById("file-image").value = '';
-    //     content=""
-    // }
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
     const handleContactChange = (e) => {
         e.preventDefault()
@@ -92,80 +89,93 @@ function UpdateProfile() {
         }
     }
     return (
-        <div className="bg-room-issue h-screen bg-cover">
-            <h1 className="text-4xl mt-2 text-center">Update Profile</h1>
-            <div className="mx-auto text-center w-80 flex items-center gap-4 mt-20 mb-8">
-                <h1 className="text-center text-2xl">Update Profile Photo</h1>
-                {/* <input id="file-image" onChange={() => console.log('Changed')} type="file"> */}
-                <FontAwesomeIcon icon={solid('upload')} />
-                {/* </input> */}
-            </div>
+        <div className="flex">
+            <div className="w-3/5 my-auto">
+                <div className="">
+                    <div className="flex flex-col items-center">
+                        <div className="bg-gray-200 p-3 rounded-full border-4 border-gray-300 shadow-lg">
+                            <FontAwesomeIcon icon={solid("pen-nib")} size="2x" className="text-primary rounded-full" />
+                        </div>
+                        <h1 className="text-3xl font-bold mt-4 text-gray-800">Update Profile</h1>
+                    </div>
+                    <div className="flex gap-4 mx-auto text-center my-8 w-3/4">
+                        <TextField
+                            id="name"
+                            label="Name"
+                            type="text"
+                            value={name}
+                            variant="outlined"
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full shadow-md"
+                        />
+                        <TextField
+                            id="name"
+                            label="Phone"
+                            type="text"
+                            value={name}
+                            variant="outlined"
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full shadow-md"
+                        />
+                    </div>
+                    <div className="flex gap-4 mx-auto text-center my-8 w-3/4">
+                        <FormControl className='w-full shadow-md text-left'>
+                            <InputLabel id="gender">Gender</InputLabel>
+                            <Select
+                                labelId="gender"
+                                id="gender"
+                                value={gender}
+                                label="gender"
+                                onChange={(e) => setGender(e.target.value)}
+                            >
+                                <MenuItem value={"Male"}>Male</MenuItem>
+                                <MenuItem value={"Female"}>Female</MenuItem>
+                                <MenuItem value={"Other"}>Other</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <FormControl variant="outlined" className='w-full shadow-md'>
+                            <InputLabel htmlFor="outlined-adornment-password">Old Password</InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-password"
+                                type={values.showPassword ? 'text' : 'password'}
+                                value={values.password}
+                                onChange={handleChange('password')}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                label="Old Password"
+                            />
+                        </FormControl>
+                    </div>
+                </div>
 
-            {/* {percentage > 0 && <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-l-full" style={`width=${percentage}%`}> {percentage}%</div>} */}
+                <span>
+                    {/* <p className="text-center mb-4 text-sm text-green-500">{successMessage}</p> */}
+                </span>
 
-            <div className="mx-auto text-center px-60 grid grid-cols-1 md:grid-cols-4">
-                <div className="col-span-1">
-                    <h1 className="text-center text-2xl mt-20 mb-8">Email</h1>
-                    <TextField
-                        id="date"
-                        label="Your email..."
-                        type="text"
-                        multiline
-                        onChange={handleEmailChange}
-                        defaultValue={email}
-                        InputLabelProps={{
-                            shrink: true,
+                <div className="mx-auto text-center">
+                    <button
+                        className="text-white bg-gray-700 hover:bg-gray-900 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            validate() && RoomIssueData({ studentid: localStorage.getItem("id"), message: reason });
                         }}
-                    />
-                </div>
-                <div className="col-span-1">
-                    <h1 className="text-center text-2xl mt-20 mb-8">Gender</h1>
-                    <TextField
-                        id="date"
-                        label="Your gender..."
-                        type="text"
-                        multiline
-                        onChange={handleGenderChange}
-                        defaultValue={gender}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                </div>
-                <div className="col-span-1">
-                    <h1 className="text-center text-2xl mt-20 mb-8">Location</h1>
-                    <TextField
-                        id="date"
-                        label="Your address..."
-                        type="text"
-                        multiline
-                        onChange={handleAddressChange}
-                        defaultValue={location}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                </div>
-                <div className="col-span-1">
-                    <h1 className="text-center text-2xl mt-20 mb-8">Contact</h1>
-                    <TextField
-                        id="date"
-                        label="Your contact..."
-                        type="text"
-                        multiline
-                        onChange={handleContactChange}
-                        defaultValue={contact}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
+                    >
+                        Submit
+                    </button>
                 </div>
             </div>
-
-            <div className="mx-auto text-center mt-20">
-                <button className="text-white bg-black px-4 py-2 rounded-3xl" onClick={handleSubmit}>Submit</button>
-            </div>
-        </div>
+            <img src={Issue} alt="" className="w-2/5 bg-no-repeat bg-cover bg-center h-screen" />
+        </div >
     )
 }
 

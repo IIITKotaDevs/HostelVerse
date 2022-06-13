@@ -5,6 +5,7 @@ import { useLocation } from "react-router";
 import { useStudentDetails } from "../queries/hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid, regular, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
+import { useNavigate } from "react-router";
 
 export default function Profile() {
 
@@ -12,7 +13,8 @@ export default function Profile() {
     studentid: localStorage.getItem(localStorageKey.id),
   });
 
-  const location = useLocation();
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="flex justify-center items-center bg-profile bg-cover h-screen">
@@ -80,8 +82,8 @@ export default function Profile() {
                   <FontAwesomeIcon className="cursor-pointer" icon={brands('github')} />
                 </div>
               </div>
-              <div className="flex flex-col items-center mt-4">
-                <button className="px-4 py-1 bg-primary rounded text-semibold text-white">Update Profile</button>
+              <div className="flex flex-col items-center">
+                <button className="px-4 py-1 bg-primary rounded font-roboto font-medium text-white" onClick={() => navigate("/student/update-profile")}>Edit Profile</button>
               </div>
             </div>
           </div>

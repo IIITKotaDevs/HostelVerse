@@ -29,23 +29,24 @@ function HostelDetail(id) {
             <div className="text-center">
             </div>
 
-            <div className="rounded-xl py-6 items-center drop-shadow-[15px_15px_15px_rgba(0,0,0,0.25)] text-center bg-white mx-auto -mt-28 w-1/2">
+            <div className="rounded-xl py-6 items-center drop-shadow-[15px_15px_15px_rgba(0,0,0,0.25)] text-center bg-white mx-auto -mt-20 w-1/2 mb-12">
                 <h1 className="font-bold text-3xl">{hostelDetails?.data?.data?.name}</h1>
                 <p className='font-medium text-gray-700'>{hostelDetails?.data?.data?.location}</p>
-                <div className='flex items-center justify-around mt-4 text-sm'>
+                <div className='flex items-end justify-around mt-4 text-sm'>
                     <p className={`${hostelDetails?.data?.data?.overallRating >= 4 ? 'bg-green-500 text-white border-1 border-green-400' : (hostelDetails?.data?.data?.overallRating >= 2 ? 'bg-yellow-500' : 'bg-red-500 text-white')} px-2 py-1 rounded-md shadow-md`}>{hostelDetails?.data?.data?.overallRating ? (<><span className='text-xl font-bold'> {hostelDetails?.data?.data?.overallRating} </span> <span className='text-xs'> Out of 5</span></>) : "Not rated yet"}</p>
+                    <div><span className='text-xl font-bold text-gray-700'>₹{hostelDetails?.data?.data?.fees}</span> /month</div>
                     <div className='text-right'>
                         <p className='font-bold text-base text-gray-800'>{hostelDetails?.data?.data?.feedback?.length > 0 ? (hostelDetails?.data?.data?.overallRating >= 4 ? 'Excellent' : (hostelDetails?.data?.data?.overallRating >= 3 ? 'Good' : (hostelDetails?.data?.data?.overallRating >= 2 ? 'Average' : (hostelDetails?.data?.data?.overallRating >= 1 ? 'Poor' : 'Awful')))) : ""}</p>
-                        <p className='text-xs'>Based on <span className='font-medium'>{hostelDetails?.data?.data?.feedback?.length || "No reviews Yet"} {hostelDetails?.data?.data?.feedback?.length === 1 ? "review" : (hostelDetails?.data?.data?.feedback?.length === 0 ? "" : "reviews")}</span></p>
+                        <p className='text-xs'>{hostelDetails?.data?.data?.feedback?.length !== 0 && "Based on"} <span className='font-medium'>{hostelDetails?.data?.data?.feedback?.length || "No reviews Yet"} {hostelDetails?.data?.data?.feedback?.length === 1 ? "review" : (hostelDetails?.data?.data?.feedback?.length === 0 ? "" : "reviews")}</span></p>
                     </div>
                 </div>
             </div>
 
-            <h1 className="text-orange-400 font-bold mx-24 text-3xl mt-20">Description</h1>
-            <p className="text-lg mx-24 mt-4">{hostelDetails?.data?.data?.description}</p>
+            <h1 className="text-orange-400 font-bold mx-24 text-3xl">Description</h1>
+            <p className="text-lg mx-24 mt-2 mb-12">{hostelDetails?.data?.data?.description}</p>
 
-            <h1 className="text-orange-400 font-bold mx-24 text-3xl mt-20">Room Type</h1>
-            <div className='mx-24 flex gap-20'>
+            <h1 className="text-orange-400 font-bold mx-24 text-3xl">Room Type</h1>
+            <div className='mx-24 flex gap-20 mb-12'>
                 {hostelDetails?.data?.data?.singleRooms > 0 ? <div>
                     <img className="w-16 mt-4" src={Man} />
                     <h1 className="text-xl mt-2">Single-Seater</h1>
@@ -74,8 +75,8 @@ function HostelDetail(id) {
             </div>
 
             {hostelDetails?.data?.data?.feedback?.length > 0 ? <>
-                <h1 className="text-orange-400 font-bold mx-24 text-3xl mt-20">Feedback</h1>
-                <div className="mx-24 mb-44">
+                <h1 className="text-orange-400 font-bold mx-24 text-3xl">Feedback</h1>
+                <div className="mx-24 mb-12">
                     {hostelDetails?.data?.data?.feedback?.map(feedback => {
                         return (
                             <div className='mt-4 border-gray-100 rounded-md shadow-xl border-2 px-8 py-4 flex items-center gap-4' key={feedback.name}>

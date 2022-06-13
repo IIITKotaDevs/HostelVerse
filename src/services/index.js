@@ -136,6 +136,25 @@ export async function getStudentList(params) {
   }
 }
 
+export async function getStudentDetailsWarden(params) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.getStudentList + `?studentid=${params.studentid}&wardenid=${params.wardenid}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+      }).then((res) => res.json())
+    );
+    return res;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
 export async function getStudentAttendanceList(params) {
   try {
     const res = (

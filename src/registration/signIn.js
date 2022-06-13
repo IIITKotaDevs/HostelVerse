@@ -36,23 +36,17 @@ export default function SignIn() {
             response.profile.role
           );
           navigate("/student/dashboard");
-        } else if (
-          response?.status === 200 &&
-          type.name.toLowerCase() === "warden"
-        ) {
+        } else if (type.name.toLowerCase() === "warden") {
           localStorage.setItem(
             localStorageKey.id,
             response.profile.wardenid
           );
           localStorage.setItem(
             localStorageKey.role,
-            response.profile.role
+            "warden"
           );
           navigate("/warden/student-list");
-        } else if (
-          response?.status === 200 &&
-          type.name.toLowerCase() === "admin"
-        ) {
+        } else if (type.name.toLowerCase() === "admin") {
           navigate("/admin/dashboard");
         }
       }

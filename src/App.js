@@ -11,8 +11,9 @@ import UpdateProfile from "./student/updateprofile";
 import { geolocated } from "react-geolocated";
 import Profile from "./student/profile";
 import Otp from "./registration/otp";
+import StudentDetail from "./warden/studentDetail";
 import Navbar from "./components/Navbar";
-import StudentList from "./student/studentList";
+import StudentList from "./warden/studentList";
 import LeaveApplications from "./warden/leaveApplications";
 import RoomIssuesList from "./warden/roomIssuesList";
 import WardenList from "./admin/WardenList";
@@ -65,10 +66,8 @@ function App(props) {
             <Route path="/:user/profile" element={<Profile />} />
             <Route path="/:user/update-profile" element={<UpdateProfile />} />
             <Route path="/warden/student-list" element={<StudentList />} />
-            <Route
-              path="/:user/leave-applications"
-              element={<LeaveApplications />}
-            />
+            <Route path="/student-detail/:id" element={<StudentDetail />} />
+            <Route path="/:user/leave-applications" element={<LeaveApplications />} />
             <Route path="/:user/room-issues" element={<RoomIssuesList />} />
             <Route path="/admin/warden-list" element={<WardenList />} />
             <Route path="/admin/create-hostel" element={<CreateHostel />} />

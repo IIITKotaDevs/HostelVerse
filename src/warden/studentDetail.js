@@ -6,7 +6,7 @@ import { localStorageKey } from '../utils/localStorageKey';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid, regular, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
 
-export default function studentDetail() {
+export default function StudentDetail() {
     const params = useParams();
     const studentDetails = useStudentDetailsWarden({
         studentid: params.id,

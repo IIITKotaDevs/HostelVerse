@@ -199,7 +199,7 @@ function UpdateProfile() {
                         size='small'
                     />
                 </div>
-                <p className='text-sm font-bold text-gray-400 text-center mt-4 mb-2'>CHANGE PASSWORD</p>
+                {/* <p className='text-sm font-bold text-gray-400 text-center mt-4 mb-2'>CHANGE PASSWORD</p>
                 <div className='flex items-center gap-4 mx-auto w-3/4'>
                     <div className='w-full'>
                         <FormControl variant="outlined" className='w-full shadow' size='small'>
@@ -276,7 +276,7 @@ function UpdateProfile() {
                         </FormControl>
                     </div>
                     <div className='w-full'></div>
-                </div>
+                </div> */}
 
                 <span>
                     {/* <p className="text-center mb-4 text-sm text-green-500">{successMessage}</p> */}

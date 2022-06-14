@@ -80,6 +80,7 @@ export default function Profile() {
                   <FontAwesomeIcon className="cursor-pointer text-pink-500" icon={brands("instagram")} />
                   <FontAwesomeIcon className="cursor-pointer text-blue-700" icon={brands('linkedin-in')} />
                   <FontAwesomeIcon className="cursor-pointer" icon={brands('github')} />
+                  <FontAwesomeIcon className="cursor-pointer text-blue-500" icon={brands('twitter')} />
                 </div>
               </div>
               <div className="flex flex-col items-center">

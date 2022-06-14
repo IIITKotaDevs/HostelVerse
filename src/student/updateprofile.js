@@ -287,7 +287,6 @@ function UpdateProfile() {
                         className="text-white bg-gray-700 hover:bg-gray-900 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
                         onClick={(e) => {
                             e.preventDefault();
-                            validate() && RoomIssueData({ studentid: localStorage.getItem("id"), message: reason });
                         }}
                     >
                         Update

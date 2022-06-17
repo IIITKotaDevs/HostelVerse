@@ -76,13 +76,13 @@ export default function LeaveApplications() {
           <div className="grid grid-cols-3 gap-6 mx-32">
             {leaveApplicationList?.data?.message?.filter((e) => e.status === "Pending")?.length > 0 ? leaveApplicationList?.data?.message?.filter((e) => e.status === "Pending")?.map((application, index) => {
               return (
-                <div className="bg-gray-800 rounded-2xl shadow-xl" key={index}>
-                  <div className="flex justify-between items-center">
+                <div className="rounded-2xl shadow-xl" key={index}>
+                  <div className="bg-gray-800 flex justify-between items-center pb-10">
                     <p className="text-sm font-medium text-right px-6 text-gray-100 py-3">{(new Date(application.date_from)).toDateString()}</p>
                     <FontAwesomeIcon className="text-white" icon={solid('arrow-right')} />
                     <p className="text-sm font-medium text-right px-6 text-gray-100 py-3">{(new Date(application.date_to)).toDateString()}</p>
                   </div>
-                  <div className="bg-white rounded-2xl px-6 py-6">
+                  <div className="bg-white rounded-2xl px-6 py-6 -mt-8">
                     <pre className="text-gray-900 font-nunito">{application.message}</pre>
                     <p className="font-medium text-xs text-gray-700 text-right">~ {application.studentid}</p>
                     <div className="flex justify-between mt-4">
@@ -177,7 +177,7 @@ export default function LeaveApplications() {
 
           {leaveApplicationList?.data?.message?.filter((e) => e.status === "Approved").length > 0 ?
             <div>
-              <p className="font-semibold text-green-700 text-2xl text-center mt-12 mb-8">Recent Approved</p>
+              <p className="font-semibold text-green-700 text-2xl text-center mt-12 mb-4">Recent Approved</p>
               <div className="grid grid-cols-3 gap-6 mx-32">
                 {leaveApplicationList?.data?.message?.filter((e) => e.status === "Approved")?.map((application, index) => {
                   return (
@@ -187,12 +187,12 @@ export default function LeaveApplications() {
                         <FontAwesomeIcon className="text-white" icon={solid('arrow-right')} />
                         <p className="text-sm font-medium text-right px-6 text-gray-100 py-3">{(new Date(application.date_to)).toDateString()}</p>
                       </div>
-                      <div className="bg-white px-6 py-6">
+                      <div className="bg-white px-6 py-4">
                         <pre className="text-gray-900 font-nunito">{application.message}</pre>
                         <p className="font-medium text-xs text-gray-700 text-right">~ {application.studentid}</p>
                       </div>
-                      <p className="text-sm font-medium text-white font-roboto py-2 px-4"><span className="font-normal text-gray-300"><FontAwesomeIcon icon={solid('note-sticky')} /> </span> {application.remarks}</p>
-                    </div >
+                      <p className="text-sm text-white py-2 px-4"><span className="font-normal text-gray-300"><FontAwesomeIcon icon={solid('note-sticky')} /> </span>&nbsp;{application.remarks}</p>
+                    </div>
                   )
                 }
                 )}
@@ -201,7 +201,7 @@ export default function LeaveApplications() {
 
           {leaveApplicationList?.data?.message?.filter((e) => e.status === "Rejected")?.length > 0 ?
             <div>
-              <p className="font-semibold text-red-700 text-2xl text-center mt-12 mb-8">Recent Rejected</p>
+              <p className="font-semibold text-red-700 text-2xl text-center mt-12 mb-4">Recent Rejected</p>
               <div className="grid grid-cols-3 gap-6 mx-32">
                 {leaveApplicationList?.data?.message?.filter((e) => e.status === "Rejected")?.map((application, index) => {
                   return (
@@ -211,11 +211,11 @@ export default function LeaveApplications() {
                         <FontAwesomeIcon className="text-white" icon={solid('arrow-right')} />
                         <p className="text-sm font-medium text-right px-6 text-gray-100 py-3">{(new Date(application.date_to)).toDateString()}</p>
                       </div>
-                      <div className="bg-white px-6 py-6">
+                      <div className="bg-white px-6 py-4">
                         <pre className="text-gray-900 font-nunito">{application.message}</pre>
                         <p className="font-medium text-xs text-gray-700 text-right">~ {application.studentid}</p>
                       </div>
-                      <p className="text-sm font-medium text-white font-roboto py-2 px-4"><span className="font-normal text-gray-300"><FontAwesomeIcon icon={solid('note-sticky')} /> </span> {application.remarks}</p>
+                      <p className="text-sm text-white py-2 px-4"><span className="font-normal text-gray-300"><FontAwesomeIcon icon={solid('note-sticky')} /> </span>&nbsp;{application.remarks}</p>
                     </div >
                   )
                 }

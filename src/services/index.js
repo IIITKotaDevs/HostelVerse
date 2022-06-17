@@ -10,6 +10,7 @@ const apiEndPoints = {
   getStudentAttendanceList: `/getStudentAttendence`,
   getAnnouncementList: `/getAnnouncements`,
   getFeedback: `/getFeedback`,
+  getWardenProfile: `/getWardenProfile`,
   signUp: `/student/signup`,
   verifyEmail: `/student/verifyEmail`,
   login: `/login`,
@@ -19,6 +20,7 @@ const apiEndPoints = {
   submitRoomIssue: `/createRoomIssue`,
   submitFeedback: `/createFeedback`,
   updateStudentProfile: `/updateStudentProfile`,
+  updateWardenProfile: `/updateWardenProfile`,
   createAnnouncement: `/createAnnouncement`,
 };
 
@@ -214,6 +216,25 @@ export async function getFeedback(params) {
   }
 }
 
+export async function getWardenProfile(params) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.getWardenProfile + `?wardenid=${params.wardenid}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+      }).then((res) => res.json())
+    );
+    return res;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
 export async function signUp(data) {
   try {
     const res = (
@@ -340,6 +361,26 @@ export async function updateStudentDetails(data) {
   try {
     const res = (
       await fetch(baseUrl + apiEndPoints.updateStudentProfile, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updateWardenProfile(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.updateWardenProfile, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem(

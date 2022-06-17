@@ -17,14 +17,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { localStorageKey } from '../utils/localStorageKey';
 import Issue from "../assets/img/updateProfile.jpg";
-import { useMutateUpdateStudentDetails } from '../queries/mutations';
-import { useStudentDetails } from '../queries/hooks';
+import { useMutateUpdateStudentDetails, useMutateUpdateWardenProfile } from '../queries/mutations';
+import { useStudentDetails, useWardenProfile } from '../queries/hooks';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 
 function UpdateProfile() {
     const studentDetails = useStudentDetails({
         studentid: localStorage.getItem(localStorageKey.id),
+    });
+
+    const wardenProfile = useWardenProfile({
+        wardenid: localStorage.getItem(localStorageKey.id),
     });
 
     var Filter = require('bad-words'),
@@ -59,6 +63,17 @@ function UpdateProfile() {
         setTwitter(studentDetails?.data?.student?.profile?.twitterHandle);
         setBio(studentDetails?.data?.student?.profile?.description);
     }, [studentDetails.isSuccess]);
+
+    useEffect(() => {
+        setName(wardenProfile?.data?.message?.profile?.name);
+        setPhone(wardenProfile?.data?.message?.profile?.contactno);
+        setGender(wardenProfile?.data?.message?.profile?.gender);
+        setGithub(studentDetails?.data?.message?.profile?.githubHandle);
+        setLinkedin(studentDetails?.data?.message?.profile?.linkedinHandle);
+        setInstagram(studentDetails?.data?.message?.profile?.instagramHandle);
+        setTwitter(studentDetails?.data?.message?.profile?.twitterHandle);
+        setBio(studentDetails?.data?.message?.profile?.description);
+    }, [wardenProfile.isSuccess]);
 
     useEffect(() => {
         studentDetails?.data?.student?.profile?.picture && setImagePreviewUrl(studentDetails?.data?.student?.profile?.picture);
@@ -190,6 +205,11 @@ function UpdateProfile() {
         onError: () => { }
     });
 
+    const { mutateAsync: updateWardenProfile } = useMutateUpdateWardenProfile({
+        onSuccess: (data) => { },
+        onError: () => { }
+    });
+
     const photoUpload = (e) => {
         e.preventDefault();
         const reader = new FileReader();
@@ -243,7 +263,7 @@ function UpdateProfile() {
 
     return (
         <div className="flex" >
-            {studentDetails?.data?.student ? (
+            {studentDetails?.data?.student || wardenProfile?.data?.message ? (
                 <div className="w-3/5 my-auto">
                     <div className="flex flex-col items-center">
                         <div className="bg-gray-200 p-3 rounded-full border-4 border-gray-300 shadow-lg">
@@ -515,7 +535,8 @@ function UpdateProfile() {
                 </div>
             ) : <div className='w-2/3'>
                 <Loader />
-            </div>}
+            </div>
+            }
             <img src={Issue} alt="" className="w-2/5 bg-no-repeat bg-cover bg-center h-screen" />
         </div >
     )

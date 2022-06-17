@@ -14,6 +14,7 @@ const QUERY_KEYS = {
   GET_STUDENT_DETAILS_WARDEN: generateKeyName("get-student-details-warden"),
   GET_STUDENT_ATTENDANCE_LIST: generateKeyName("get-student-attendance-list"),
   GET_ANNOUNCEMENT_LIST: generateKeyName("get-announcement-list"),
+  GET_WARDEN_PROFILE: generateKeyName("get-warden-profile"),
 };
 
 export default QUERY_KEYS;

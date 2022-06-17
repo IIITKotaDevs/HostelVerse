@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query';
-import { signUp, verifyEmail, login, submitCheckIn, submitCheckOut, submitLeaveApplication, submitRoomIssue, updateStudentDetails, createAnnouncement } from '../services';
+import { signUp, verifyEmail, login, submitCheckIn, submitCheckOut, submitLeaveApplication, submitRoomIssue, updateStudentDetails, updateWardenProfile, createAnnouncement } from '../services';
 
 export const useMutateSignUp = ({ onSuccess, onError }) => {
   return useMutation((data) => signUp(data), {
@@ -80,6 +80,17 @@ export const useMutateRoomIssue = ({ onSuccess, onError }) => {
 
 export const useMutateUpdateStudentDetails = ({ onSuccess, onError }) => {
   return useMutation((data) => updateStudentDetails(data), {
+    onSuccess: (result) => {
+      typeof onSuccess && onSuccess(result);
+    },
+    onError: async (err) => {
+      typeof onError && onError(err);
+    }
+  });
+}
+
+export const useMutateUpdateWardenProfile = ({ onSuccess, onError }) => {
+  return useMutation((data) => updateWardenProfile(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
     },

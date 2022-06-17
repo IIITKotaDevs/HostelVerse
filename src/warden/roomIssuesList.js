@@ -3,6 +3,8 @@ import baseurl from "../config";
 import axios from "axios";
 import { localStorageKey } from "../utils/localStorageKey";
 import { useRoomIssueList } from "../queries/hooks";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid, regular, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
 
 export default function RoomIssuesList() {
   const [issues, setIssues] = useState([]);
@@ -78,26 +80,25 @@ export default function RoomIssuesList() {
         }
       </div>
       <p className="font-semibold text-2xl text-center mt-20 mb-4">Resolved Earlier</p>
-      <div className="mx-32 grid grid-cols-3 items-stretch gap-4 mb-10">
+      <div className="mx-32 grid grid-cols-3 items-stretch gap-4 mb-8">
         {roomIssueList?.data?.filter((e) => e.status === "Resolved")?.map((issues, index) => {
           return (
-            <div
-              className="px-6 py-4 border border-gray-400 rounded-lg"
-              key={index}
-            >
-              <p className="text-2xl">{issues?.studentid}</p>
-              {issues.roomno && issues.hostelid ? (
-                <p>
-                  Room No. <span className="font-medium">{issues.roomno}</span> | Hostel No. <span className="font-medium">{issues.hostelid}</span>
-                </p>
-              ) : (
-                <p>No Room/Hostel Assigned</p>
-              )}
-              <p className="">
-                Created at: <span className="font-medium">{issues.created_at.split("T")[0]}</span>
-              </p>
-              <p className="text-sm">{issues?.remarks}</p>
-            </div>
+            <div className="rounded-2xl overflow-hidden shadow-xl" key={index}>
+              <p className="bg-gray-800 text-sm font-medium text-right px-6 text-gray-100 py-3 pb-10">{(new Date(issues.created_at)).toDateString()}</p>
+              <div className="bg-white rounded-2xl px-6 py-4 -mt-8">
+                <div className="flex justify-between">
+                  <div className="flex gap-2 items-center">
+                    <FontAwesomeIcon icon={solid('house')} className="text-gray-700 text-sm" />
+                    <p className="font-medium">{issues.roomno}</p>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <FontAwesomeIcon icon={solid('building')} className="text-gray-700 text-sm" />
+                    <p className="font-medium">{issues.hostelid}</p>
+                  </div>
+                </div>
+                <pre className="text-gray-900 font-nunito whitespace-pre-wrap mt-2">{issues.remarks}</pre>
+              </div>
+            </div >
           );
         })}
       </div>

@@ -18,6 +18,8 @@ const apiEndPoints = {
   submitLeaveApplication: `/createLeaveApplication`,
   submitRoomIssue: `/createRoomIssue`,
   submitFeedback: `/createFeedback`,
+  updateStudentProfile: `/updateStudentProfile`,
+  createAnnouncement: `/createAnnouncement`,
 };
 
 export async function getStudentDetails(params) {
@@ -318,6 +320,46 @@ export async function submitRoomIssue(data) {
   try {
     const res = (
       await fetch(baseUrl + apiEndPoints.submitRoomIssue, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updateStudentDetails(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.updateStudentProfile, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function createAnnouncement(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.createAnnouncement, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem(

@@ -78,11 +78,11 @@ export default function RoomIssuesList() {
         }
       </div>
       <p className="font-semibold text-2xl text-center mt-20 mb-4">Resolved Earlier</p>
-      <div className="flex gap-4 flex-col">
+      <div className="mx-32 grid grid-cols-3 items-stretch gap-4 mb-10">
         {roomIssueList?.data?.filter((e) => e.status === "Resolved")?.map((issues, index) => {
           return (
             <div
-              className="mx-32 px-6 py-4 border border-gray-400 rounded-lg"
+              className="px-6 py-4 border border-gray-400 rounded-lg"
               key={index}
             >
               <p className="text-2xl">{issues?.studentid}</p>

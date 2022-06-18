@@ -2,16 +2,8 @@ import React, { useEffect, useState } from 'react'
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import axios from "axios"
-// import FormData from "form-data";
 import baseurl from "../config"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -19,7 +11,7 @@ import { localStorageKey } from '../utils/localStorageKey';
 import Issue from "../assets/img/updateProfile.jpg";
 import { useMutateUpdateStudentDetails, useMutateUpdateWardenProfile } from '../queries/mutations';
 import { useStudentDetails, useWardenProfile } from '../queries/hooks';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Loader from '../components/Loader';
 
 function UpdateProfile() {
@@ -34,7 +26,10 @@ function UpdateProfile() {
     var Filter = require('bad-words'),
         filter = new Filter();
 
+    const params = useParams();
+
     const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [gender, setGender] = useState("");
     const [github, setGithub] = useState("")
@@ -42,11 +37,6 @@ function UpdateProfile() {
     const [instagram, setInstagram] = useState("")
     const [twitter, setTwitter] = useState("")
     const [bio, setBio] = useState("")
-    const [values, setValues] = useState({
-        showPasswordOld: false,
-        showPasswordNew: false,
-        showPasswordConfirm: false,
-    });
     const [error, setError] = useState([]);
     const [file, setFile] = useState("");
     const [imagePreviewUrl, setImagePreviewUrl] = useState("https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true");
@@ -65,19 +55,17 @@ function UpdateProfile() {
     }, [studentDetails.isSuccess]);
 
     useEffect(() => {
-        setName(wardenProfile?.data?.message?.profile?.name);
+        setEmail(wardenProfile?.data?.message?.profile?.email);
         setPhone(wardenProfile?.data?.message?.profile?.contactno);
-        setGender(wardenProfile?.data?.message?.profile?.gender);
-        setGithub(studentDetails?.data?.message?.profile?.githubHandle);
-        setLinkedin(studentDetails?.data?.message?.profile?.linkedinHandle);
-        setInstagram(studentDetails?.data?.message?.profile?.instagramHandle);
-        setTwitter(studentDetails?.data?.message?.profile?.twitterHandle);
-        setBio(studentDetails?.data?.message?.profile?.description);
     }, [wardenProfile.isSuccess]);
 
     useEffect(() => {
         studentDetails?.data?.student?.profile?.picture && setImagePreviewUrl(studentDetails?.data?.student?.profile?.picture);
     }, [studentDetails.isSuccess]);
+
+    useEffect(() => {
+        wardenProfile?.data?.message?.profile?.picture && setImagePreviewUrl(wardenProfile?.data?.message?.profile?.picture);
+    }, [wardenProfile.isSuccess]);
 
     useEffect(() => {
         // Set message to empty string after 3 seconds
@@ -90,71 +78,107 @@ function UpdateProfile() {
     var errorLength = 0;
 
     const validate = () => {
-        if (name === "") {
-            setError([...error, { type: "name", message: "Name is required" }]);
-            errorLength++;
-        }
-        if (name !== "" && name.length < 3) {
-            setError([...error, { type: "name", message: "Name must be atleast 3 characters long" }]);
-            errorLength++;
-        }
-        if (phone === "") {
-            setError([...error, { type: "phone", message: "Phone is required" }]);
-            errorLength++;
-        }
-        if (phone.length > 0 && phone.length !== 10) {
-            setError((error) => [
-                ...error,
-                { type: "phone", message: "Phone must be only of 10 digits" },
-            ]);
-            errorLength++;
-        }
-        if (phone.length > 0 && phone.match(/[0-9]/g) === null) {
-            setError((error) => [
-                ...error,
-                { type: "phone", message: "Phone must contain only numbers" },
-            ]);
-            errorLength++;
-        }
+        errorLength = 0;
+        setError([]);
+        if (params.user === "student") {
+            if (name === "") {
+                setError([...error, { type: "name", message: "Name is required" }]);
+                errorLength++;
+            }
+            if (name !== "" && name.length < 3) {
+                setError([...error, { type: "name", message: "Name must be atleast 3 characters long" }]);
+                errorLength++;
+            }
+            if (phone === "") {
+                setError([...error, { type: "phone", message: "Phone is required" }]);
+                errorLength++;
+            }
+            if (phone.length > 0 && phone.length !== 10) {
+                setError((error) => [
+                    ...error,
+                    { type: "phone", message: "Phone must be only of 10 digits" },
+                ]);
+                errorLength++;
+            }
+            if (phone.length > 0 && phone.match(/[0-9]/g) === null) {
+                setError((error) => [
+                    ...error,
+                    { type: "phone", message: "Phone must contain only numbers" },
+                ]);
+                errorLength++;
+            }
 
-        if (github !== "" && github.match(/^(http(s?):\/\/)?(www\.)?github\.([a-z])+\/([A-Za-z0-9]{1,})+\/?$/i) === null) {
-            setError((error) => [
-                ...error,
-                { type: "github", message: "Github link is not valid" },
-            ]);
-            errorLength++;
-        }
+            if (github !== "" && github.match(/^(http(s?):\/\/)?(www\.)?github\.([a-z])+\/([A-Za-z0-9]{1,})+\/?$/i) === null) {
+                setError((error) => [
+                    ...error,
+                    { type: "github", message: "Github link is not valid" },
+                ]);
+                errorLength++;
+            }
 
-        if (linkedin !== "" && linkedin.match(/^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile)/gm) === null) {
-            setError((error) => [
-                ...error,
-                { type: "linkedin", message: "Linkedin link is not valid" },
-            ]);
-            errorLength++;
-        }
+            if (linkedin !== "" && linkedin.match(/^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile)/gm) === null) {
+                setError((error) => [
+                    ...error,
+                    { type: "linkedin", message: "Linkedin link is not valid" },
+                ]);
+                errorLength++;
+            }
 
-        if (instagram !== "" && instagram.match(/(?:(?:http|https):\/\/)?(?:www.)?(?:instagram.com|instagr.am|instagr.com)\/(\w+)/igm) === null) {
-            setError((error) => [
-                ...error,
-                { type: "instagram", message: "Instagram link is not valid" },
-            ]);
-            errorLength++;
-        }
+            if (instagram !== "" && instagram.match(/(?:(?:http|https):\/\/)?(?:www.)?(?:instagram.com|instagr.am|instagr.com)\/(\w+)/igm) === null) {
+                setError((error) => [
+                    ...error,
+                    { type: "instagram", message: "Instagram link is not valid" },
+                ]);
+                errorLength++;
+            }
 
-        if (twitter !== "" && twitter.match(/(?:https?:)?\/\/(?:www\.|m\.)?twitter\.com\/(\w{2,15})\/?(?:\?\S+)?(?:\#\S+)?$/igm) === null) {
-            setError((error) => [
-                ...error,
-                { type: "twitter", message: "Twitter link is not valid" },
-            ]);
-            errorLength++;
-        }
+            if (twitter !== "" && twitter.match(/(?:https?:)?\/\/(?:www\.|m\.)?twitter\.com\/(\w{2,15})\/?(?:\?\S+)?(?:\#\S+)?$/igm) === null) {
+                setError((error) => [
+                    ...error,
+                    { type: "twitter", message: "Twitter link is not valid" },
+                ]);
+                errorLength++;
+            }
 
-        if (bio !== "" && filter.isProfane(bio)) {
-            setError((error) => [
-                ...error,
-                { type: "bio", message: "Profanity/Bad Word(s) not allowed in Bio" },
-            ]);
-            errorLength++;
+            if (bio !== "" && filter.isProfane(bio)) {
+                setError((error) => [
+                    ...error,
+                    { type: "bio", message: "Profanity/Bad Word(s) not allowed in Bio" },
+                ]);
+                errorLength++;
+            }
+        } else if (params.user === "warden") {
+            if (phone === "") {
+                setError([...error, { type: "phone", message: "Phone is required" }]);
+                errorLength++;
+            }
+            if (phone.length > 0 && phone.length !== 10) {
+                setError((error) => [
+                    ...error,
+                    { type: "phone", message: "Phone must be only of 10 digits" },
+                ]);
+                errorLength++;
+            }
+            if (phone.length > 0 && phone.match(/[0-9]/g) === null) {
+                setError((error) => [
+                    ...error,
+                    { type: "phone", message: "Phone must contain only numbers" },
+                ]);
+                errorLength++;
+            }
+
+            if (email === "") {
+                setError([...error, { type: "email", message: "Email is required" }]);
+                errorLength++;
+            }
+
+            if (email !== "" && email.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/gm) === null) {
+                setError((error) => [
+                    ...error,
+                    { type: "email", message: "Email is not valid" },
+                ]);
+                errorLength++;
+            }
         }
 
         if (errorLength === 0) {
@@ -164,39 +188,10 @@ function UpdateProfile() {
         }
     }
 
-    const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
-    };
-
-    const handleClickShowPasswordOld = () => {
-        setValues({
-            ...values,
-            showPasswordOld: !values.showPasswordOld,
-        });
-    };
-
-    const handleClickShowPasswordNew = () => {
-        setValues({
-            ...values,
-            showPasswordNew: !values.showPasswordNew,
-        });
-    };
-
-    const handleClickShowPasswordConfirm = () => {
-        setValues({
-            ...values,
-            showPasswordConfirm: !values.showPasswordConfirm,
-        });
-    };
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
     const { mutateAsync: updateStudentDetails } = useMutateUpdateStudentDetails({
         onSuccess: (data) => {
             if (data.message === "Student Profile Updated!") {
-                navigate("/student/profile");
+                navigate(`/${params.user}/profile`);
             }
             else {
                 console.log(data.message);
@@ -247,7 +242,7 @@ function UpdateProfile() {
     }
 
     const ImgUpload = ({ onChange, src }) =>
-        <label htmlFor="photo-upload" className="rounded-full inline-block relative border-4 border-primary hover:border-yellow-700 transition-colors ease-in-out cursor-pointer mt-2 shadow-xl hover:shadow-none">
+        <label htmlFor="photo-upload" className={`rounded-full inline-block relative border-4 border-primary hover:border-yellow-700 transition-colors ease-in-out cursor-pointer ${params.user === "student" ? 'mt-2' : "mt-4"}  shadow-xl hover:shadow-none`}>
             <div className="rounded-full overflow-hidden w-24 h-24 relative">
                 <img htmlFor="photo-upload" src={src} className="w-auto h-24 object-cover" alt="profile" />
             </div>
@@ -278,8 +273,8 @@ function UpdateProfile() {
                         {updated ? <button className='bg-primary font-roboto text-gray-900 text-sm hover:text-gray-100 px-3 py-1 rounded-lg font-medium shadow-md hover:shadow-none' onClick={uploadProfilePicture}>Upload</button> : null}
                     </div>
                     {message !== "" ? <div className="text-center text-green-700 transition-all ease-in-out text-xs pt-1">{message}</div> : null}
-                    <div className="flex gap-4 mx-auto mt-4 w-3/4">
-                        <div className='w-full'>
+                    <div className={`flex gap-4 mx-auto ${params.user === "student" ? 'mt-4' : 'mt-6'} w-3/4`}>
+                        {params.user === "student" ? <div className='w-full'>
                             <TextField
                                 id="name"
                                 label="Name"
@@ -296,6 +291,25 @@ function UpdateProfile() {
                                 }
                             })}
                         </div>
+                            : null}
+                        {params.user === "warden" ? <div className='w-full'>
+                            <TextField
+                                id="email"
+                                label="Email"
+                                type="text"
+                                value={email}
+                                variant="outlined"
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full shadow"
+                                size='small'
+                            />
+                            {error.map((error) => {
+                                if (error.type === "email") {
+                                    return <p className="text-red-500 text-xs italic">{error.message}</p>;
+                                }
+                            })}
+                        </div>
+                            : null}
                         <div className='w-full'>
                             <TextField
                                 id="phone"
@@ -314,7 +328,7 @@ function UpdateProfile() {
                             })}
                         </div>
                     </div>
-                    <div className="flex items-center gap-4 mx-auto mt-3 w-3/4">
+                    {params.user === "student" ? <div className="flex items-center gap-4 mx-auto mt-3 w-3/4">
                         <div className='w-full'>
                             <FormControl className='w-full shadow' size='small'>
                                 <InputLabel id="gender">Gender</InputLabel>
@@ -349,167 +363,95 @@ function UpdateProfile() {
                             })}
                         </div>
                     </div>
-                    <div className="flex items-center gap-4 mx-auto mt-3 w-3/4">
-                        <div className='w-full'>
+                        : null}
+                    {params.user === "student" ?
+                        <div className="flex items-center gap-4 mx-auto mt-3 w-3/4">
+                            <div className='w-full'>
+                                <TextField
+                                    id="linkedin"
+                                    label="Linkedin Url"
+                                    type="text"
+                                    value={linkedin}
+                                    variant="outlined"
+                                    onChange={(e) => setLinkedin(e.target.value)}
+                                    className="w-full shadow"
+                                    size='small'
+                                />
+                                {error.map((error) => {
+                                    if (error.type === "linkedin") {
+                                        return <p className="text-red-500 text-xs italic">{error.message}</p>;
+                                    }
+                                })}
+                            </div>
+                            <div className='w-full'>
+                                <TextField
+                                    id="instagram"
+                                    label="Instagram Url"
+                                    type="text"
+                                    value={instagram}
+                                    variant="outlined"
+                                    onChange={(e) => setInstagram(e.target.value)}
+                                    className="w-full shadow"
+                                    size='small'
+                                />
+                                {error.map((error) => {
+                                    if (error.type === "instagram") {
+                                        return <p className="text-red-500 text-xs italic">{error.message}</p>;
+                                    }
+                                })}
+                            </div>
+                        </div>
+                        : null}
+                    {params.user === "student" ?
+                        <div className="flex items-center gap-4 mx-auto mt-3 w-3/4">
+                            <div className='w-full'>
+                                <TextField
+                                    id="twitter"
+                                    label="Twitter Url"
+                                    type="text"
+                                    value={twitter}
+                                    variant="outlined"
+                                    onChange={(e) => setTwitter(e.target.value)}
+                                    className="w-full shadow"
+                                    size='small'
+                                />
+                                {error.map((error) => {
+                                    if (error.type === "twitter") {
+                                        return <p className="text-red-500 text-xs italic">{error.message}</p>;
+                                    }
+                                })}
+                            </div>
+                            <div className='w-full'></div>
+                        </div>
+                        : null}
+                    {params.user === "student" ?
+                        <div className="flex flex-col items-center gap-4 mx-auto mt-3 w-3/4">
                             <TextField
-                                id="linkedin"
-                                label="Linkedin Url"
+                                id="bio"
+                                label="Bio"
                                 type="text"
-                                value={linkedin}
+                                value={bio}
                                 variant="outlined"
-                                onChange={(e) => setLinkedin(e.target.value)}
+                                multiline
+                                rows={4}
+                                inputProps={{ maxLength: 200 }}
+                                onChange={(e) => setBio(e.target.value)}
                                 className="w-full shadow"
                                 size='small'
                             />
                             {error.map((error) => {
-                                if (error.type === "linkedin") {
-                                    return <p className="text-red-500 text-xs italic">{error.message}</p>;
+                                if (error.type === "bio") {
+                                    return <p className="text-red-500 text-xs italic -mt-3">{error.message}</p>;
                                 }
                             })}
                         </div>
-                        <div className='w-full'>
-                            <TextField
-                                id="instagram"
-                                label="Instagram Url"
-                                type="text"
-                                value={instagram}
-                                variant="outlined"
-                                onChange={(e) => setInstagram(e.target.value)}
-                                className="w-full shadow"
-                                size='small'
-                            />
-                            {error.map((error) => {
-                                if (error.type === "instagram") {
-                                    return <p className="text-red-500 text-xs italic">{error.message}</p>;
-                                }
-                            })}
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-4 mx-auto mt-3 w-3/4">
-                        <div className='w-full'>
-                            <TextField
-                                id="twitter"
-                                label="Twitter Url"
-                                type="text"
-                                value={twitter}
-                                variant="outlined"
-                                onChange={(e) => setTwitter(e.target.value)}
-                                className="w-full shadow"
-                                size='small'
-                            />
-                            {error.map((error) => {
-                                if (error.type === "twitter") {
-                                    return <p className="text-red-500 text-xs italic">{error.message}</p>;
-                                }
-                            })}
-                        </div>
-                        <div className='w-full'></div>
-                    </div>
-                    <div className="flex flex-col items-center gap-4 mx-auto mt-3 w-3/4">
-                        <TextField
-                            id="bio"
-                            label="Bio"
-                            type="text"
-                            value={bio}
-                            variant="outlined"
-                            multiline
-                            rows={4}
-                            inputProps={{ maxLength: 200 }}
-                            onChange={(e) => setBio(e.target.value)}
-                            className="w-full shadow"
-                            size='small'
-                        />
-                        {error.map((error) => {
-                            if (error.type === "bio") {
-                                return <p className="text-red-500 text-xs italic -mt-3">{error.message}</p>;
-                            }
-                        })}
-                    </div>
-                    {/* <p className='text-sm font-bold text-gray-400 text-center mt-4 mb-2'>CHANGE PASSWORD</p>
-                <div className='flex items-center gap-4 mx-auto w-3/4'>
-                    <div className='w-full'>
-                        <FormControl variant="outlined" className='w-full shadow' size='small'>
-                            <InputLabel htmlFor="password-old">Old Password</InputLabel>
-                            <OutlinedInput
-                                id="password-old"
-                                type={values.showPasswordOld ? 'text' : 'password'}
-                                value={values.passwordOld}
-                                onChange={handleChange('passwordOld')}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPasswordOld}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {values.showPasswordOld ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label="Old Password"
-                            />
-                        </FormControl>
-                    </div>
-                    <div className='w-full'>
-                        <FormControl variant="outlined" className='w-full shadow' size='small'>
-                            <InputLabel htmlFor="password-new">New Password</InputLabel>
-                            <OutlinedInput
-                                id="password-new"
-                                type={values.showPasswordNew ? 'text' : 'password'}
-                                value={values.passwordNew}
-                                onChange={handleChange('passwordNew')}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPasswordNew}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {values.showPasswordNew ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label="New Password"
-                            />
-                        </FormControl>
-                    </div>
-                </div>
-                <div className='flex items-center gap-4 mx-auto w-3/4 mt-3'>
-                    <div className='w-full'>
-                        <FormControl variant="outlined" className='w-full shadow' size='small'>
-                            <InputLabel htmlFor="password-confirm">Confirm Password</InputLabel>
-                            <OutlinedInput
-                                id="password-confirm"
-                                type={values.showPasswordConfirm ? 'text' : 'password'}
-                                value={values.password}
-                                onChange={handleChange('passwordConfirm')}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPasswordConfirm}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {values.showPasswordConfirm ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label="Old Password"
-                            />
-                        </FormControl>
-                    </div>
-                    <div className='w-full'></div>
-                </div> */}
-
+                        : null}
                     <span>
                         {/* <p className="text-center mb-4 text-sm text-green-500">{successMessage}</p> */}
                     </span>
 
-                    <div className="mx-auto text-center mt-4">
-                        <button
+                    <div className={`mx-auto text-center ${params.user === "student" ? 'mt-4' : 'mt-8'}`}>
+                        {params.user === "student" ? <button
                             className="text-white bg-green-700 hover:bg-green-900 font-medium shadow-lg transition-all ease-in-out hover:shadow-none px-4 py-1 rounded-lg"
                             onClick={(e) => {
                                 e.preventDefault();
@@ -523,12 +465,24 @@ function UpdateProfile() {
                                     "linkedinHandle": linkedin || "",
                                     "githubHandle": github || "",
                                     "twitterHandle": twitter || "",
-                                });
+                                })
                             }}
                         >
                             Update
                         </button>
-                        <button className="text-white ml-6 bg-red-500 hover:bg-red-700 font-medium shadow-lg transition-all ease-in-out hover:shadow-none px-4 py-1 rounded-lg" onClick={() => navigate("/student/profile")}>
+                            : <button
+                                className="text-white bg-green-700 hover:bg-green-900 font-medium shadow-lg transition-all ease-in-out hover:shadow-none px-4 py-1 rounded-lg"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    validate() && updateWardenProfile({
+                                        "email": email || wardenProfile?.data?.warden?.profile?.email,
+                                        "contactno": phone || wardenProfile?.data?.warden?.profile?.contactno,
+                                    })
+                                }}
+                            >
+                                Update
+                            </button>}
+                        <button className="text-white ml-6 bg-red-500 hover:bg-red-700 font-medium shadow-lg transition-all ease-in-out hover:shadow-none px-4 py-1 rounded-lg" onClick={() => navigate(`/${params.user}/profile`)}>
                             Cancel
                         </button>
                     </div>

@@ -1,6 +1,4 @@
 import React, { useState, Fragment, useEffect } from "react";
-import baseurl from "../config";
-import axios from "axios";
 import { localStorageKey } from "../utils/localStorageKey";
 import { TextField } from "@material-ui/core";
 import { useLeaveApplicationList } from "../queries/hooks";
@@ -8,9 +6,9 @@ import { Dialog, Transition } from '@headlessui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid, regular, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
 import Loader from "../components/Loader";
+import { useMutateUpdateLeaveApplication } from "../queries/mutations";
 
 export default function LeaveApplications() {
-  const [application, setApplication] = useState([]);
   const [resolveStatus, SetResolveStatus] = useState(false);
   const [boxIndex, setBoxIndex] = useState(undefined);
   const [reason, setReason] = useState("");
@@ -26,37 +24,13 @@ export default function LeaveApplications() {
     setIsOpen(true)
   }
 
-  const handleReasonChange = (e) => {
-    e.preventDefault();
-    setReason(e.target.value);
-  };
-
-  const handleSubmit = async (e, studentid) => {
-    e.preventDefault();
-    setMessage("Updating leave application");
-    const res = await axios.post(
-      `${baseurl}/updateLeaveApplication`,
-      {
-        studentid: studentid,
-        wardenid: localStorage.getItem(localStorageKey.id),
-        name: localStorage.getItem(localStorageKey.name),
-        status: resolveStatus ? "Approved" : "Rejected",
-        remarks: reason,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            localStorageKey.jwtToken
-          )}`,
-          "Content-type": "application/json",
-        },
-      }
-    );
-
-    setMessage("");
-    setResolved(true);
-    console.log("resolved the leave application");
-  };
+  const { mutateAsync: updateLeaveApplication } = useMutateUpdateLeaveApplication({
+    onSuccess: () => {
+      setMessage("Leave Application Resolved Successfully");
+      setResolved(true);
+    },
+    onError: () => { }
+  });
 
   const leaveApplicationList = useLeaveApplicationList({
     wardenid: localStorage.getItem(localStorageKey.id),
@@ -77,12 +51,12 @@ export default function LeaveApplications() {
             {leaveApplicationList?.data?.message?.filter((e) => e.status === "Pending")?.length > 0 ? leaveApplicationList?.data?.message?.filter((e) => e.status === "Pending")?.map((application, index) => {
               return (
                 <div className="rounded-2xl shadow-xl" key={index}>
-                  <div className="bg-gray-800 flex justify-between items-center pb-10">
+                  <div className="bg-gray-800 flex justify-between items-center pb-10 rounded-2xl">
                     <p className="text-sm font-medium text-right px-6 text-gray-100 py-3">{(new Date(application.date_from)).toDateString()}</p>
                     <FontAwesomeIcon className="text-white" icon={solid('arrow-right')} />
                     <p className="text-sm font-medium text-right px-6 text-gray-100 py-3">{(new Date(application.date_to)).toDateString()}</p>
                   </div>
-                  <div className="bg-white rounded-2xl px-6 py-6 -mt-8">
+                  <div className="bg-white rounded-2xl px-6 py-6 -mt-10">
                     <pre className="text-gray-900 font-nunito">{application.message}</pre>
                     <p className="font-medium text-xs text-gray-700 text-right">~ {application.studentid}</p>
                     <div className="flex justify-between mt-4">
@@ -91,6 +65,7 @@ export default function LeaveApplications() {
                         onClick={() => {
                           SetResolveStatus(true);
                           setBoxIndex(index);
+                          openModal();
                         }}
                       >
                         Approve
@@ -100,6 +75,7 @@ export default function LeaveApplications() {
                         onClick={() => {
                           SetResolveStatus(false);
                           setBoxIndex(index);
+                          openModal();
                         }}
                       >
                         Reject
@@ -154,13 +130,27 @@ export default function LeaveApplications() {
                                       </div>
                                     </div>
 
-                                    <div className="mx-auto flex flex-col items-center bg-gray-800 hover:bg-black transition-all text-white rounded-md w-1/4 px-4 py-2 text-sm">
+                                    <div className="flex justify-evenly items-center w-full text-sm">
                                       <button
-                                        onClick={(e) => handleSubmit(e, application.studentid)}
+                                        className="bg-blue-600 hover:bg-blue-800 transition-all text-white rounded-md px-4 py-1"
+                                        onClick={() => {
+                                          updateLeaveApplication({
+                                            studentid: application.studentid,
+                                            wardenid: localStorage.getItem(localStorageKey.id),
+                                            name: application.name,
+                                            status: resolveStatus ? "Approved" : "Rejected",
+                                            remarks: reason,
+                                          })
+                                          setTimeout(() => {
+                                            closeModal();
+                                          }, 5000);
+                                        }}
                                       >
                                         Submit
                                       </button>
+                                      <button onClick={closeModal} className="bg-red-500 hover:bg-red-700 transition-all text-white rounded-md px-4 py-1">Cancel</button>
                                     </div>
+                                    <span className="text-green-500 italic text-center">{message}</span>
                                   </Dialog.Panel>
                                 </Transition.Child>
                               </div>
@@ -223,7 +213,8 @@ export default function LeaveApplications() {
               </div>
             </div> : null}
         </div>
-        : <Loader />}
-    </div>
+        : <Loader />
+      }
+    </div >
   );
 }

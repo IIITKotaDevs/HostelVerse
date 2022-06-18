@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import { useMutateRoomIssue } from "../queries/mutations";
 import Issue from "../assets/img/Issue.jpg";
@@ -31,6 +31,12 @@ function RoomIssue() {
     },
     onError: () => { }
   });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 5000);
+  }, [successMessage]);
 
   return (
     <div className="flex">
@@ -77,7 +83,7 @@ function RoomIssue() {
             className="text-white bg-gray-700 hover:bg-gray-900 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
             onClick={(e) => {
               e.preventDefault();
-              validate() && RoomIssueData({ studentid: localStorage.getItem("id"), message: reason });
+              validate() && RoomIssueData({ studentid: localStorage.getItem("id"), remarks: reason });
             }}
           >
             Submit

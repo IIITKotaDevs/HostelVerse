@@ -22,6 +22,8 @@ const apiEndPoints = {
   updateStudentProfile: `/updateStudentProfile`,
   updateWardenProfile: `/updateWardenProfile`,
   createAnnouncement: `/createAnnouncement`,
+  updateLeaveApplication: `/updateLeaveApplication`,
+  resolveRoomIssue: `/resolveRoomIssue`,
 };
 
 export async function getStudentDetails(params) {
@@ -378,9 +380,10 @@ export async function updateStudentDetails(data) {
 }
 
 export async function updateWardenProfile(data) {
+  console.log(data);
   try {
     const res = (
-      await fetch(baseUrl + apiEndPoints.updateWardenProfile, {
+      await fetch(baseUrl + apiEndPoints.updateWardenProfile + `?wardenid=${localStorage.getItem(localStorageKey.id)}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem(
@@ -401,6 +404,46 @@ export async function createAnnouncement(data) {
   try {
     const res = (
       await fetch(baseUrl + apiEndPoints.createAnnouncement, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updateLeaveApplication(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.updateLeaveApplication, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function resolveRoomIssue(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.resolveRoomIssue, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem(

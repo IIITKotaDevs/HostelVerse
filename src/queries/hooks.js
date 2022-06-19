@@ -1,6 +1,19 @@
 import QUERY_KEYS from "./queryKeys";
 import { useQuery } from "react-query";
-import { getStudentDetails, getHostelList, getHostelDetail, getRoomIssueList, getLeaveApplicationList, getStudentList, getStudentDetailsWarden, getStudentAttendanceList, getAnnouncementList, getWardenProfile, getWardenList } from "../services";
+import {
+  getStudentDetails,
+  getHostelList,
+  getHostelDetail,
+  getRoomIssueList,
+  getLeaveApplicationList,
+  getStudentList,
+  getStudentDetailsWarden,
+  getStudentAttendanceList,
+  getAnnouncementList,
+  getWardenProfile,
+  getWardenList,
+  getAdminProfile,
+} from "../services";
 
 export const useStudentDetails = (params) => {
   return useQuery(
@@ -13,13 +26,14 @@ export const useStudentDetails = (params) => {
 };
 
 export const useHostelList = (params) => {
-  return useQuery([QUERY_KEYS.GET_HOSTEL_LIST, params.low, params.high],
+  return useQuery(
+    [QUERY_KEYS.GET_HOSTEL_LIST, params.low, params.high],
     () => getHostelList(params),
     {
       retry: false,
     }
   );
-}
+};
 
 export const useHostelDetails = (params) => {
   return useQuery(
@@ -29,7 +43,7 @@ export const useHostelDetails = (params) => {
       retry: false,
     }
   );
-}
+};
 
 export const useRoomIssueList = (params) => {
   return useQuery(
@@ -39,7 +53,7 @@ export const useRoomIssueList = (params) => {
       retry: false,
     }
   );
-}
+};
 
 export const useLeaveApplicationList = (params) => {
   return useQuery(
@@ -49,7 +63,7 @@ export const useLeaveApplicationList = (params) => {
       retry: false,
     }
   );
-}
+};
 
 export const useStudentList = (params) => {
   return useQuery(
@@ -59,7 +73,7 @@ export const useStudentList = (params) => {
       retry: false,
     }
   );
-}
+};
 
 export const useWardenList = (params) => {
   return useQuery(
@@ -69,7 +83,7 @@ export const useWardenList = (params) => {
       retry: false,
     }
   );
-}
+};
 
 export const useStudentDetailsWarden = (params) => {
   return useQuery(
@@ -79,7 +93,7 @@ export const useStudentDetailsWarden = (params) => {
       retry: false,
     }
   );
-}
+};
 
 export const useStudentAttendanceList = (params) => {
   return useQuery(
@@ -89,7 +103,7 @@ export const useStudentAttendanceList = (params) => {
       retry: false,
     }
   );
-}
+};
 
 export const useAnnouncementList = (params) => {
   return useQuery(
@@ -99,7 +113,7 @@ export const useAnnouncementList = (params) => {
       retry: false,
     }
   );
-}
+};
 
 export const useWardenProfile = (params) => {
   return useQuery(
@@ -109,4 +123,14 @@ export const useWardenProfile = (params) => {
       retry: false,
     }
   );
-}
+};
+
+export const useAdminProfile = (params) => {
+  return useQuery(
+    [QUERY_KEYS.GET_ADMIN_PROFILE, params.adminid],
+    () => getAdminProfile(params),
+    {
+      retry: false,
+    }
+  );
+};

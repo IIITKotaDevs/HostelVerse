@@ -11,6 +11,7 @@ const apiEndPoints = {
   getAnnouncementList: `/getAnnouncements`,
   getFeedback: `/getFeedback`,
   getWardenProfile: `/getWardenProfile`,
+  getAdminProfile: `/getAdminProfile`,
   signUp: `/student/signup`,
   verifyEmail: `/student/verifyEmail`,
   login: `/login`,
@@ -222,6 +223,25 @@ export async function getWardenProfile(params) {
   try {
     const res = (
       await fetch(baseUrl + apiEndPoints.getWardenProfile + `?wardenid=${params.wardenid}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+      }).then((res) => res.json())
+    );
+    return res;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getAdminProfile(params) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.getAdminProfile + `?adminid=${params.adminid}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem(
             localStorageKey.jwtToken

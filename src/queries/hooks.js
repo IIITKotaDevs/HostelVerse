@@ -1,6 +1,6 @@
 import QUERY_KEYS from "./queryKeys";
 import { useQuery } from "react-query";
-import { getStudentDetails, getHostelList, getHostelDetail, getRoomIssueList, getLeaveApplicationList, getStudentList, getStudentDetailsWarden, getStudentAttendanceList, getAnnouncementList, getWardenProfile } from "../services";
+import { getStudentDetails, getHostelList, getHostelDetail, getRoomIssueList, getLeaveApplicationList, getStudentList, getStudentDetailsWarden, getStudentAttendanceList, getAnnouncementList, getWardenProfile, getAdminProfile } from "../services";
 
 export const useStudentDetails = (params) => {
   return useQuery(
@@ -95,6 +95,16 @@ export const useWardenProfile = (params) => {
   return useQuery(
     [QUERY_KEYS.GET_WARDEN_PROFILE, params.wardenid],
     () => getWardenProfile(params),
+    {
+      retry: false,
+    }
+  );
+}
+
+export const useAdminProfile = (params) => {
+  return useQuery(
+    [QUERY_KEYS.GET_ADMIN_PROFILE, params.adminid],
+    () => getAdminProfile(params),
     {
       retry: false,
     }

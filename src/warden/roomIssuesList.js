@@ -32,6 +32,11 @@ export default function RoomIssuesList() {
   const { mutateAsync: ResolveRoomIssueData } = useMutateResolveRoomIssue({
     onSuccess: () => {
       roomIssueList.refetch();
+      setMessage("");
+      setBoxIndex(undefined);
+      setAssignedTo("");
+      setAssignedPhone("");
+      setExpectedDate("");
     },
     onError: () => { },
   });
@@ -93,16 +98,31 @@ export default function RoomIssuesList() {
                                 </div>
                               </div>
                               <pre className="text-gray-900 font-nunito whitespace-pre-wrap mt-2">{issues.remarks}</pre>
-                              {category === "Pending" ? <button
-                                className="bg-blue-500 hover:bg-blue-700 transition-all text-sm text-white px-4 py-1 rounded mt-4"
-                                onClick={(e) => {
-                                  setBoxIndex(index);
-                                  openModal();
-                                }}
-                              >
-                                Assign
-                              </button>
-                                : null}
+                              <div className="flex justify-between">
+                                {category !== "Resolved" ? <button
+                                  className="bg-blue-500 hover:bg-blue-700 transition-all text-sm text-white px-4 py-1 rounded mt-4"
+                                  onClick={(e) => {
+                                    setBoxIndex(index);
+                                    openModal();
+                                  }}
+                                >
+                                  Assign
+                                </button>
+                                  : null}
+                                {category === "Assigned" ? <button
+                                  className="bg-green-500 hover:bg-green-700 transition-all text-sm text-white px-4 py-1 rounded mt-4"
+                                  onClick={() => {
+                                    ResolveRoomIssueData({
+                                      hostelid: issues.hostelid,
+                                      roomno: issues.roomno,
+                                      status: "Resolved",
+                                    })
+                                  }}
+                                >
+                                  Resolved
+                                </button>
+                                  : null}
+                              </div>
                             </div>
                             {
                               boxIndex === index && (
@@ -179,11 +199,11 @@ export default function RoomIssuesList() {
                                                   ResolveRoomIssueData({
                                                     hostelid: issues.hostelid,
                                                     roomno: issues.roomno,
-                                                    status: "Resolved",
+                                                    status: "Assigned",
+                                                    assigned_person: assignedTo,
+                                                    expected_completion_date: expectedDate,
+                                                    contact_no: assignedPhone,
                                                   })
-                                                  setTimeout(() => {
-                                                    closeModal();
-                                                  }, 5000);
                                                 }}
                                               >
                                                 Assign

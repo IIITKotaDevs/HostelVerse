@@ -221,7 +221,7 @@ function UpdateProfile() {
         var bodyFormData = new FormData()
         bodyFormData.append('file', file);
 
-        const result = fetch(baseurl + "/uploadProfilePic" + "?filename=" + studentDetails?.data?.student?.profile?.studentid + '.' + file.name.split('.')[1] + "&id=" + studentDetails?.data?.student?.studentid, {
+        const result = fetch(baseurl + "/uploadProfilePic" + "?filename=" + (params.user === "student" ? studentDetails?.data?.student?.profile?.studentid : wardenProfile?.data?.message?.profile?.wardenid) + '.' + file.name.split('.')[1] + "&id=" + (params.user === "student" ? studentDetails?.data?.student?.studentid : wardenProfile?.data?.message?.profile?.wardenid), {
             method: 'POST',
             body: bodyFormData,
             headers: {

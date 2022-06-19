@@ -8,7 +8,7 @@ import { solid, regular, brands } from "@fortawesome/fontawesome-svg-core/import
 import Loader from "../components/Loader";
 
 export default function StudentList() {
-  const [refetch, setRefetch] = useState(false);
+  const [studentListData, setStudentListData] = useState([]);
   const navigate = useNavigate();
 
   const studentList = useStudentList({
@@ -16,11 +16,6 @@ export default function StudentList() {
   });
 
   const baseUrl = "https://hostelverse-backend.azurewebsites.net/api";
-
-  useEffect(() => {
-    studentList.refetch();
-    setRefetch(false);
-  }, [refetch === true]);
 
   const handleRemoveStudent = async (id) => {
     const response = await fetch(baseUrl + "/removeStudent" + `?studentid=${id}`, {
@@ -31,16 +26,30 @@ export default function StudentList() {
       },
     });
     if (response.status === 200) {
-      setRefetch(true);
+      studentList.refetch();
     }
   }
 
+  useEffect(() => {
+    setStudentListData(studentList.data?.data);
+  }, [studentList.isSuccess === true]);
+
+  const filter = (name) => {
+    const filteredData = studentList.data?.data.filter((student) => {
+      return student.profile.name.toLowerCase().includes(name.toLowerCase()) || student.profile.studentid.toLowerCase().includes(name.toLowerCase());
+    });
+    setStudentListData(filteredData);
+  }
+
   return (
-    <div className="bg-gray-75">
+    <div className={`${studentListData?.length < 5 ? 'h-screen' : ''} bg-gray-75`}>
       <p className="font-bold text-3xl text-center pt-12 pb-8">Student List</p>
-      {studentList?.data?.data ? (
+      <div className="flex justify-center mb-8">
+        <input type="text" className='w-1/2 px-4 py-1 rounded-lg shadow-md' placeholder="Search by Name or Roll Number" onChange={(e) => { filter(e.target.value) }} />
+      </div>
+      {studentListData ? (
         <div className="flex flex-wrap justify-center gap-8 pb-8">
-          {studentList?.data?.data?.length > 0 ? studentList?.data?.data?.map((student, index) => {
+          {studentListData?.length > 0 ? studentListData?.map((student, index) => {
             return (
               <div key={student?.profile?.studentid} className="w-1/5 rounded-lg shadow-lg overflow-hidden bg-white py-8 px-12 divide-y-2">
                 <div className="w-full flex flex-col items-center pb-4">
@@ -73,7 +82,7 @@ export default function StudentList() {
                 </div>
               </div>
             );
-          }) : <p className="italic text-center">No students under this warden yet.</p>}
+          }) : <p className="italic text-center">No students under this warden with the given name or roll number.</p>}
         </div>
       ) : <Loader />}
     </div >

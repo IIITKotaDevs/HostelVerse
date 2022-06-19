@@ -27,7 +27,7 @@ export default function Profile() {
       <div className="flex justify-center items-center bg-profile bg-cover h-screen">
         {(params.user === 'student' ? studentDetails?.data?.student : wardenProfile?.data?.message) ? <div className="w-2/3 flex bg-white rounded-3xl shadow-2xl overflow-hidden">
           <div className="w-1/2">
-            <img src={studentDetails?.data?.student?.profile?.picture || person} className="w-full h-full object-cover" />
+            <img src={params.user === "student" ? studentDetails?.data?.student?.profile?.picture : (params.user === "warden" ? wardenProfile?.data?.message?.profile?.picture : person)} className="w-full h-full object-cover" />
           </div>
           <div className="w-1/2 flex items-center py-6">
             <div className="w-full flex flex-col px-8 gap-y-2">
@@ -38,7 +38,7 @@ export default function Profile() {
                 </div>
                 <div className="text-right">
                   <p className="text-xxs font-bold text-gray-400">STUDENT ID</p>
-                  <p className="text-lg -mt-1 font-bold text-gray-800 uppercase">{params.user === "user" ? studentDetails?.data?.student?.profile?.studentid : wardenProfile?.data?.message?.profile?.wardenid}</p>
+                  <p className="text-lg -mt-1 font-bold text-gray-800 uppercase">{params.user === "student" ? studentDetails?.data?.student?.profile?.studentid : wardenProfile?.data?.message?.profile?.wardenid}</p>
                 </div>
               </div>
               <div className="flex justify-between">

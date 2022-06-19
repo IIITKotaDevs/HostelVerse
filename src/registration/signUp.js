@@ -199,7 +199,7 @@ export default function SignUp() {
       ]);
       errorLength++;
     }
-    if (phone.length > 0 && phone.match(/[0-9]/g) === null) {
+    if (phone.length > 0 && phone.match(/^[0-9]+$/) === null) {
       setError((error) => [
         ...error,
         { type: "phone", message: "Phone must contain only numbers" },

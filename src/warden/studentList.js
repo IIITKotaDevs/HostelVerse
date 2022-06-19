@@ -75,7 +75,6 @@ export default function StudentList() {
                     <button className="cursor-pointer bg-red-500 px-4 py-1 font-mono uppercase rounded font-semibold text-white text-sm"
                       onClick={() => {
                         handleRemoveStudent(student?.profile?.studentid);
-                        setRefetch(true);
                       }}
                     >Remove</button>
                     : null}

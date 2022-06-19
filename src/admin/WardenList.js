@@ -1,61 +1,42 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import baseurl from "../config";
+import { useWardenList } from "../queries/hooks";
 import { localStorageKey } from "../utils/localStorageKey";
+import Loader from "../components/Loader";
 
 export default function WardenList() {
-  const [wardens, setWardens] = useState([]);
-  const [loading, setLoading] = useState(false);
+	const [wardenListData, setWardenListData] = useState([]);
 
-  const getWardenList = async () => {
-    setLoading(true);
-    try {
-      const warden = await axios.get(`${baseurl}/getWarden`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            localStorageKey.jwtToken
-          )}`,
-        },
-      });
-      setWardens(warden.data.data);
-      setLoading(false);
-    } catch (error) {
-      console.log("error aa gaya bro");
-      setLoading(false);
-    }
-  };
+	const wardenList = useWardenList({});
 
-  useEffect(() => {
-    getWardenList();
-  }, []);
+	const baseUrl = "https://hostelverse-backend.azurewebsites.net/api";
 
-  const removeWarden = async (wardenItem) => {
-    axios
-      .post(
-        `${baseurl}/deleteWarden`,
-        {
-          wardenid: wardenItem.wardenid,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              localStorageKey.jwtToken
-            )}`,
-            "Content-type": "application/json",
-          },
-        }
-      )
-      .then(() => {
-        getWardenList();
-      });
-  };
+	useEffect(() => {
+    setWardenListData(wardenList.data?.data);
+  }, [wardenList.isSuccess === true]);
+
+    const handleRemoveWarden = async (id) => {
+	    const response = await fetch(baseUrl + "/deleteWarden", {
+	      method: "POST",
+	      body: JSON.stringify(id),
+	      headers: {
+	        "Content-Type": "application/json",
+	        Authorization: `Bearer ${localStorage.getItem(localStorageKey.token)}`,
+	      },
+	    });
+	    if (response.status === 200) {
+	      wardenList.refetch();
+	    }
+  	}
 
   return (
     <>
       <p className="font-bold text-3xl text-center mt-12 mb-8">Warden List</p>
-      {loading && <p className="text-2xl text-center mt-8">Loading...</p>}
       <div className="flex flex-col gap-4">
-        {wardens.map((warden, index) => {
+      {wardenListData ? (
+      	<div>
+      	{wardenListData.map((warden, index) => {
           return (
             <div
               key={index}
@@ -66,7 +47,9 @@ export default function WardenList() {
                 <p className="text-lg mt-2">Warden of: {warden?.hostelid}</p>
                 <p
                   className="text-red-500 text-lg cursor-pointer font-medium mt-2"
-                  onClick={() => removeWarden(warden)}
+                  onClick={() => {
+                        handleRemoveWarden(warden.profile.wardenid)
+                      }}
                 >
                   Remove Warden
                 </p>
@@ -79,6 +62,9 @@ export default function WardenList() {
             </div>
           );
         })}
+        </div>
+      ) : <Loader />}
+        
       </div>
     </>
   );

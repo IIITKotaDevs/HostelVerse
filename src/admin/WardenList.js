@@ -16,19 +16,19 @@ export default function WardenList() {
     setWardenListData(wardenList.data?.data);
   }, [wardenList.isSuccess === true]);
 
-    const handleRemoveWarden = async (id) => {
-	    const response = await fetch(baseUrl + "/deleteWarden", {
-	      method: "POST",
-	      body: JSON.stringify(id),
-	      headers: {
-	        "Content-Type": "application/json",
-	        Authorization: `Bearer ${localStorage.getItem(localStorageKey.token)}`,
-	      },
-	    });
-	    if (response.status === 200) {
-	      wardenList.refetch();
-	    }
-  	}
+  const handleRemoveWarden = async (id) => {
+    const response = await fetch(baseUrl + "/deleteWarden", {
+      method: "POST",
+      body: JSON.stringify(id),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(localStorageKey.token)}`,
+      },
+    });
+    if (response.status === 200) {
+      wardenList.refetch();
+    }
+	}
 
   return (
     <>

@@ -13,6 +13,7 @@ import {
   getWardenProfile,
   getWardenList,
   getAdminProfile,
+  getAdminDashboard,
 } from "../services";
 
 export const useStudentDetails = (params) => {
@@ -129,6 +130,16 @@ export const useAdminProfile = (params) => {
   return useQuery(
     [QUERY_KEYS.GET_ADMIN_PROFILE, params.adminid],
     () => getAdminProfile(params),
+    {
+      retry: false,
+    }
+  );
+};
+
+export const useAdminDashboard = () => {
+  return useQuery(
+    [QUERY_KEYS.GET_ADMIN_DASHBOARD],
+    () => getAdminDashboard(),
     {
       retry: false,
     }

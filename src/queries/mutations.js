@@ -1,5 +1,20 @@
 import { useMutation } from 'react-query';
-import { signUp, verifyEmail, login, submitCheckIn, submitCheckOut, submitLeaveApplication, submitRoomIssue, updateStudentDetails, updateWardenProfile, createAnnouncement, updateLeaveApplication, resolveRoomIssue } from '../services';
+import {
+  signUp,
+  verifyEmail,
+  login,
+  submitCheckIn,
+  submitCheckOut,
+  submitLeaveApplication,
+  submitRoomIssue,
+  updateStudentDetails,
+  updateWardenProfile,
+  createAnnouncement,
+  updateLeaveApplication,
+  resolveRoomIssue,
+  createWarden,
+  deleteWarden,
+} from '../services';
 
 export const useMutateSignUp = ({ onSuccess, onError }) => {
   return useMutation((data) => signUp(data), {
@@ -124,6 +139,28 @@ export const useMutateUpdateLeaveApplication = ({ onSuccess, onError }) => {
 
 export const useMutateResolveRoomIssue = ({ onSuccess, onError }) => {
   return useMutation((data) => resolveRoomIssue(data), {
+    onSuccess: (result) => {
+      typeof onSuccess && onSuccess(result);
+    },
+    onError: async (err) => {
+      typeof onError && onError(err);
+    }
+  });
+}
+
+export const useMutateCreateWarden = ({ onSuccess, onError }) => {
+  return useMutation((data) => createWarden(data), {
+    onSuccess: (result) => {
+      typeof onSuccess && onSuccess(result);
+    },
+    onError: async (err) => {
+      typeof onError && onError(err);
+    }
+  });
+}
+
+export const useMutateDeleteWarden = ({ onSuccess, onError }) => {
+  return useMutation((data) => deleteWarden(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
     },

@@ -65,7 +65,7 @@ function App(props) {
             <Route path="/student/feedback" element={<FeedbackForm />} />
             <Route path="/:user/profile" element={<Profile />} />
             <Route path="/:user/update-profile" element={<UpdateProfile />} />
-            <Route path="/warden/student-list" element={<StudentList />} />
+            <Route path="/:user/student-list" element={<StudentList />} />
             <Route path="/student-detail/:id" element={<StudentDetail />} />
             <Route path="/:user/leave-applications" element={<LeaveApplications />} />
             <Route path="/:user/room-issues" element={<RoomIssuesList />} />

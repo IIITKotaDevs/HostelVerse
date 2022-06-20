@@ -17,6 +17,7 @@ const QUERY_KEYS = {
   GET_WARDEN_PROFILE: generateKeyName("get-warden-profile"),
   GET_WARDEN_LIST: generateKeyName("get-warden-list"),
   GET_ADMIN_PROFILE: generateKeyName("get-admin-profile"),
+  GET_ADMIN_DASHBOARD: generateKeyName("get-admin-dashboard"),
 };
 
 export default QUERY_KEYS;

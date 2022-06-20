@@ -47,6 +47,10 @@ export default function SignIn() {
           );
           navigate("/warden/student-list");
         } else if (type.name.toLowerCase() === "admin") {
+          localStorage.setItem(
+            localStorageKey.id,
+            response.profile.adminid
+          );
           navigate("/admin/dashboard");
         }
       }

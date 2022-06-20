@@ -27,6 +27,8 @@ const apiEndPoints = {
   updateLeaveApplication: `/updateLeaveApplication`,
   resolveRoomIssue: `/resolveRoomIssue`,
   getWardenList: `/getWarden`,
+  createWarden: `/createWarden`,
+  deleteWarden: `/deleteWarden`,
 };
 
 export async function getStudentDetails(params) {
@@ -504,6 +506,46 @@ export async function resolveRoomIssue(data) {
   try {
     const res = (
       await fetch(baseUrl + apiEndPoints.resolveRoomIssue, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function createWarden(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.createWarden, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteWarden(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.deleteWarden, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem(

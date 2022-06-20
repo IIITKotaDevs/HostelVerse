@@ -3,34 +3,27 @@ import { useWardenList } from "../queries/hooks";
 import { localStorageKey } from "../utils/localStorageKey";
 import Loader from "../components/Loader";
 import person from '../assets/img/person.jpg'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid, regular, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
+import { useMutateDeleteWarden } from "../queries/mutations";
 
 export default function WardenList() {
   const [wardenListData, setWardenListData] = useState([]);
-
   const wardenList = useWardenList({});
-
-  const baseUrl = "https://hostelverse-backend.azurewebsites.net/api";
 
   useEffect(() => {
     setWardenListData(wardenList.data?.data);
-  }, [wardenList.isSuccess === true]);
+  }, [wardenList.isSuccess]);
 
-  const handleRemoveWarden = async (id) => {
-    const response = await fetch(baseUrl + "/deleteWarden", {
-      method: "POST",
-      body: JSON.stringify(id),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem(localStorageKey.token)}`,
-      },
-    });
-    if (response.status === 200) {
-      wardenList.refetch();
-    }
-  }
+  const { mutateAsync: deleteWarden } = useMutateDeleteWarden({
+    onSuccess: () => {
+      window.location.reload();
+    },
+    onError: () => { },
+  });
 
   return (
-    <div className="bg-gray-75">
+    <div className={`bg-gray-75 ${wardenListData.length < 5 ? 'h-screen' : ''} `}>
       <p className="font-bold text-3xl text-center pt-12 mb-8">Warden List</p>
       {wardenListData ? (
         <div className="flex flex-wrap justify-center gap-8 pb-8">
@@ -42,11 +35,17 @@ export default function WardenList() {
                   <p className="pt-4 font-bold text-xl hover:text-primary transition-all cursor-pointer" onClick={() => { navigate(`/warden-detail/${warden?.profile?.wardenid}`) }}>{warden?.profile?.name}</p>
                   <p className="text-xs text-gray-600 font-semibold font-roboto uppercase">{warden?.profile?.wardenid}</p>
                 </div>
+                <div className="w-full justify-center items-center py-4 text-gray-700 flex gap-4">
+                  {warden?.profile?.contactno ? <FontAwesomeIcon className="cursor-pointer" icon={solid('phone')} onClick={() => { window.location.href = `tel:${warden?.profile?.contactno}` }} /> : null}
+                  {warden?.profile?.email ? <FontAwesomeIcon className="cursor-pointer" icon={solid('envelope')} onClick={() => { window.location.href = `mailto:${warden?.profile?.email}` }} /> : null}
+                </div>
                 <div className={`w-full flex justify-between pt-4`}>
                   <button className="cursor-pointer bg-green-500 px-4 py-1 font-mono uppercase rounded font-semibold text-white text-sm">Chat</button>
                   <button className="cursor-pointer bg-red-500 px-4 py-1 font-mono uppercase rounded font-semibold text-white text-sm"
                     onClick={() => {
-                      handleRemoveWarden(warden?.profile?.wardenid);
+                      deleteWarden({
+                        wardenid: warden?.profile?.wardenid,
+                      });
                     }}
                   >Remove</button>
                 </div>

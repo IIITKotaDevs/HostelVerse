@@ -4,53 +4,24 @@ import Rating from "@mui/material/Rating";
 import baseurl from "../config";
 import axios from "axios";
 import { localStorageKey } from "../utils/localStorageKey";
+import {useMutateAllotHostel} from '../queries/mutations';
 
 const AllotHostel = () => {
   const [hostelId, setHostelId] = useState("");
   const [batch, setBatch] = useState("");
-  const [message, setMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log([batch]);
-    console.log([hostelId]);
-
-    setMessage("Alloting the hostels...");
-    const res = await axios.post(
-      `${baseurl}/allotHostel`,
-      {
-        hostelid: [hostelId],
-        batch: [batch],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            localStorageKey.jwtToken
-          )}`,
-          "Content-type": "application/json",
-        },
-      }
-    );
-
-    if (res.status === 200) {
-      console.log("Alloted successfully");
-      setMessage("");
-      setSuccessMessage("Hostels alloted successfully!");
-    } else {
-      console.error("Something went wrong!");
-      setMessage("Something went wrong!");
-    }
-
-    document.getElementById("hostelid").input = "";
-    document.getElementById("batch").input = "";
-  };
+  const { mutateAsync: allotHostel } = useMutateAllotHostel({
+    onSuccess: () => {
+      window.location.reload();
+    },
+    onError: () => {},
+  });
 
   return (
     <div className="bg-room-issue h-screen bg-cover">
       <h1 className="text-4xl mt-2 text-center">Allot Hostel</h1>
       <div className="mx-auto text-center w-80">
-        <h1 className="text-center mt-12 text-3xl text-red-500">{message}</h1>
         <h1 className="text-center mt-12 text-3xl text-green-500">
           {successMessage}
         </h1>
@@ -82,7 +53,10 @@ const AllotHostel = () => {
       <div className="mx-auto text-center mt-20">
         <button
           className="text-white bg-black px-4 py-2 rounded-xl"
-          onClick={handleSubmit}
+          onClick={() => {allotHostel({
+          	hostelid: hostelId,
+          	batch: batch,
+          })}}
         >
           Submit
         </button>

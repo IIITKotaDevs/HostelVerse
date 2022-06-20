@@ -2,42 +2,25 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import baseurl from "../config";
 import { localStorageKey } from "../utils/localStorageKey";
+import Loader from '../components/Loader';
+import {useFeedbackList} from '../queries/hooks';
 
 export default function ViewFeedback() {
-  const [feedbacks, setFeedbacks] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [feedbackData, setFeedbackData] = useState([]);
 
-  const getFeedbacks = async () => {
-    setLoading(true);
-    try {
-      const feedback = await axios.get(`${baseurl}/getFeedback`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            localStorageKey.jwtToken
-          )}`,
-        },
-      });
-      setFeedbacks(feedback.data.data);
-      setLoading(false);
-    } catch (error) {
-      console.log("error aa gaya bro ");
-      setLoading(false);
-    }
-  };
+  const feedbacks = useFeedbackList({});
 
   useEffect(() => {
-    const fetchStudentsList = async () => {
-      await getFeedbacks();
-    };
-    fetchStudentsList();
-  }, []);
+    setFeedbackData(feedbacks.data?.data);
+  }, [feedbacks.isSuccess]);
 
   return (
     <>
       <p className="font-bold text-3xl text-center mt-12 mb-8">Feedback List</p>
-      {loading && <p className="text-2xl text-center mt-8">Loading...</p>}
-      <div className="flex flex-col gap-4">
-        {feedbacks.map((feedback, index) => {
+
+      {feedbackData ? (
+      	<div className="flex flex-col gap-4">
+        {feedbackData.map((feedback, index) => {
           return (
             <div
               key={index}
@@ -78,7 +61,8 @@ export default function ViewFeedback() {
             </div>
           );
         })}
-      </div>
+      </div>) : (<Loader />)}
+      
     </>
   );
 }

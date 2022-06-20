@@ -14,6 +14,7 @@ import {
   resolveRoomIssue,
   createWarden,
   deleteWarden,
+  allotHostel
 } from '../services';
 
 export const useMutateSignUp = ({ onSuccess, onError }) => {
@@ -168,4 +169,15 @@ export const useMutateDeleteWarden = ({ onSuccess, onError }) => {
       typeof onError && onError(err);
     }
   });
+}
+
+export const useMutateAllotHostel = ({ onSuccess, onError}) => {
+	return useMutation((data) => allotHostel(data), {
+		onSuccess: (result) => {
+			typeof onSuccess && onSuccess(result);
+		},
+		onError: async (err) => {
+			typeof onError && onError(err);
+		}
+	})
 }

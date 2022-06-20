@@ -157,23 +157,23 @@ export default function Dashboard() {
 
           {params.user === "admin" ? <div>
             <p className="text-xl font-bold mt-16">Hostel Statistics</p>
-            <div class="flex flex-col w-1/2">
-              <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-                  <div class="overflow-hidden rounded-xl">
-                    <table class="w-full">
-                      <thead class="bg-gray-700 border-b text-white">
+            <div className="flex flex-col w-1/2">
+              <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+                  <div className="overflow-hidden rounded-xl">
+                    <table className="w-full">
+                      <thead className="bg-gray-700 border-b text-white">
                         <tr>
-                          <th scope="col" class="font-medium px-6 py-4 text-left">
+                          <th scope="col" className="font-medium px-6 py-4 text-left">
                             Hostel Name
                           </th>
-                          <th scope="col" class="font-medium px-6 py-4 text-left">
+                          <th scope="col" className="font-medium px-6 py-4 text-left">
                             Warden Name
                           </th>
-                          <th scope="col" class="font-medium px-6 py-4 text-left">
+                          <th scope="col" className="font-medium px-6 py-4 text-left">
                             Occupancy
                           </th>
-                          <th scope="col" class="font-medium px-6 py-4 text-left">
+                          <th scope="col" className="font-medium px-6 py-4 text-left">
                             Issue Resolved
                           </th>
                         </tr>

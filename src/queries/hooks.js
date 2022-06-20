@@ -14,6 +14,7 @@ import {
   getWardenList,
   getAdminProfile,
   getAdminDashboard,
+  getFeedbackList
 } from "../services";
 
 export const useStudentDetails = (params) => {
@@ -80,6 +81,16 @@ export const useWardenList = (params) => {
   return useQuery(
     [QUERY_KEYS.GET_WARDEN_LIST, params.wardenid],
     () => getWardenList(params),
+    {
+      retry: false,
+    }
+  );
+};
+
+export const useFeedbackList = (params) => {
+  return useQuery(
+    [QUERY_KEYS.GET_FEEDBACK_LIST, params.feedbackid],
+    () => getFeedbackList(params),
     {
       retry: false,
     }

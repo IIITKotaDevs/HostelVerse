@@ -28,20 +28,20 @@ export const Attendes = () => {
         <input type="text" className='w-1/2 px-4 py-1 rounded-lg shadow-md border-1 border-gray-100' placeholder="Search by Name or Roll Number" onChange={(e) => { filter(e.target.value) }} />
       </div>
       {attendanceList ? attendanceList?.length > 0 ? (
-        <div class="flex flex-col mx-32">
-          <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-              <div class="overflow-hidden rounded-3xl">
-                <table class="w-full">
-                  <thead class="bg-gray-700 text-white border-b">
+        <div className="flex flex-col mx-32">
+          <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+              <div className="overflow-hidden rounded-3xl">
+                <table className="w-full">
+                  <thead className="bg-gray-700 text-white border-b">
                     <tr>
-                      <th scope="col" class="font-medium px-6 py-4 text-left">
+                      <th scope="col" className="font-medium px-6 py-4 text-left">
                         Student ID
                       </th>
-                      <th scope="col" class="font-medium px-6 py-4 text-left">
+                      <th scope="col" className="font-medium px-6 py-4 text-left">
                         Name
                       </th>
-                      <th scope="col" class="font-medium px-6 py-4 text-left">
+                      <th scope="col" className="font-medium px-6 py-4 text-left">
                         Status
                       </th>
                     </tr>
@@ -50,13 +50,13 @@ export const Attendes = () => {
                     {attendanceList.map((student) => {
                       return (
                         <tr className="odd:bg-gray-100 even:bg-white">
-                          <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                          <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                             {student.studentid}
                           </td>
-                          <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                          <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                             {student.name}
                           </td>
-                          <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                          <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                             {student.location}
                           </td>
                         </tr>

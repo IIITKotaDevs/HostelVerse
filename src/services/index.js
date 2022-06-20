@@ -12,6 +12,7 @@ const apiEndPoints = {
   getFeedback: `/getFeedback`,
   getWardenProfile: `/getWardenProfile`,
   getAdminProfile: `/getAdminProfile`,
+  getAdminDashboard: `/getAdminDashboard`,
   signUp: `/student/signup`,
   verifyEmail: `/student/verifyEmail`,
   login: `/login`,
@@ -146,20 +147,20 @@ export async function getStudentList(params) {
 
 export async function getWardenList(params) {
   try {
-  	const res = (
-  		await fetch(baseUrl + apiEndPoints.getWardenList, {
-  			headers: {
-  				Authorization: `Bearer ${localStorage.getItem(
-          	localStorageKey.jwtToken
-        	)}`,
-        	"Content-type": "application/json",
-  			},
-  		}).then((res) => res.json())
-  	);
-  	return res;
+    const res = (
+      await fetch(baseUrl + apiEndPoints.getWardenList, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+      }).then((res) => res.json())
+    );
+    return res;
   }
   catch (error) {
-  	console.log(error);
+    console.log(error);
   }
 };
 
@@ -262,6 +263,25 @@ export async function getAdminProfile(params) {
   try {
     const res = (
       await fetch(baseUrl + apiEndPoints.getAdminProfile + `?adminid=${params.adminid}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+      }).then((res) => res.json())
+    );
+    return res;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getAdminDashboard() {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.getAdminDashboard, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem(
             localStorageKey.jwtToken

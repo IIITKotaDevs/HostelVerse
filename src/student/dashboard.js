@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import man from "../assets/img/man.png";
-import { useStudentDetails, useAdminProfile } from "../queries/hooks";
-import { useLocation } from "react-router";
+import { useStudentDetails, useAdminProfile, useAdminDashboard } from "../queries/hooks";
+import { useParams } from 'react-router-dom'
 import { localStorageKey } from "../utils/localStorageKey";
 import { useMutateCheckIn, useMutateCheckOut } from "../queries/mutations";
 import Loader from "../components/Loader";
@@ -11,6 +11,7 @@ export default function Dashboard() {
   const [error, setError] = useState('');
   const [studentData, setStudentData] = useState([]);
   const [checkedIn, setCheckedIn] = useState('');
+  const [dashboardData, setDashboardData] = useState([]);
 
   setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
 
@@ -54,61 +55,7 @@ export default function Dashboard() {
     },
   ];
 
-  const data2 = [
-    {
-      name: "Hostel 1",
-      advance: [
-        {
-          title: "Occupancy Rate",
-          value: "20%",
-        },
-        {
-          title: "Due Payments",
-          value: "08/20",
-        },
-        {
-          title: "Issue Resolved",
-          value: "17/20",
-        },
-      ],
-    },
-    {
-      name: "Hostel 2",
-      advance: [
-        {
-          title: "Occupancy Rate",
-          value: "20%",
-        },
-        {
-          title: "Due Payments",
-          value: "08/20",
-        },
-        {
-          title: "Issue Resolved",
-          value: "17/20",
-        },
-      ],
-    },
-    {
-      name: "Hostel 3",
-      advance: [
-        {
-          title: "Occupancy Rate",
-          value: "20%",
-        },
-        {
-          title: "Due Payments",
-          value: "08/20",
-        },
-        {
-          title: "Issue Resolved",
-          value: "17/20",
-        },
-      ],
-    },
-  ];
-
-  const location = useLocation();
+  const params = useParams();
 
   const { mutateAsync: checkInData } = useMutateCheckIn({
     onSuccess: () => {
@@ -138,17 +85,24 @@ export default function Dashboard() {
     adminid: localStorage.getItem(localStorageKey.id),
   });
 
+  const adminDashboard = useAdminDashboard();
+
+  useEffect(() => {
+    if (adminDashboard.data?.occupancyRate?.length > 0) {
+      const zip = (a1, a2) => a1.map((x, i) => [x, a2[i]]);
+      setDashboardData(zip(adminDashboard?.data?.occupancyRate, adminDashboard?.data?.issueClearanceRate));
+    }
+  }, [adminDashboard?.data?.occupancyRate?.length > 0]);
+
   useEffect(() => {
     setStudentData(studentDetails?.data?.student);
     setCheckedIn(studentDetails?.data?.attendenceStatus?.data === 'In Hostel' ? 'In Hostel' : 'Not In Hostel');
   }, [studentDetails]);
 
-  console.log(localStorage.getItem(localStorageKey.id));
-
   return (
     <>
       {studentDetails?.data || adminProfile?.data ? (
-        <div className="px-16 py-10 bg-dashboard bg-cover h-screen">
+        <div className="px-16 py-10 bg-dashboard bg-cover">
           <p className="font-medium text-gray-800 text-xl">{time}</p>
           <p className="font-bold text-4xl text-primary mt-2">{today}</p>
           <div className="mt-16 flex items-center gap-8">
@@ -156,14 +110,14 @@ export default function Dashboard() {
             <div className="flex flex-col gap-1">
               <p className="text-gray-800 font-medium text-xl">Welcome</p>
               <p className="text-black font-bold text-3xl">
-                {studentData?.profile?.name || adminProfile?.data?.profile?.name}
+                {studentData?.profile?.name || adminProfile?.data?.data?.profile?.name}
               </p>
               <p className="text-gray-800 font-medium text-xl">
                 Have a good day !!!
               </p>
             </div>
           </div>
-          <div className="flex gap-8 mt-8">
+          {params.user === "student" ? <div className="flex gap-8 mt-8">
             {data.map((item, index) => (
               <div key={index} className="text-center bg-primary2 p-6 rounded">
                 <p className="text-sm">{item.title}</p>
@@ -173,7 +127,8 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
-          {studentData?.roomAlloted ?
+            : null}
+          {params.user === "student" && studentData?.roomAlloted ?
             <div>
               <p className={`text-xl font-bold mt-10 mb-2`}>Check In / Out</p>
               <button
@@ -199,50 +154,51 @@ export default function Dashboard() {
               </p>
             </div>
             : null}
+
+          {params.user === "admin" ? <div>
+            <p className="text-xl font-bold mt-16">Hostel Statistics</p>
+            <div class="flex flex-col w-1/2">
+              <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+                  <div class="overflow-hidden rounded-xl">
+                    <table class="w-full">
+                      <thead class="bg-gray-700 border-b text-white">
+                        <tr>
+                          <th scope="col" class="font-medium px-6 py-4 text-left">
+                            Hostel Name
+                          </th>
+                          <th scope="col" class="font-medium px-6 py-4 text-left">
+                            Warden Name
+                          </th>
+                          <th scope="col" class="font-medium px-6 py-4 text-left">
+                            Occupancy
+                          </th>
+                          <th scope="col" class="font-medium px-6 py-4 text-left">
+                            Issue Resolved
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {dashboardData.map((item, index) => {
+                          return (
+                            <tr className="odd:bg-gray-300 even:bg-gray-200 text-white" key={index}>
+                              <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 font-semibold">{item[0].hostelname}</td>
+                              <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">{item[0].wardenname}</td>
+                              <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">{item[0].occupancyRate ? `${item[0].occupancyRate}%` : 'None'}</td>
+                              <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">{item[1].issueClearanceRate ? `${item[1].issueClearanceRate}%` : 'None'}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            : null}
         </div>
       ) : <Loader />}
     </>
   );
-  // else
-  //   return (
-  //     <div className="px-16 py-10 bg-dashboard h-auto bg-cover">
-  //       <p className="font-medium text-gray-800 text-xl">{time}</p>
-  //       <p className="font-bold text-4xl text-primary mt-2">{today}</p>
-  //       <div className="mt-16 flex items-center gap-8">
-  //         <img src={man} alt="" className="w-32" />
-  //         <div className="flex flex-col gap-1">
-  //           <p className="text-gray-800 font-medium text-xl">Welcome</p>
-  //           <p className="text-black font-bold text-3xl">Abc Admin</p>
-  //           <p className="text-gray-800 font-medium text-xl">
-  //             Have a good day !!!
-  //           </p>
-  //         </div>
-  //       </div>
-  //       <p className="text-xl font-bold mt-10 mb-4">Occupancy Rate</p>
-  //       <div className="flex flex-col gap-4">
-  //         {data2.map((item, index) => {
-  //           return (
-  //             <div
-  //               className="w-1/2 border-2 border-gray-400 rounded-lg"
-  //               key={index}
-  //             >
-  //               <div className="border-b-2 border-gray-400 text-center font-bold py-1">
-  //                 {item.name}
-  //               </div>
-  //               <div className="flex justify-around">
-  //                 {item.advance.map((item, index) => {
-  //                   return (
-  //                     <div className="text-center py-2" key={index}>
-  //                       <p>{item.title}</p>
-  //                       <p className="font-bold">{item.value}</p>
-  //                     </div>
-  //                   );
-  //                 })}
-  //               </div>
-  //             </div>
-  //           );
-  //         })}
-  //       </div>
-  //     </div>
-  //   );
 }

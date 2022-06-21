@@ -4,7 +4,7 @@ import { localStorageKey } from "../utils/localStorageKey";
 import { useStudentList } from "../queries/hooks";
 import person from '../assets/img/person.jpg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid, regular, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
+import { solid, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
 import Loader from "../components/Loader";
 
 export default function StudentList() {
@@ -18,7 +18,7 @@ export default function StudentList() {
   const baseUrl = "https://hostelverse-backend.azurewebsites.net/api";
 
   const handleRemoveStudent = async (id) => {
-    const response = await fetch(baseUrl + "/removeStudent" + `?studentid=${id}`, {
+    const response = await fetch(baseUrl + `/removeStudent` + `?studentid=${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export default function StudentList() {
 
   useEffect(() => {
     setStudentListData(studentList.data?.data);
-  }, [studentList.isSuccess === true]);
+  }, [studentList.isSuccess === true, studentList.data?.data]);
 
   const filter = (name) => {
     const filteredData = studentList.data?.data.filter((student) => {

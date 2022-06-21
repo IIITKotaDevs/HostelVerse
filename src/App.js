@@ -24,6 +24,7 @@ import { Announcement } from "./student/components/Announcement";
 import PutAnnouncement from "./warden/putAnnouncement";
 import { Attendes } from "./warden/Attendes";
 import CreateHostel from "./admin/createHostel";
+import StudentListAdmin from "./admin/studentList";
 import ViewFeedback from "./admin/viewfeedback";
 import AllotHostel from "./admin/allotHostel";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -72,6 +73,7 @@ function App(props) {
             <Route path="/admin/warden-list" element={<WardenList />} />
             <Route path="/admin/create-hostel" element={<CreateHostel />} />
             <Route path="/admin/create-warden" element={<CreateWarden />} />
+            <Route path="/admin/student-list" element={<StudentListAdmin />} />
             <Route path="/admin/view-feedback" element={<ViewFeedback />} />
             <Route path="/admin/allot-hostel" element={<AllotHostel />} />
             <Route path="/student/announcement" element={<Announcement />} />

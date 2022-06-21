@@ -14,7 +14,8 @@ import {
   getWardenList,
   getAdminProfile,
   getAdminDashboard,
-  getFeedbackList
+  getFeedbackList,
+  getStudentListAdmin,
 } from "../services";
 
 export const useStudentDetails = (params) => {
@@ -71,6 +72,16 @@ export const useStudentList = (params) => {
   return useQuery(
     [QUERY_KEYS.GET_STUDENT_LIST, params.wardenid],
     () => getStudentList(params),
+    {
+      retry: false,
+    }
+  );
+};
+
+export const useStudentListAdmin = (params) => {
+  return useQuery(
+    [QUERY_KEYS.GET_STUDENT_LIST, params.adminid, params.wardenid],
+    () => getStudentListAdmin(params),
     {
       retry: false,
     }

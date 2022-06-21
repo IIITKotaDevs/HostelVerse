@@ -19,6 +19,7 @@ const QUERY_KEYS = {
   GET_ADMIN_PROFILE: generateKeyName("get-admin-profile"),
   GET_ADMIN_DASHBOARD: generateKeyName("get-admin-dashboard"),
   GET_FEEDBACK_LIST: generateKeyName("get-feedback-list"),
+  GET_STUDENT_LIST_ADMIN: generateKeyName("get-student-list-admin"),
 };
 
 export default QUERY_KEYS;

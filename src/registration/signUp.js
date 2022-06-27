@@ -17,10 +17,10 @@ export default function SignUp() {
   const [id, setId] = useState("");
   const [gender, setGender] = useState({ name: "Select Gender" });
   const [phone, setPhone] = useState("");
-  const [location, setLocation] = useState("");
   const [eyePassword, setEyePassword] = useState(false);
   const [eyeConfirmPassword, setEyeConfirmPassword] = useState(false);
   const [error, setError] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   var errorLength = 0;
 
@@ -28,6 +28,7 @@ export default function SignUp() {
     onSuccess: (data) => {
       // Console the response from the server
       if (data.message !== "Student created successfully!") {
+        setLoading(false);
         setError(error => [...error, { type: "undefined", message: data.message }]);
         errorLength++;
         setEmail("");
@@ -45,6 +46,9 @@ export default function SignUp() {
       setId("");
       setGender({ name: "Select Gender" });
       setPhone("");
+    },
+    onMutate: () => {
+      setLoading(true)
     }
   });
 
@@ -451,7 +455,7 @@ export default function SignUp() {
             })
           }}
         >
-          Submit
+          {loading ? 'Submitting...' : 'Submit'}
         </button>
         <div className="flex gap-1 items-end text-xs">
           <p className="mt-2 ">Already have an Account ?</p>

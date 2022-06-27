@@ -12,6 +12,7 @@ export default function Dashboard() {
   const [studentData, setStudentData] = useState([]);
   const [checkedIn, setCheckedIn] = useState('');
   const [dashboardData, setDashboardData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
 
@@ -60,15 +61,29 @@ export default function Dashboard() {
   const { mutateAsync: checkInData } = useMutateCheckIn({
     onSuccess: () => {
       studentDetails.refetch();
+      // artificial delay to let studentData update
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     },
     onError: () => { },
+    onMutate: () => {
+      setLoading(true);
+    }
   });
 
   const { mutateAsync: checkOutData } = useMutateCheckOut({
     onSuccess: () => {
       studentDetails.refetch();
+      // artificial delay to let studentData update
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     },
     onError: () => { },
+    onMutate: () => {
+      setLoading(true);
+    }
   });
 
   useEffect(() => {
@@ -102,7 +117,7 @@ export default function Dashboard() {
   return (
     <>
       {studentDetails?.data || adminProfile?.data ? (
-        <div className="px-16 py-10 bg-dashboard bg-cover">
+        <div className="px-16 py-10 bg-dashboard bg-cover min-h-screen">
           <p className="font-medium text-gray-800 text-xl">{time}</p>
           <p className="font-bold text-4xl text-primary mt-2">{today}</p>
           <div className="mt-16 flex items-center gap-8">
@@ -131,21 +146,27 @@ export default function Dashboard() {
           {params.user === "student" && studentData?.roomAlloted ?
             <div>
               <p className={`text-xl font-bold mt-10 mb-2`}>Check In / Out</p>
-              <button
-                className={`w-96 text-white font-bold py-2 rounded-xl text-lg ${checkedIn !== 'In Hostel' ? "bg-red-600" : "bg-green-600"
-                  }`}
-                onClick={checkedIn !== 'In Hostel' ? () => checkInData({
-                  studentid: localStorage.getItem(localStorageKey.id),
-                  location: "26.9124, 75.7873",
-                  // location: localStorage.getItem(localStorageKey.location),
-                }) : () => checkOutData({
-                  studentid: localStorage.getItem(localStorageKey.id),
-                  // location: "26.9124,75.7873",
-                  location: localStorage.getItem(localStorageKey.location),
-                })}
-              >
-                You are {checkedIn === 'In Hostel' ? "IN" : "OUT"}
-              </button>
+              {loading ? <div class="bg-slate-700 shadow rounded-xl py-4 max-w-sm w-96">
+                <div class="animate-pulse flex space-x-4 px-32">
+                  <div class="rounded-xl bg-white h-3 w-full"></div>
+                </div>
+              </div> :
+                <button
+                  className={`w-96 text-white font-bold py-2 rounded-xl text-lg ${checkedIn !== 'In Hostel' ? "bg-red-600" : "bg-green-600"
+                    }`}
+                  onClick={checkedIn !== 'In Hostel' ? () => checkInData({
+                    studentid: studentData?.profile?.studentid,
+                    location: "26.9124, 75.7873",
+                    // location: localStorage.getItem(localStorageKey.location),
+                  }) : () => checkOutData({
+                    studentid: studentData?.profile?.studentid,
+                    // location: "26.9124,75.7873",
+                    location: localStorage.getItem(localStorageKey.location),
+                  })}
+                >
+                  You are {checkedIn === 'In Hostel' ? "IN" : "OUT"}
+                </button>
+              }
               <span>
                 <p className="text-sm text-red-500 italic pt-1 font-medium">{error}</p>
               </span>

@@ -19,6 +19,7 @@ export default function SignIn() {
   const [type, setType] = useState({ name: "Select Profession" });
   const [error, setError] = useState([]);
   const [eyePassword, setEyePassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   var errorLength = 0;
 
@@ -55,6 +56,7 @@ export default function SignIn() {
         }
       }
       else {
+        setLoading(false);
         setError(error => [...error, { type: "error", message: response.message }]);
       }
     },
@@ -63,6 +65,9 @@ export default function SignIn() {
         ...error,
         { type: "error", message: data.message },
       ]);
+    },
+    onMutate: () => {
+      setLoading(true);
     }
   });
 
@@ -315,7 +320,7 @@ export default function SignIn() {
             });
           }}
         >
-          Submit
+          {loading ? "Submitting..." : "Submit"}
         </button>
         <span className="mt-2">
           {error.length > 0

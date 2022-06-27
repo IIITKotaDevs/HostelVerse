@@ -7,6 +7,7 @@ export default function Otp(props) {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState([]);
   const [resend, setResend] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const baseUrl = "https://hostelverse-backend.azurewebsites.net/api";
   const { state } = useLocation();
@@ -56,6 +57,7 @@ export default function Otp(props) {
         navigate("/sign-in");
       }
       else {
+        setLoading(false);
         setError((error) => [
           ...error,
           { type: "Reason", message: data.message },
@@ -66,6 +68,9 @@ export default function Otp(props) {
     onError: (data) => {
       console.log(data);
       // setError(data);
+    },
+    onMutate: (data) => {
+      setLoading(true);
     }
   });
 
@@ -107,7 +112,7 @@ export default function Otp(props) {
             })
           }}
         >
-          Verify
+          {loading ? 'Verifying...' : 'Verify'}
         </button>
         <button
           className="px-10 py-2 bg-black text-white font-medium rounded-lg mt-2"

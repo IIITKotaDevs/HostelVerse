@@ -17,7 +17,7 @@ import {
   allotHostel
 } from '../services';
 
-export const useMutateSignUp = ({ onSuccess, onError }) => {
+export const useMutateSignUp = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => signUp(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -25,10 +25,13 @@ export const useMutateSignUp = ({ onSuccess, onError }) => {
     onError: async (err) => {
       typeof onError && onError(err);
     },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
+    }
   });
 };
 
-export const useMutateVerifyEmail = ({ onSuccess, onError }) => {
+export const useMutateVerifyEmail = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => verifyEmail(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -36,10 +39,13 @@ export const useMutateVerifyEmail = ({ onSuccess, onError }) => {
     onError: async (err) => {
       typeof onError && onError(err);
     },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
+    }
   });
 };
 
-export const useMutateLogin = ({ onSuccess, onError }) => {
+export const useMutateLogin = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => login(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -47,10 +53,13 @@ export const useMutateLogin = ({ onSuccess, onError }) => {
     onError: async (err) => {
       typeof onError && onError(err);
     },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
+    }
   });
 };
 
-export const useMutateCheckIn = ({ onSuccess, onError }) => {
+export const useMutateCheckIn = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => submitCheckIn(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -58,10 +67,13 @@ export const useMutateCheckIn = ({ onSuccess, onError }) => {
     onError: async (err) => {
       typeof onError && onError(err);
     },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
+    }
   });
 };
 
-export const useMutateCheckOut = ({ onSuccess, onError }) => {
+export const useMutateCheckOut = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => submitCheckOut(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -69,10 +81,13 @@ export const useMutateCheckOut = ({ onSuccess, onError }) => {
     onError: async (err) => {
       typeof onError && onError(err);
     },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
+    }
   });
 }
 
-export const useMutateLeaveApplication = ({ onSuccess, onError }) => {
+export const useMutateLeaveApplication = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => submitLeaveApplication(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -80,10 +95,13 @@ export const useMutateLeaveApplication = ({ onSuccess, onError }) => {
     onError: async (err) => {
       typeof onError && onError(err);
     },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
+    }
   });
 }
 
-export const useMutateRoomIssue = ({ onSuccess, onError }) => {
+export const useMutateRoomIssue = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => submitRoomIssue(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -91,10 +109,13 @@ export const useMutateRoomIssue = ({ onSuccess, onError }) => {
     onError: async (err) => {
       typeof onError && onError(err);
     },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
+    }
   });
 }
 
-export const useMutateUpdateStudentDetails = ({ onSuccess, onError }) => {
+export const useMutateUpdateStudentDetails = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => updateStudentDetails(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -105,7 +126,7 @@ export const useMutateUpdateStudentDetails = ({ onSuccess, onError }) => {
   });
 }
 
-export const useMutateUpdateWardenProfile = ({ onSuccess, onError }) => {
+export const useMutateUpdateWardenProfile = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => updateWardenProfile(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -116,7 +137,7 @@ export const useMutateUpdateWardenProfile = ({ onSuccess, onError }) => {
   });
 }
 
-export const useMutateCreateAnnouncement = ({ onSuccess, onError }) => {
+export const useMutateCreateAnnouncement = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => createAnnouncement(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -127,7 +148,7 @@ export const useMutateCreateAnnouncement = ({ onSuccess, onError }) => {
   });
 }
 
-export const useMutateUpdateLeaveApplication = ({ onSuccess, onError }) => {
+export const useMutateUpdateLeaveApplication = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => updateLeaveApplication(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -138,7 +159,7 @@ export const useMutateUpdateLeaveApplication = ({ onSuccess, onError }) => {
   });
 }
 
-export const useMutateResolveRoomIssue = ({ onSuccess, onError }) => {
+export const useMutateResolveRoomIssue = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => resolveRoomIssue(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -149,7 +170,7 @@ export const useMutateResolveRoomIssue = ({ onSuccess, onError }) => {
   });
 }
 
-export const useMutateCreateWarden = ({ onSuccess, onError }) => {
+export const useMutateCreateWarden = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => createWarden(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -160,7 +181,7 @@ export const useMutateCreateWarden = ({ onSuccess, onError }) => {
   });
 }
 
-export const useMutateDeleteWarden = ({ onSuccess, onError }) => {
+export const useMutateDeleteWarden = ({ onSuccess, onError, onMutate }) => {
   return useMutation((data) => deleteWarden(data), {
     onSuccess: (result) => {
       typeof onSuccess && onSuccess(result);
@@ -171,13 +192,13 @@ export const useMutateDeleteWarden = ({ onSuccess, onError }) => {
   });
 }
 
-export const useMutateAllotHostel = ({ onSuccess, onError}) => {
-	return useMutation((data) => allotHostel(data), {
-		onSuccess: (result) => {
-			typeof onSuccess && onSuccess(result);
-		},
-		onError: async (err) => {
-			typeof onError && onError(err);
-		}
-	})
+export const useMutateAllotHostel = ({ onSuccess, onError, onMutate }) => {
+  return useMutation((data) => allotHostel(data), {
+    onSuccess: (result) => {
+      typeof onSuccess && onSuccess(result);
+    },
+    onError: async (err) => {
+      typeof onError && onError(err);
+    }
+  })
 }

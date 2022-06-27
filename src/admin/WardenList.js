@@ -24,14 +24,13 @@ export default function WardenList() {
     onSuccess: () => {
       window.location.reload();
     },
-    onError: () => {},
+    onError: () => { },
   });
 
   return (
     <div
-      className={`bg-gray-75 ${
-        wardenListData && wardenListData.length < 5 ? "h-screen" : ""
-      } `}
+      className={`bg-gray-75 ${wardenListData && wardenListData.length < 5 ? "h-screen" : ""
+        } `}
     >
       <p className="font-bold text-3xl text-center pt-12 mb-8">Warden List</p>
       {wardenListData ? (

@@ -10,6 +10,7 @@ import FeedbackForm from "./student/feedbackform";
 import UpdateProfile from "./student/updateprofile";
 import { geolocated } from "react-geolocated";
 import Profile from "./student/profile";
+import Payment from "./student/makepayment.js";
 import Otp from "./registration/otp";
 import StudentDetail from "./warden/studentDetail";
 import Navbar from "./components/Navbar";
@@ -68,6 +69,7 @@ function App(props) {
             <Route path="/:user/update-profile" element={<UpdateProfile />} />
             <Route path="/:user/student-list" element={<StudentList />} />
             <Route path="/student-detail/:id" element={<StudentDetail />} />
+            <Route path="/student/make-payment" element={<Payment />} />
             <Route path="/:user/leave-applications" element={<LeaveApplications />} />
             <Route path="/:user/room-issues" element={<RoomIssuesList />} />
             <Route path="/admin/warden-list" element={<WardenList />} />

@@ -53,7 +53,9 @@ export default function StudentList() {
             return (
               <div key={student?.profile?.studentid} className="w-1/5 rounded-lg shadow-lg overflow-hidden bg-white py-8 px-12 divide-y-2">
                 <div className="w-full flex flex-col items-center pb-4">
-                  <img src={student?.profile?.picture || person} alt="" className="items-center w-24 rounded-full shadow-2xl" />
+                  <div className="rounded-full overflow-hidden w-24 h-24 shadow-2xl">
+                    <img src={student?.profile?.picture || person} alt="" className="w-auto h-24 object-cover" />
+                  </div>
                   <p className="pt-4 font-bold text-xl hover:text-primary transition-all cursor-pointer" onClick={() => { navigate(`/student-detail/${student?.profile?.studentid}`) }}>{student?.profile?.name}</p>
                   <p className="text-xs text-gray-600 font-semibold font-roboto">{student?.profile?.studentid}</p>
                   <div className="text-xs font-roboto flex gap-1 items-center text-gray-400">

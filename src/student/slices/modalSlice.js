@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  name: '',
   low: '',
   high: '',
 };
@@ -9,6 +10,9 @@ export const modal = createSlice({
   name: 'modal',
   initialState: initialState,
   reducers: {
+    updateName: (state, action) => {
+      state.name = action.payload;
+    },
     updateLow: (state, action) => {
       state.low = action.payload;
     },
@@ -18,5 +22,5 @@ export const modal = createSlice({
   },
 });
 
-export const { updateLow, updateHigh } =
+export const { updateName, updateLow, updateHigh } =
   modal.actions;

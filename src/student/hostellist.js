@@ -6,13 +6,23 @@ import { useHostelList } from '../queries/hooks';
 import Man from '../assets/img/man.svg'
 import Rating from '@mui/material/Rating';
 import Hostel from '../assets/img/hostel.jpg';
-import { updateLow, updateHigh } from './slices/modalSlice'
+import { updateName, updateLow, updateHigh } from './slices/modalSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
+import Box from '@mui/material/Box';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 function HostelList() {
     const [hostelData, setHostelData] = useState([])
     const navigate = useNavigate()
+    const name = useSelector(state => state.modal.name)
     const low = useSelector(state => state.modal.low)
     const high = useSelector(state => state.modal.high)
     const dispatch = useDispatch();
@@ -36,15 +46,62 @@ function HostelList() {
 
     return (
         <>
-            <div className="pt-16 pb-8 divide-y-4 divide-blue-200 bg-blue-50">
+            <div className="pt-16 pb-8 divide-y-4 divide-blue-200 bg-blue-50 min-h-screen">
                 <div className="pb-4">
                     <p className='text-3xl font-bold text-gray-900 text-center mb-4'>Hostel List</p>
                     <div className='flex flex-col items-center'>
-                        <input type="text" className='w-1/2 px-4 py-1 rounded-lg shadow-md' placeholder="Search by Name" onChange={(e) => { filter(e.target.value) }} />
+                        <div className='bg-white px-4 py-1 rounded-md shadow-md w-1/2'>
+                            <TextField
+                                id="filled"
+                                label="Search by Name"
+                                variant="standard"
+                                value={name}
+                                onChange={(e) => {
+                                    dispatch(updateName(e.target.value))
+                                    filter(e.target.value)
+                                }}
+                                size='small'
+                                className="w-full"
+                            />
+                        </div>
                         <div className='mt-2 flex justify-between w-1/2'>
-                            <input type="number" name="" id="" className='px-4 py-1 shadow-md rounded-lg w-2/5' placeholder='Lowest Value' value={low} onChange={(e) => dispatch(updateLow(e.target.value))} />
-                            <input type="number" name="" id="" className='px-4 py-1 shadow-md rounded-lg w-2/5' placeholder='Highest Value' value={high} onChange={(e) => dispatch(updateHigh(e.target.value))} />
-                            <button type="submit" className='px-4 py-1 bg-blue-700 text-white font-medium rounded-lg' onClick={() => filter()}>Filter</button>
+                            <div className='bg-white flex gap-2 items-center shadow-md rounded-md px-2 py-1'>
+                                <FormControl variant="standard">
+                                    <InputLabel htmlFor="input-with-icon-adornment">
+                                        Low
+                                    </InputLabel>
+                                    <Input
+                                        id="input-with-icon-adornment"
+                                        value={low}
+                                        onChange={(e) => { dispatch(updateLow(e.target.value)) }}
+                                        size="small"
+                                        startAdornment={
+                                            <InputAdornment position="start">
+                                                <FontAwesomeIcon icon={solid('indian-rupee-sign')} className='text-gray-700' />
+                                            </InputAdornment>
+                                        }
+                                    />
+                                </FormControl>
+                            </div>
+                            <div className='bg-white flex gap-2 items-center shadow-md rounded-md px-4 py-1'>
+                                <FormControl variant="standard">
+                                    <InputLabel htmlFor="input-with-icon-adornment">
+                                        High
+                                    </InputLabel>
+                                    <Input
+                                        id="input-with-icon-adornment"
+                                        value={high}
+                                        onChange={(e) => { dispatch(updateHigh(e.target.value)) }}
+                                        size="small"
+                                        startAdornment={
+                                            <InputAdornment position="start">
+                                                <FontAwesomeIcon icon={solid('indian-rupee-sign')} className='text-gray-700' />
+                                            </InputAdornment>
+                                        }
+                                    />
+                                </FormControl>
+                            </div>
+                            <button type="submit" className='px-8 py-1 bg-blue-700 text-white font-medium rounded-lg' onClick={() => filter()}>Filter</button>
                         </div>
                     </div>
                 </div >
@@ -92,7 +149,7 @@ function HostelList() {
                                 </div>
                             )
                         }) : <div className='flex justify-center items-center'>
-                            <p className='text-gray-900 font-semibold'>No Hostel Found</p>
+                            <p className='text-gray-900 font-semibold italic'>No hostel found with the given filters. Try changing filters!</p>
                         </div>}
                     </div>
                     : <Loader />}

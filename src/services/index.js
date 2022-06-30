@@ -13,6 +13,7 @@ const apiEndPoints = {
   getWardenProfile: `/getWardenProfile`,
   getAdminProfile: `/getAdminProfile`,
   getAdminDashboard: `/getAdminDashboard`,
+  getFeedbackList: `/getFeedback`,
   signUp: `/student/signup`,
   verifyEmail: `/student/verifyEmail`,
   login: `/login`,
@@ -29,7 +30,6 @@ const apiEndPoints = {
   getWardenList: `/getWarden`,
   createWarden: `/createWarden`,
   deleteWarden: `/deleteWarden`,
-  getFeedbackList: `/getFeedback`,
   allotHostel: `/allotHostel`,
 };
 
@@ -207,22 +207,22 @@ export async function getStudentDetailsWarden(params) {
 }
 
 export async function getStudentListAdmin(params) {
-	try {
-		const res = (
-			await fetch(baseUrl + apiEndPoints.getStudentList + `?adminid=${localStorage.getItem(localStorageKey.id)}&wardenid=${params.wardenid}`, {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem(
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.getStudentList + `?adminid=${localStorage.getItem(localStorageKey.id)}&wardenid=${params.wardenid}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
             localStorageKey.jwtToken
           )}`,
           "Content-type": "application/json",
-				},
-			}).then((res) => res.json())
-		);
-		return res;
-	}
-	catch (error) {
-		console.log(error);
-	}
+        },
+      }).then((res) => res.json())
+    );
+    return res;
+  }
+  catch (error) {
+    console.log(error);
+  }
 }
 
 export async function getStudentAttendanceList(params) {
@@ -461,6 +461,26 @@ export async function submitRoomIssue(data) {
   }
 }
 
+export async function submitFeedback(data) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.submitFeedback, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function updateStudentDetails(data) {
   try {
     const res = (
@@ -604,23 +624,23 @@ export async function deleteWarden(data) {
 
 export async function allotHostel(data) {
 
-	try {
-		const res = (
-			await fetch(baseUrl + apiEndPoints.allotHostel, {
-				method: "POST",
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem(localStorageKey.jwtToken)}`,
-					"Content-type": "application/json",
-				},
-				body: JSON.stringify(data),
-			}).then((res) => res.json())
-		);
-		return res;
-      // {
-      //   hostelid: [hostelId],
-      //   batch: [batch],
-      // },
-	} catch (error) {
-		console.log(error);
-	}
- };
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.allotHostel, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(localStorageKey.jwtToken)}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+    );
+    return res;
+    // {
+    //   hostelid: [hostelId],
+    //   batch: [batch],
+    // },
+  } catch (error) {
+    console.log(error);
+  }
+};

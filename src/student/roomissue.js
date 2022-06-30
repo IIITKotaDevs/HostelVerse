@@ -9,6 +9,7 @@ function RoomIssue() {
   const [reason, setReason] = useState("");
   const [error, setError] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   var errorLength = 0;
 
@@ -27,9 +28,13 @@ function RoomIssue() {
   const { mutateAsync: RoomIssueData } = useMutateRoomIssue({
     onSuccess: () => {
       setSuccessMessage("Room Issues submitted successfully");
+      setLoading(false);
       setReason("");
     },
-    onError: () => { }
+    onError: () => { },
+    onMutate: () => {
+      setLoading(true);
+    }
   });
 
   useEffect(() => {
@@ -80,13 +85,13 @@ function RoomIssue() {
 
         <div className="mx-auto text-center">
           <button
-            className="text-white bg-gray-700 hover:bg-gray-900 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
+            className="text-white bg-gray-700 transition-all hover:bg-gray-900 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
             onClick={(e) => {
               e.preventDefault();
               validate() && RoomIssueData({ studentid: localStorage.getItem("id"), remarks: reason });
             }}
           >
-            Submit
+            {loading ? 'Submitting...' : 'Submit'}
           </button>
         </div>
       </div>

@@ -14,7 +14,8 @@ import {
   resolveRoomIssue,
   createWarden,
   deleteWarden,
-  allotHostel
+  allotHostel,
+  submitFeedback,
 } from '../services';
 
 export const useMutateSignUp = ({ onSuccess, onError, onMutate }) => {
@@ -122,6 +123,9 @@ export const useMutateUpdateStudentDetails = ({ onSuccess, onError, onMutate }) 
     },
     onError: async (err) => {
       typeof onError && onError(err);
+    },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
     }
   });
 }
@@ -133,6 +137,9 @@ export const useMutateUpdateWardenProfile = ({ onSuccess, onError, onMutate }) =
     },
     onError: async (err) => {
       typeof onError && onError(err);
+    },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
     }
   });
 }
@@ -144,6 +151,9 @@ export const useMutateCreateAnnouncement = ({ onSuccess, onError, onMutate }) =>
     },
     onError: async (err) => {
       typeof onError && onError(err);
+    },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
     }
   });
 }
@@ -155,6 +165,9 @@ export const useMutateUpdateLeaveApplication = ({ onSuccess, onError, onMutate }
     },
     onError: async (err) => {
       typeof onError && onError(err);
+    },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
     }
   });
 }
@@ -166,6 +179,9 @@ export const useMutateResolveRoomIssue = ({ onSuccess, onError, onMutate }) => {
     },
     onError: async (err) => {
       typeof onError && onError(err);
+    },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
     }
   });
 }
@@ -177,6 +193,9 @@ export const useMutateCreateWarden = ({ onSuccess, onError, onMutate }) => {
     },
     onError: async (err) => {
       typeof onError && onError(err);
+    },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
     }
   });
 }
@@ -188,6 +207,9 @@ export const useMutateDeleteWarden = ({ onSuccess, onError, onMutate }) => {
     },
     onError: async (err) => {
       typeof onError && onError(err);
+    },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
     }
   });
 }
@@ -199,6 +221,23 @@ export const useMutateAllotHostel = ({ onSuccess, onError, onMutate }) => {
     },
     onError: async (err) => {
       typeof onError && onError(err);
+    },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
+    }
+  });
+}
+
+export const useMutateFeedback = ({ onSuccess, onError, onMutate }) => {
+  return useMutation((data) => submitFeedback(data), {
+    onSuccess: (result) => {
+      typeof onSuccess && onSuccess(result);
+    },
+    onError: async (err) => {
+      typeof onError && onError(err);
+    },
+    onMutate: async (data) => {
+      typeof onMutate && onMutate(data);
     }
   })
 }

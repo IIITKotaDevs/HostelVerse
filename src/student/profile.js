@@ -105,7 +105,7 @@ export default function Profile() {
                 </div>
               </div>
               <div className="flex flex-col items-center mt-2">
-                <button className="px-4 py-1 bg-primary rounded font-roboto font-medium text-white text-sm shadow-md" onClick={() => navigate(`/${params.user}/update-profile`)}>Edit Profile</button>
+                <button className="px-4 py-1 bg-primary rounded font-roboto font-medium text-white text-sm shadow-md hover:shadow-none transition-all" onClick={() => navigate(`/${params.user}/update-profile`)}>Edit Profile</button>
               </div>
             </div>
           </div>

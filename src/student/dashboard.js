@@ -152,7 +152,7 @@ export default function Dashboard() {
                 </div>
               </div> :
                 <button
-                  className={`w-96 text-white font-bold py-2 rounded-xl text-lg ${checkedIn !== 'In Hostel' ? "bg-red-600" : "bg-green-600"
+                  className={`w-96 text-white font-bold py-2 rounded-xl shadow-lg hover:shadow-none transition-all text-lg ${checkedIn !== 'In Hostel' ? "bg-red-600" : "bg-green-600"
                     }`}
                   onClick={checkedIn !== 'In Hostel' ? () => checkInData({
                     studentid: studentData?.profile?.studentid,

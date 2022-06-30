@@ -11,6 +11,7 @@ function LeaveApplication() {
   const [reason, setReason] = useState("");
   const [error, setError] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   var errorLength = 0;
 
@@ -53,11 +54,15 @@ function LeaveApplication() {
   const { mutateAsync: LeaveApplicationData } = useMutateLeaveApplication({
     onSuccess: () => {
       setSuccessMessage("Leave Application Submitted Successfully");
+      setLoading(false);
       setStartDate("");
       setEndDate("");
       setReason("");
     },
-    onError: () => { }
+    onError: () => { },
+    onMutate: () => {
+      setLoading(true);
+    }
   });
 
   useEffect(() => {
@@ -125,7 +130,7 @@ function LeaveApplication() {
               : null}
           </div>
         </div>
-        <div className="mx-auto text-center mt-8 w-2/3 rounded-lg shadow-lg mb-8">
+        <div className="mx-auto text-center mt-8 w-2/3 mb-8">
           <TextField
             id="reason"
             type="text"
@@ -135,7 +140,7 @@ function LeaveApplication() {
             onChange={(e) => setReason(e.target.value)}
             label="Reason"
             variant="outlined"
-            className="w-full"
+            className="w-full shadow-md"
           />
           {
             error.length > 0
@@ -155,13 +160,13 @@ function LeaveApplication() {
         <h1 className="text-center font-semibold mb-2 text-sm text-green-500">{successMessage}</h1>
         <div className="text-center">
           <button
-            className="text-white bg-gray-700 hover:bg-gray-900 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
+            className="text-white bg-gray-700 transition-all hover:bg-gray-900 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
             onClick={(e) => {
               e.preventDefault();
               validate() && LeaveApplicationData({ studentid: localStorage.getItem("id"), message: reason, date_to: endDate, date_from: startDate });
             }}
           >
-            Submit
+            {loading ? 'Submitting...' : 'Submit'}
           </button>
         </div>
       </div>

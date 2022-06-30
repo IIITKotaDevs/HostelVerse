@@ -29,7 +29,10 @@ export default function Navbar() {
     location.pathname === "/" ||
     location.pathname === "/sign-up" ||
     location.pathname === "/sign-in" ||
-    location.pathname === "/otp"
+    location.pathname === "/otp" ||
+    location.pathname === "/request-reset-password" ||
+    location.pathname === "/reset-password" ||
+    location.pathname === "/404"
   )
     return null;
   else {

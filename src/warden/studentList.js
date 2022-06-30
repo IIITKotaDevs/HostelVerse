@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { localStorageKey } from "../utils/localStorageKey";
 import { useStudentList } from "../queries/hooks";
 import person from '../assets/img/person.jpg'
+import TextField from '@mui/material/TextField';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
 import Loader from "../components/Loader";
@@ -42,10 +43,19 @@ export default function StudentList() {
   }
 
   return (
-    <div className={`${studentListData?.length < 5 ? 'h-screen' : ''} bg-gray-75`}>
+    <div className={`min-h-screen bg-gray-75`}>
       <p className="font-bold text-3xl text-center pt-12 pb-8">Student List</p>
-      <div className="flex justify-center mb-8">
-        <input type="text" className='w-1/2 px-4 py-1 rounded-lg shadow-md' placeholder="Search by Name or Roll Number" onChange={(e) => { filter(e.target.value) }} />
+      <div className="mx-auto mb-8 w-1/2 bg-white p-2 rounded-lg shadow-md">
+        <TextField
+          id="filled"
+          label="Search by Name or Student ID"
+          variant="outlined"
+          onChange={(e) => {
+            filter(e.target.value)
+          }}
+          size='small'
+          className="w-full"
+        />
       </div>
       {studentListData ? (
         <div className="flex flex-wrap justify-center gap-8 pb-8">

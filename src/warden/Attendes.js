@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { localStorageKey } from "../utils/localStorageKey";
 import { useStudentAttendanceList } from "../queries/hooks";
 import Loader from "../components/Loader";
+import TextField from '@mui/material/TextField';
 
 export const Attendes = () => {
   const [attendanceList, setAttendanceList] = useState([]);
@@ -24,8 +25,17 @@ export const Attendes = () => {
   return (
     <div>
       <p className="font-bold text-3xl text-center mt-12 mb-8">Check In / Out Log</p>
-      <div className="flex justify-center mb-4">
-        <input type="text" className='w-1/2 px-4 py-1 rounded-lg shadow-md border-1 border-gray-100' placeholder="Search by Name or Roll Number" onChange={(e) => { filter(e.target.value) }} />
+      <div className="mx-auto mb-8 w-1/2 bg-white rounded-lg shadow-md">
+        <TextField
+          id="filled"
+          label="Search by Name"
+          variant="outlined"
+          onChange={(e) => {
+            filter(e.target.value)
+          }}
+          size='small'
+          className="w-full"
+        />
       </div>
       {attendanceList ? attendanceList?.length > 0 ? (
         <div className="flex flex-col mx-32">

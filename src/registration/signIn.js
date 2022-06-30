@@ -1,15 +1,9 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { Listbox, Transition } from "@headlessui/react";
-import axios from "axios";
 import { localStorageKey } from "../utils/localStorageKey";
-import baseurl from "../config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  solid,
-  regular,
-  brands,
-} from "@fortawesome/fontawesome-svg-core/import.macro";
+import { solid, regular, brands, } from "@fortawesome/fontawesome-svg-core/import.macro";
 import { useMutateLogin } from "../queries/mutations";
 
 export default function SignIn() {
@@ -308,7 +302,9 @@ export default function SignIn() {
               : null}
           </div>
         </div>
-
+        <div className="mb-2 text-xs text-gray-800 hover:text-black">
+          <p className="cursor-pointer text-right" onClick={() => navigate("/request-reset-password")}>Forgot Password ?</p>
+        </div>
         <button
           className="px-10 py-2 bg-black text-white font-medium rounded-lg"
           onClick={(e) => {
@@ -335,7 +331,7 @@ export default function SignIn() {
             })
             : null}
         </span>
-        <div className="flex gap-1 text-xs mt-2">
+        <div className="flex gap-1 text-xs">
           <p className="">Don't have an Account ?</p>
           <p
             className="cursor-pointer underline text-blue-700"

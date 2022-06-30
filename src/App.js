@@ -1,8 +1,10 @@
-import { Routes, Route, useParams } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { HostelList, HostelDetail } from "./student";
 import Landing from "./registration/landing";
 import SignUp from "./registration/signUp";
 import SignIn from "./registration/signIn";
+import RequestResetPassword from "./registration/requestResetPassword";
+import ResetPassword from "./registration/resetPassword";
 import Dashboard from "./student/dashboard";
 import LeaveApplication from "./student/leaveapplication";
 import RoomIssue from "./student/roomissue";
@@ -28,6 +30,7 @@ import CreateHostel from "./admin/createHostel";
 import StudentListAdmin from "./admin/studentList";
 import ViewFeedback from "./admin/viewfeedback";
 import AllotHostel from "./admin/allotHostel";
+import Error404 from "./components/Error404";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Provider } from 'react-redux';
@@ -61,6 +64,8 @@ function App(props) {
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/otp" element={<Otp />} />
+            <Route path="/request-reset-password" element={<RequestResetPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/:user/dashboard" element={<Dashboard />} />
             <Route path="/:user/leave" element={<LeaveApplication />} />
             <Route path="/:user/issue" element={<RoomIssue />} />
@@ -82,6 +87,8 @@ function App(props) {
             <Route path="/warden/announcement" element={<PutAnnouncement />} />
             <Route path="/:user/hostels/:id" element={<HostelDetail />} />
             <Route path="/warden/attendees" element={<Attendes />} />
+            <Route path="/404" element={<Error404 />} />
+            <Route path="*" element={<Navigate replace to="/404" />} />
           </Routes>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

@@ -19,6 +19,7 @@ module.exports = {
         'comfortaa': ['Comfortaa', 'sans-serif'],
         'righteous': ['Righteous', 'sans-serif'],
         'fredoka': ['Fredoka One', 'sans-serif'],
+        'rubik': ['Rubik Moonrocks', 'sans-serif'],
       },
       colors: {
         'primary': 'rgba(241, 174, 0, 1)',

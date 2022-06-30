@@ -11,47 +11,20 @@ import { useMutateCreateAnnouncement } from "../queries/mutations";
 function PutAnnouncement() {
   const [heading, setHeading] = useState("");
   const [content, setContent] = useState("");
-  const [error, setError] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const res = await axios.post(
-      `${baseurl}/createAnnouncement`,
-      {
-        wardenid: localStorage.getItem(localStorageKey.id),
-        heading: heading,
-        message: content,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            localStorageKey.jwtToken
-          )}`,
-          "Content-type": "application/json",
-        },
-      }
-    );
-
-    setContent("");
-    setHeading("");
-    if (res.status === 200) {
-      console.log("Submitted successfully");
-    } else {
-      console.error("Something went wrong!");
-    }
-
-    document.getElementById("heading").value = "";
-    document.getElementById("content").value = "";
-  };
 
   const { mutateAsync: CreateAnnouncementData } = useMutateCreateAnnouncement({
     onSuccess: () => {
+      setLoading(false);
       setSuccessMessage("Announcement Posted Successfully");
       setHeading("");
       setContent("");
     },
     onError: () => { },
+    onMutate: () => {
+      setLoading(true);
+    }
   });
 
   useEffect(() => {
@@ -97,7 +70,7 @@ function PutAnnouncement() {
         <h1 className="text-center font-medium mb-2 text-sm text-green-500 italic">{successMessage}</h1>
         <div className="text-center">
           <button
-            className="text-white bg-gray-700 hover:bg-gray-900 font-medium shadow-lg hover:shadow-none px-4 py-1 transition-all ease-in-out rounded-lg"
+            className="text-white bg-gray-700 transition-all hover:bg-gray-900 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
             onClick={(e) => {
               e.preventDefault();
               CreateAnnouncementData({
@@ -107,7 +80,7 @@ function PutAnnouncement() {
               });
             }}
           >
-            Submit
+            {loading ? 'Submitting...' : 'Submit'}
           </button>
         </div>
       </div>

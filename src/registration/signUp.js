@@ -111,7 +111,7 @@ export default function SignUp() {
       ]);
       errorLength++;
     }
-    if (password.length > 0 && password.match(/[a-z]/g) === null) {
+    if (password.length >= 8 && password.match(/[a-z]/g) === null) {
       setError((error) => [
         ...error,
         {
@@ -121,7 +121,7 @@ export default function SignUp() {
       ]);
       errorLength++;
     }
-    if (password.length > 0 && password.match(/[A-Z]/g) === null) {
+    if (password.length >= 8 && password.match(/[A-Z]/g) === null) {
       setError((error) => [
         ...error,
         {
@@ -131,7 +131,7 @@ export default function SignUp() {
       ]);
       errorLength++;
     }
-    if (password.length > 0 && password.match(/[0-9]/g) === null) {
+    if (password.length >= 8 && password.match(/[0-9]/g) === null) {
       setError((error) => [
         ...error,
         {
@@ -142,7 +142,7 @@ export default function SignUp() {
       errorLength++;
     }
     if (
-      password.length > 0 &&
+      password.length >= 8 &&
       password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g) === null
     ) {
       setError((error) => [
@@ -154,7 +154,7 @@ export default function SignUp() {
       ]);
       errorLength++;
     }
-    if (password.length > 0 && confirmPassword === "") {
+    if (password.length >= 8 && confirmPassword === "") {
       setError((error) => [
         ...error,
         { type: "confirmPassword", message: "Confirm Password is required" },
@@ -162,7 +162,7 @@ export default function SignUp() {
       errorLength++;
     }
     if (
-      password.length > 0 &&
+      password.length >= 8 &&
       confirmPassword.length > 0 &&
       password !== confirmPassword
     ) {

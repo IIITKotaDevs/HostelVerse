@@ -15,7 +15,6 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import.macro';
 
@@ -50,11 +49,11 @@ function HostelList() {
                 <div className="pb-4">
                     <p className='text-3xl font-bold text-gray-900 text-center mb-4'>Hostel List</p>
                     <div className='flex flex-col items-center'>
-                        <div className='bg-white px-4 py-1 rounded-md shadow-md w-1/2'>
+                        <div className='bg-white p-2 rounded-md shadow-md w-1/2 mx-auto'>
                             <TextField
                                 id="filled"
                                 label="Search by Name"
-                                variant="standard"
+                                variant="outlined"
                                 value={name}
                                 onChange={(e) => {
                                     dispatch(updateName(e.target.value))

@@ -4,7 +4,6 @@ import { useStudentDetails } from "../queries/hooks";
 import baseurl from "../config";
 import axios from 'axios';
 
-import Loader from '../components/Loader';
 import { useHostelList } from '../queries/hooks';
 
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
@@ -12,12 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import feedback from '../assets/img/feedback.jpg'
 
 const Payment = () => {
-	const [amount, setAmount] = useState('');
-	const [orderid, setOrderid] = useState('');
-	const [receiptid, setReceiptid] = useState('');
 	const [studentData, setStudentData] = useState([]);
-	const [paymentid, setPaymentid] = useState('');
-	const [signature, setSignature] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [payDisable, setPayDisable] = useState(true);
 	const [hostelData, setHostelData] = useState([])
@@ -56,8 +50,8 @@ const Payment = () => {
           },
         });
 
-        setOrderid(res.data.data.orderid);
-        setReceiptid(res.data.data.receiptid);
+        localStorage.setItem('orderID', res.data.data.orderid);
+        localStorage.setItem('receiptID', res.data.data.receiptid);
 	}
 
 	const loadScript = async (src) => {
@@ -94,14 +88,14 @@ const Payment = () => {
 			amount: hostelData.fees + '00',
 			name: "Hostelverse",
 			description: "Pay fees for the current semester",
-			order_id: orderid,
+			order_id: localStorage.getItem('orderID'),
 
 			handler: async function (response) {
 				alert(response.razorpay_payment_id);
 				alert(response.razorpay_order_id);
 				alert(response.razorpay_signature);
 
-				await verifyPayment(response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature, receiptid);
+				await verifyPayment(response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature);
 				alert('Payment successful!');
 				setLoading(false);
 			},
@@ -122,7 +116,7 @@ const Payment = () => {
           razorpay_payment_id: paymentId,
           razorpay_order_id: orderId,
           razorpay_signature: sign,
-          receipt_id: receiptid
+          receipt_id: localStorage.getItem('receiptID'),
         },
         {
           headers: {
@@ -132,6 +126,11 @@ const Payment = () => {
             "Content-type": "application/json",
           },
         });
+
+        if (res) {
+        	localStorage.removeItem('orderID');
+        	localStorage.removeItem('receiptID');
+        }
 	}
 
     return (
@@ -145,10 +144,6 @@ const Payment = () => {
 	          </div>
 	          <h1 className="text-3xl font-bold mt-4 text-gray-800">Pay Fees Form</h1>
 	        </div>
-
-	        {
-	        	console.log(hostelData)
-	        }
 
 	        <div className="mx-auto text-center mt-2">
 	          <button

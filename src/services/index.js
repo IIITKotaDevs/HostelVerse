@@ -205,6 +205,24 @@ export async function getStudentDetailsWarden(params) {
     console.log(error);
   }
 }
+export async function getStudentDetailsAdmin(params) {
+  try {
+    const res = (
+      await fetch(baseUrl + apiEndPoints.getStudentList + `?studentid=${params.studentid}&adminid=${params.adminid}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            localStorageKey.jwtToken
+          )}`,
+          "Content-type": "application/json",
+        },
+      }).then((res) => res.json())
+    );
+    return res;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
 
 export async function getStudentListAdmin(params) {
   try {

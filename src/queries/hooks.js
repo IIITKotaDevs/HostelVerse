@@ -8,6 +8,7 @@ import {
   getLeaveApplicationList,
   getStudentList,
   getStudentDetailsWarden,
+  getStudentDetailsAdmin,
   getStudentAttendanceList,
   getAnnouncementList,
   getWardenProfile,
@@ -112,6 +113,16 @@ export const useStudentDetailsWarden = (params) => {
   return useQuery(
     [QUERY_KEYS.GET_STUDENT_DETAILS_WARDEN, params.studentid, params.wardenid],
     () => getStudentDetailsWarden(params),
+    {
+      retry: false,
+    }
+  );
+};
+
+export const useStudentDetailsAdmin = (params) => {
+  return useQuery(
+    [QUERY_KEYS.GET_STUDENT_DETAILS_ADMIN, params.studentid, params.adminid],
+    () => getStudentDetailsAdmin(params),
     {
       retry: false,
     }

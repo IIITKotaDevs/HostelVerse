@@ -29,7 +29,7 @@ export default function WardenList() {
 
   return (
     <div
-      className={`bg-gray-75 ${wardenListData && wardenListData.length < 5 ? "h-screen" : ""
+      className={`bg-gray-75 min-h-screen ${wardenListData && wardenListData.length < 5 ? "h-screen" : ""
         } `}
     >
       <p className="font-bold text-3xl text-center pt-12 mb-8">Warden List</p>
@@ -48,10 +48,7 @@ export default function WardenList() {
                     className="items-center w-24 rounded-full shadow-2xl"
                   />
                   <p
-                    className="pt-4 font-bold text-xl hover:text-primary transition-all cursor-pointer"
-                    onClick={() => {
-                      navigate(`/warden-detail/${warden?.profile?.wardenid}`);
-                    }}
+                    className="pt-4 font-bold text-xl"
                   >
                     {warden?.profile?.name}
                   </p>

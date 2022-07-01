@@ -2,8 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import person from "../assets/img/person.jpg";
 import { localStorageKey } from "../utils/localStorageKey";
-import { useLocation } from "react-router";
-import { useStudentDetails, useWardenProfile } from "../queries/hooks";
+import { useStudentDetails, useWardenProfile, useAdminProfile } from "../queries/hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid, regular, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
 import { useNavigate } from "react-router";
@@ -19,43 +18,65 @@ export default function Profile() {
     wardenid: localStorage.getItem(localStorageKey.id),
   });
 
+  const adminProfile = useAdminProfile({
+    adminid: localStorage.getItem(localStorageKey.id),
+  });
+
   const navigate = useNavigate();
   const params = useParams();
+
+  let image = person;
+  switch (params.type) {
+    case "student":
+      image = studentDetails.data?.student.profile.image;
+      break;
+    case "warden":
+      image = wardenProfile.data?.message.profile.image;
+      break;
+    case "admin":
+      image = adminProfile.data?.data.profile.image;
+      break;
+    default:
+      break;
+  }
+
 
   return (
     <>
       <div className="flex justify-center items-center bg-profile bg-cover h-screen">
-        {(params.user === 'student' ? studentDetails?.data?.student : wardenProfile?.data?.message) ? <div className="w-2/3 flex bg-white rounded-3xl shadow-2xl overflow-hidden">
+        {(params.user === 'student' ? studentDetails?.data?.student : (params.user === "warden" ? wardenProfile?.data?.message : adminProfile?.data?.data)) ? <div className="w-2/3 flex bg-white rounded-3xl shadow-2xl overflow-hidden">
           <div className="w-1/2">
-            <img src={params.user === "student" ? studentDetails?.data?.student?.profile?.picture : (params.user === "warden" ? wardenProfile?.data?.message?.profile?.picture : person)} className="w-full h-full object-cover" />
+            <img src={image || person} className="w-full h-full object-cover" />
           </div>
           <div className="w-1/2 flex items-center py-6">
             <div className="w-full flex flex-col px-8 gap-y-2">
               <div className="flex justify-between">
                 <div>
                   <p className="text-xxs font-bold text-gray-400">NAME</p>
-                  <p className="text-lg -mt-1 font-bold text-gray-800">{params.user === "student" ? studentDetails?.data?.student?.profile?.name : wardenProfile?.data?.message?.profile?.name}</p>
+                  <p className="text-lg -mt-1 font-bold text-gray-800">{params.user === "student" ? studentDetails?.data?.student?.profile?.name : (params.user === "warden" ? wardenProfile?.data?.message?.profile?.name : adminProfile?.data?.data?.profile?.name)}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-xxs font-bold text-gray-400">STUDENT ID</p>
-                  <p className="text-lg -mt-1 font-bold text-gray-800 uppercase">{params.user === "student" ? studentDetails?.data?.student?.profile?.studentid : wardenProfile?.data?.message?.profile?.wardenid}</p>
+                  <p className="text-lg -mt-1 font-bold text-gray-800 uppercase">{params.user === "student" ? studentDetails?.data?.student?.profile?.studentid : (params.user === "warden" ? wardenProfile?.data?.message?.profile?.wardenid : adminProfile?.data?.data?.profile?.adminid)}</p>
                 </div>
               </div>
               <div className="flex justify-between">
                 <div>
                   <p className="text-xxs font-bold text-gray-400">EMAIL</p>
-                  <p className="text-lg -mt-1 font-bold text-gray-800">{params.user === "student" ? studentDetails?.data?.student?.profile?.email : wardenProfile?.data?.message?.profile?.email}</p>
+                  <p className="text-lg -mt-1 font-bold text-gray-800">{params.user === "student" ? studentDetails?.data?.student?.profile?.email : (params.user === "warden" ? wardenProfile?.data?.message?.profile?.email : adminProfile?.data?.data?.profile?.email)}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-xxs font-bold text-gray-400">PHONE</p>
-                  <p className="text-lg -mt-1 font-bold text-gray-800">{params.user === "student" ? studentDetails?.data?.student?.profile?.contactno : wardenProfile?.data?.message?.profile?.contactno}</p>
+                  <p className="text-lg -mt-1 font-bold text-gray-800">{params.user === "student" ? studentDetails?.data?.student?.profile?.contactno : (params.user === "warden" ? wardenProfile?.data?.message?.profile?.contactno : adminProfile?.data?.data?.profile?.contactno)}</p>
                 </div>
               </div>
               <div className="flex justify-between">
-                <div>
-                  <p className="text-xxs font-bold text-gray-400">HOSTEL</p>
-                  <p className="text-lg -mt-1 font-bold text-gray-800">{params.user === "student" ? studentDetails?.data?.student?.hostelid : wardenProfile?.data?.message?.hostelid}</p>
-                </div>
+                {params.user === "student" || params.user === "warden" ?
+                  <div>
+                    <p className="text-xxs font-bold text-gray-400">HOSTEL</p>
+                    <p className="text-lg -mt-1 font-bold text-gray-800">{params.user === "student" ? studentDetails?.data?.student?.hostelid : (params.user === "warden" ? wardenProfile?.data?.message?.hostelid : adminProfile?.data?.data?.hostelid)}</p>
+                  </div>
+                  : null}
                 {params.user === "student" ? <div className="text-right">
                   <p className="text-xxs font-bold text-gray-400">ROOM</p>
                   <p className="text-lg -mt-1 font-bold text-gray-800">{studentDetails?.data?.student?.roomid}</p>
@@ -63,7 +84,12 @@ export default function Profile() {
                   : null}
                 {params.user === "warden" ? <div className="text-right">
                   <p className="text-xxs font-bold text-gray-400">ROLE</p>
-                  <p className="text-lg -mt-1 font-bold text-gray-800 capitalize">{wardenProfile?.data?.message?.role}</p>
+                  <p className="text-lg -mt-1 font-bold text-gray-800 capitalize">{wardenProfile?.data?.message?.role || adminProfile?.data?.data?.role}</p>
+                </div>
+                  : null}
+                {params.user === "admin" ? <div className="">
+                  <p className="text-xxs font-bold text-gray-400">ROLE</p>
+                  <p className="text-lg -mt-1 font-bold text-gray-800 capitalize">{adminProfile?.data?.data?.role}</p>
                 </div>
                   : null}
               </div>

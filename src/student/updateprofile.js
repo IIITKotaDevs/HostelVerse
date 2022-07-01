@@ -10,7 +10,7 @@ import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import
 import { localStorageKey } from '../utils/localStorageKey';
 import Issue from "../assets/img/updateProfile.jpg";
 import { useMutateUpdateStudentDetails, useMutateUpdateWardenProfile } from '../queries/mutations';
-import { useStudentDetails, useWardenProfile } from '../queries/hooks';
+import { useStudentDetails, useWardenProfile, useAdminProfile } from '../queries/hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 import Loader from '../components/Loader';
 
@@ -21,6 +21,10 @@ function UpdateProfile() {
 
     const wardenProfile = useWardenProfile({
         wardenid: localStorage.getItem(localStorageKey.id),
+    });
+
+    const adminProfile = useAdminProfile({
+        adminid: localStorage.getItem(localStorageKey.id),
     });
 
     var Filter = require('bad-words'),
@@ -68,7 +72,6 @@ function UpdateProfile() {
     }, [wardenProfile.isSuccess]);
 
     useEffect(() => {
-        // Set message to empty string after 3 seconds
         setTimeout(() => {
             setMessage("");
         }, 3000);

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 export default function RequestResetPassword() {
     const [email, setEmail] = useState('');
     const [error, setError] = useState([]);
+    const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
@@ -41,22 +42,25 @@ export default function RequestResetPassword() {
             .then(response => response.json())
             .then(data => {
                 if (data.message === 'Reset password email sent successfully!') {
-                    navigate('/reset-password');
+                    setLoading(false);
+                    setMessage('Check your email for reset password link');
                 }
                 else {
                     setError((error) => [
                         ...error,
-                        { type: "Email", message: data.message },
+                        { type: "Submit", message: data.message },
                     ]);
                     errorLength++;
+                    setLoading(false);
                 }
             })
             .catch(error => {
                 setError((error) => [
                     ...error,
-                    { type: "Email", message: "Something went wrong" },
+                    { type: "Submit", message: "Something went wrong" },
                 ]);
                 errorLength++;
+                setLoading(false);
             })
     }
 
@@ -86,6 +90,20 @@ export default function RequestResetPassword() {
                         }
                     })
                     : null}
+                {error.length > 0
+                    ? error.map((item, index) => {
+                        if (item.type === "Submit") {
+                            return (
+                                <span className="text-red-500 -mt-2 mb-2 text-xs" key={index}>
+                                    <p>
+                                        {item.message}
+                                    </p>
+                                </span>
+                            );
+                        }
+                    })
+                    : null}
+                {message ? <p className="text-green-700 -mt-2 mb-2 text-xs italic">{message}</p> : null}
                 <button
                     className="px-10 py-2 bg-black text-white font-medium rounded-lg"
                     onClick={(e) => {
@@ -95,7 +113,6 @@ export default function RequestResetPassword() {
                 >
                     {loading ? 'Submitting...' : 'Submit'}
                 </button>
-                {/* {error ? <p className="text-xl text-red-500 mt-2">{error}</p> : null} */}
             </div>
         </div >
     )

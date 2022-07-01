@@ -3,15 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 export default function ResetPassword() {
-    const [email, setEmail] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [eyePassword, setEyePassword] = useState(false);
     const [eyeConfirmPassword, setEyeConfirmPassword] = useState(false);
     const [error, setError] = useState([]);
+    const [message, setMessage] = useState(false);
     const [loading, setLoading] = useState(false);
 
     var errorLength = 0;
+    const query = new URLSearchParams(window.location.search);
     const validate = () => {
         setError([]);
         errorLength = 0;
@@ -101,29 +102,34 @@ export default function ResetPassword() {
     }
 
     const handleSubmit = (e) => {
-        fetch('https://hostelverse-backend.azurewebsites.net/api/resetPassword' + `?email=${email}`, {
+        setLoading(true);
+        fetch('https://hostelverse-backend.azurewebsites.net/api/resetPassword' + `?token=${query.get('token')}&newPassword=${newPassword}`, {
             method: 'GET',
         })
             .then(response => response.json())
             .then(data => {
-                if (data.message === 'Reset password email sent successfully!') {
-
+                if (data.message === 'Password changed successfully!') {
                     setLoading(false);
+                    setMessage(true)
+                    setNewPassword('');
+                    setConfirmPassword('');
                 }
                 else {
                     setError((error) => [
                         ...error,
-                        { type: "Email", message: data.message },
+                        { type: "Submit", message: data.message },
                     ]);
                     errorLength++;
+                    setLoading(false);
                 }
             })
             .catch(error => {
                 setError((error) => [
                     ...error,
-                    { type: "Email", message: "Something went wrong" },
+                    { type: "Submit", message: "Something went wrong" },
                 ]);
                 errorLength++;
+                setLoading(false);
             })
     }
 
@@ -176,7 +182,7 @@ export default function ResetPassword() {
                     ? error.map((item, index) => {
                         if (item.type === "Confirm Password") {
                             return (
-                                <span className="text-red-500 mt-2 text-xs" key={index}>
+                                <span className="text-red-500 -mt-2 mb-2 text-xs" key={index}>
                                     <p>
                                         {item.message}
                                     </p>
@@ -185,6 +191,24 @@ export default function ResetPassword() {
                         }
                     })
                     : null}
+                {error.length > 0
+                    ? error.map((item, index) => {
+                        if (item.type === "Submit") {
+                            return (
+                                <span className="text-red-500 -mt-2 mb-1 text-xs" key={index}>
+                                    <p>
+                                        {item.message}
+                                    </p>
+                                </span>
+                            );
+                        }
+                    })
+                    : null}
+                {message ? <div className="text-green-700 text-xs mb-2 -mt-1 flex gap-1 items-center">
+                    <FontAwesomeIcon icon={solid("check-circle")} className="text-xs" />
+                    <p>Password changed successfully!</p>
+                    <a href="/sign-in" className="text-blue-700 cursor-pointer">Sign In</a>
+                </div> : null}
                 <button
                     className="px-10 py-2 bg-black text-white font-medium rounded-lg"
                     onClick={(e) => {
@@ -194,6 +218,7 @@ export default function ResetPassword() {
                 >
                     {loading ? 'Submitting...' : 'Submit'}
                 </button>
+
             </div>
 
         </div>

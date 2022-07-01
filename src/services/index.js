@@ -55,9 +55,12 @@ export async function getStudentDetails(params) {
 }
 
 export async function getHostelList(params) {
+	let uri = baseUrl + apiEndPoints.getHostelList + `?low=${params.low}&high=${params.high}`;
+	if(params.hostelid)
+		uri = uri + `&hostelid=${params.hostelid}`;
   try {
     const res = (
-      await fetch(baseUrl + apiEndPoints.getHostelList + `?low=${params.low}&high=${params.high}`, {
+      await fetch(uri, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem(
             localStorageKey.jwtToken

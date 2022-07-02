@@ -31,7 +31,7 @@ export const useStudentDetails = (params) => {
 
 export const useHostelList = (params) => {
   return useQuery(
-    [QUERY_KEYS.GET_HOSTEL_LIST, params.low, params.high],
+    [QUERY_KEYS.GET_HOSTEL_LIST, params.low, params.high, params?.hostelid],
     () => getHostelList(params),
     {
       retry: false,

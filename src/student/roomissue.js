@@ -2,14 +2,22 @@ import React, { useEffect, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import { useMutateRoomIssue } from "../queries/mutations";
 import Issue from "../assets/img/Issue.jpg";
+import Room1 from "../assets/img/Room1.png";
+import Room2 from "../assets/img/Room2.png";
+import Room3 from "../assets/img/Room3.png";
+import Room4 from "../assets/img/Room4.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid, regular, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
 
 function RoomIssue() {
   const [reason, setReason] = useState("");
   const [error, setError] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const images = [Room1, Room2, Room3, Room4];
 
   var errorLength = 0;
 
@@ -95,7 +103,20 @@ function RoomIssue() {
           </button>
         </div>
       </div>
-      <img src={Issue} alt="" className="w-1/2 bg-no-repeat bg-cover bg-center h-screen" />
+      <div className="w-1/2 bg-no-repeat bg-cover bg-center h-screen flex items-center justify-center" style={{ backgroundImage: `url(${Issue})` }} >
+        <div className="w-3/4 z-0">
+          <Carousel autoPlay={true} infiniteLoop={true} interval={3000} showThumbs={false} showStatus={false} showArrows={false} className="z-0">
+            {images.map((item, index) => {
+              return (
+                <div key={index}>
+                  <img src={item} alt="Leave" className="" />
+                </div>
+              );
+            }
+            )}
+          </Carousel>
+        </div>
+      </div>
     </div >
   );
 }

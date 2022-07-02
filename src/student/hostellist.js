@@ -49,58 +49,64 @@ function HostelList() {
                 <div className="pb-4">
                     <p className='text-3xl font-bold text-gray-900 text-center mb-4'>Hostel List</p>
                     <div className='flex flex-col items-center'>
-                        <div className='bg-white p-2 rounded-md shadow-md w-1/2 mx-auto'>
+                        <div className='bg-white rounded-lg overflow-hidden shadow-md w-1/3 mx-auto'>
                             <TextField
+                                inputProps={{ style: { fontSize: 14, backgroundColor: "white" } }}
+                                InputLabelProps={{ style: { fontSize: 14 } }}
                                 id="filled"
                                 label="Search by Name"
-                                variant="outlined"
+                                variant="filled"
                                 value={name}
                                 onChange={(e) => {
                                     dispatch(updateName(e.target.value))
                                     filter(e.target.value)
                                 }}
                                 size='small'
-                                className="w-full"
+                                className="w-full bg-white"
                             />
                         </div>
-                        <div className='mt-2 flex justify-between w-1/2'>
-                            <div className='bg-white flex gap-2 items-center shadow-md rounded-md px-2 py-1'>
-                                <FormControl variant="standard">
-                                    <InputLabel htmlFor="input-with-icon-adornment">
-                                        Low
-                                    </InputLabel>
-                                    <Input
-                                        id="input-with-icon-adornment"
-                                        value={low}
-                                        onChange={(e) => { dispatch(updateLow(e.target.value)) }}
-                                        size="small"
-                                        startAdornment={
+                        <div className='mt-2 flex justify-between w-1/3'>
+                            <div className='bg-white flex gap-2 items-center shadow-md rounded-md px-2 pt-1'>
+                                <TextField
+                                    id="input-with-icon-low"
+                                    value={low}
+                                    inputProps={{ style: { fontSize: 14, backgroundColor: "white" } }}
+                                    onChange={(e) => { dispatch(updateLow(e.target.value)) }}
+                                    label="Low"
+                                    size='small'
+                                    InputProps={{
+                                        startAdornment: (
                                             <InputAdornment position="start">
                                                 <FontAwesomeIcon icon={solid('indian-rupee-sign')} className='text-gray-700' />
                                             </InputAdornment>
-                                        }
-                                    />
-                                </FormControl>
+                                        ),
+                                        style: { fontSize: 14, backgroundColor: "white" }
+                                    }}
+                                    InputLabelProps={{ style: { fontSize: 14 } }}
+                                    variant="standard"
+                                />
                             </div>
-                            <div className='bg-white flex gap-2 items-center shadow-md rounded-md px-4 py-1'>
-                                <FormControl variant="standard">
-                                    <InputLabel htmlFor="input-with-icon-adornment">
-                                        High
-                                    </InputLabel>
-                                    <Input
-                                        id="input-with-icon-adornment"
-                                        value={high}
-                                        onChange={(e) => { dispatch(updateHigh(e.target.value)) }}
-                                        size="small"
-                                        startAdornment={
+                            <div className='bg-white flex gap-2 items-center shadow-md rounded-md px-2 pt-1'>
+                                <TextField
+                                    id="input-with-icon-high"
+                                    value={high}
+                                    inputProps={{ style: { fontSize: 14, backgroundColor: "white" } }}
+                                    onChange={(e) => { dispatch(updateHigh(e.target.value)) }}
+                                    label="High"
+                                    size='small'
+                                    InputProps={{
+                                        startAdornment: (
                                             <InputAdornment position="start">
                                                 <FontAwesomeIcon icon={solid('indian-rupee-sign')} className='text-gray-700' />
                                             </InputAdornment>
-                                        }
-                                    />
-                                </FormControl>
+                                        ),
+                                        style: { fontSize: 14, backgroundColor: "white" }
+                                    }}
+                                    InputLabelProps={{ style: { fontSize: 14 } }}
+                                    variant="standard"
+                                />
                             </div>
-                            <button type="submit" className='px-8 py-1 bg-blue-700 text-white font-medium rounded-lg' onClick={() => filter()}>Filter</button>
+                            <button type="submit" className='px-8 bg-blue-700 text-white font-medium rounded-lg' onClick={() => filter()}>Filter</button>
                         </div>
                     </div>
                 </div >

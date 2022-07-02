@@ -91,9 +91,6 @@ const Payment = () => {
 			order_id: localStorage.getItem('orderID'),
 
 			handler: async function (response) {
-				alert(response.razorpay_payment_id);
-				alert(response.razorpay_order_id);
-				alert(response.razorpay_signature);
 
 				await verifyPayment(response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature);
 				alert('Payment successful!');

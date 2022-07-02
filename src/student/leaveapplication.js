@@ -4,6 +4,11 @@ import { useMutateLeaveApplication } from "../queries/mutations";
 import Leave from "../assets/img/leave.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid, regular, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
+import Leave1 from "../assets/img/Leave1.png";
+import Leave2 from "../assets/img/Leave2.png";
+import Leave3 from "../assets/img/Leave3.png";
 
 function LeaveApplication() {
   const [startDate, setStartDate] = useState("");
@@ -12,6 +17,8 @@ function LeaveApplication() {
   const [error, setError] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const images = [Leave1, Leave2, Leave3];
 
   var errorLength = 0;
 
@@ -170,7 +177,20 @@ function LeaveApplication() {
           </button>
         </div>
       </div>
-      <div className="w-1/2 bg-no-repeat bg-cover bg-center h-screen" style={{ backgroundImage: `url(${Leave})` }} />
+      <div className="w-1/2 bg-no-repeat bg-cover bg-center h-screen flex items-center justify-center" style={{ backgroundImage: `url(${Leave})` }} >
+        <div className="w-3/4 z-0">
+          <Carousel autoPlay={true} infiniteLoop={true} interval={3000} showThumbs={false} showStatus={false} showArrows={false} className="z-0">
+            {images.map((item, index) => {
+              return (
+                <div key={index}>
+                  <img src={item} alt="Leave" className="" />
+                </div>
+              );
+            }
+            )}
+          </Carousel>
+        </div>
+      </div>
     </div >
   );
 }

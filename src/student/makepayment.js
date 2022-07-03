@@ -188,42 +188,20 @@ const Payment = () => {
 	        					<h1 className='text-base w-16 text-center rounded-lg bg-green-500 text-white p-1'>{order.status}</h1>
 	        					<h1 className='text-base'>{order.amount / 100}</h1>
 	        				</div>
-	        			)) : <Loader />
+	        			)) : <div className='text-center'>
+	        				<h1 className='my-2'>You have not made any transactions yet!</h1>
+	        			</div>
 	        		}
 	        	</div>
 	        </div>
 	        
 
-	        {hostelData?.name ?
+	        {hostelData?.name &&
 	        	<div className='mx-auto text-center mt-2'>
 	        		<h1>Hostel Name: {hostelData.name}</h1>
 	        		<h1>Location: {hostelData.location}</h1>
 	        		<h1>Fees: &#8377;{hostelData.fees}</h1>
-	        	</div> :
-	        	<svg
-                  width="21px"
-                  height="21px"
-                  viewBox="0 0 21 21"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="animate-spin text-2xl mx-auto"
-                >
-                  <g
-                    fill="none"
-                    fillRule="evenodd"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="m10.5 3.5v2" />
-                    <path d="m15.5 5.5-1.5 1.5" />
-                    <path d="m5.5 5.5 1.5 1.5" />
-                    <path d="m10.5 17.5v-2" />
-                    <path d="m15.5 15.5-1.5-1.5" />
-                    <path d="m5.5 15.5 1.5-1.5" />
-                    <path d="m3.5 10.5h2" />
-                    <path d="m15.5 10.5h2" />
-                  </g>
-                </svg>
+	        	</div>
 	    	}
 
 	        {

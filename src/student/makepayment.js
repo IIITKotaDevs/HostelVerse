@@ -3,6 +3,7 @@ import { localStorageKey } from "../utils/localStorageKey";
 import { useStudentDetails } from "../queries/hooks";
 import baseurl from "../config";
 import axios from 'axios';
+import Loader from '../components/Loader';
 
 import { useHostelList } from '../queries/hooks';
 
@@ -13,8 +14,24 @@ import feedback from '../assets/img/feedback.jpg'
 const Payment = () => {
 	const [studentData, setStudentData] = useState([]);
 	const [loading, setLoading] = useState(false);
-	const [payDisable, setPayDisable] = useState(true);
-	const [hostelData, setHostelData] = useState([])
+	const [hostelData, setHostelData] = useState([]);
+	const [orderData, setOrderData] = useState([]);
+
+	const getOrderHistory = async () => {
+		const res = await axios.get(
+		`${baseurl}/getPaymentHistory?studentid=${localStorage.getItem(localStorageKey.id)}`,
+		{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              localStorageKey.jwtToken
+            )}`,
+            "Content-type": "application/json",
+          },
+        }
+		)
+
+		setOrderData(res.data.message);
+	}
 
 	const studentDetails = useStudentDetails({
 	    studentid: localStorage.getItem(localStorageKey.id),
@@ -28,6 +45,11 @@ const Payment = () => {
 	const hostelList = useHostelList({
 		hostelid: localStorage.getItem('hostelid'),
     })
+
+    useEffect(() => {
+    	getOrderHistory();
+    	setHostelData(hostelList.data?.data);
+    }, [studentData, loading === false]);
 
 	const getOrderID = async () => {
 
@@ -142,34 +164,76 @@ const Payment = () => {
 	          <h1 className="text-3xl font-bold mt-4 text-gray-800">Pay Fees Form</h1>
 	        </div>
 
-	        <div className="mx-auto text-center mt-2">
-	          <button
-	            className="text-white bg-gray-700 transition-all hover:bg-gray-900 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
-	            onClick={() => {
-	            	setHostelData(hostelList.data?.data)
-	            	setPayDisable(false)
-	            }}
-	          >
-	            Get Fee Details
-	          </button>
+	        <div className=''>
+	        	<h1 className='text-center text-2xl font-bold mt-4'>Recent Transactions</h1>
+	        	<div className='mx-12 border-4 border-gray-300 rounded-xl'>
+	        		<div className='grid grid-cols-4 bg-gray-200 border-b-2 border-black rounded-t-lg p-2 font-bold'>
+	        			<h1 className='text-xl'>Payment ID</h1>
+    					<h1 className='text-xl'>Date</h1>
+    					<h1 className='text-xl'>Status</h1>
+    					<h1 className='text-xl'>Amount</h1>
+	        		</div>
+	        		{
+	        			orderData.length ? orderData.map((order, index) => (
+	        				index % 2 == 0 ?
+	        				<div className='grid grid-cols-4 bg-gray-100 p-2 ' key={index}>
+	        					<h1 className='text-base'>{`${order.razorpay_payment_id.substring(0, 7)}...${order.razorpay_payment_id.substring(14)}`}</h1>
+	        					<h1 className='text-base'>{order.updatedAt.substring(0, 10)}</h1>
+	        					<h1 className='text-base w-16 text-center rounded-lg bg-green-500 text-white p-1'>{order.status}</h1>
+	        					<h1 className='text-base'>{order.amount / 100}</h1>
+	        				</div> :
+	        				<div className='grid grid-cols-4 p-2' key={index}>
+	        					<h1 className='text-base'>{`${order.razorpay_payment_id.substring(0, 7)}...${order.razorpay_payment_id.substring(14)}`}</h1>
+	        					<h1 className='text-base'>{order.updatedAt.substring(0, 10)}</h1>
+	        					<h1 className='text-base w-16 text-center rounded-lg bg-green-500 text-white p-1'>{order.status}</h1>
+	        					<h1 className='text-base'>{order.amount / 100}</h1>
+	        				</div>
+	        			)) : <Loader />
+	        		}
+	        	</div>
 	        </div>
+	        
 
-	        {hostelData.name &&
+	        {hostelData?.name ?
 	        	<div className='mx-auto text-center mt-2'>
 	        		<h1>Hostel Name: {hostelData.name}</h1>
 	        		<h1>Location: {hostelData.location}</h1>
 	        		<h1>Fees: &#8377;{hostelData.fees}</h1>
-	        	</div>
+	        	</div> :
+	        	<svg
+                  width="21px"
+                  height="21px"
+                  viewBox="0 0 21 21"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="animate-spin text-2xl mx-auto"
+                >
+                  <g
+                    fill="none"
+                    fillRule="evenodd"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m10.5 3.5v2" />
+                    <path d="m15.5 5.5-1.5 1.5" />
+                    <path d="m5.5 5.5 1.5 1.5" />
+                    <path d="m10.5 17.5v-2" />
+                    <path d="m15.5 15.5-1.5-1.5" />
+                    <path d="m5.5 15.5 1.5-1.5" />
+                    <path d="m3.5 10.5h2" />
+                    <path d="m15.5 10.5h2" />
+                  </g>
+                </svg>
 	    	}
 
-	        { !payDisable &&
+	        {
 	        	<div className="mx-auto text-center mt-4">
 		          <button
-		          	disabled={loading || payDisable}
+		          	disabled={loading}
 		            className="text-white bg-blue-500 transition-all hover:bg-blue-600 font-medium shadow-lg hover:shadow-none px-4 py-2 rounded-lg"
 		            onClick={() => displayRazorpay(300)}
 		          >
-		            {loading || payDisable ? (<h1 className='text-3xl animate-spin'>&#9696;</h1>) : <h1 className='text-2xl'>Pay</h1>}
+		            {loading ? (<h1 className='text-3xl animate-spin'>&#9696;</h1>) : <h1 className='text-2xl'>Pay</h1>}
 		          </button>
 		        </div>
 	    	}

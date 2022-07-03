@@ -118,6 +118,12 @@ const Payment = () => {
 				alert('Payment successful!');
 				setLoading(false);
 			},
+			"modal": {
+		        "ondismiss": function() {
+		            console.log('Checkout form closed');
+		            setLoading(false);
+		        }
+		    },
 			prefill: {
 				name: "Hostelverse"
 			},
